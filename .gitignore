@@ -1,0 +1,80 @@
+# Ignorar mis scripts
+app_run
+test_run
+
+# Ignorar archivos generados por Visual Studio
+.vscode/
+.vs/
+/bin/
+/obj/
+
+# Ignorar archivos de caché y temporales
+[Tt]emp/
+[Oo]bj/
+[Bb]in/
+*.bak
+*.cache
+*.log
+*.DS_Store
+
+# Ignorar archivos de usuario y configuración
+*.suo
+*.user
+*.sln.docstates
+*.userprefs
+*.usertasks
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.usertasks
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.usertasks
+
+# Ignorar archivos de respaldo de editor
+*~
+*.swp
+*.swo
+*.swn
+
+# Ignorar archivos de paquetes de NuGet
+packages/
+
+# Ignorar archivos de salida de compilación
+*.dll
+*.exe
+*.pdb
+*.dll.config
+*.exe.config
+
+# Ignorar archivos de caché de ReSharper
+_ReSharper*/
+
+# Ignorar archivos de caché de CodeRush
+_CodeRush*/
+
+# Ignorar archivos de caché de Visual Studio
+.vscode/
+
+# Ignorar archivos de dependencias de Node.js (si se utiliza)
+node_modules/
+
+# Ignorar archivos generados por TypeScript (si se utiliza)
+*.js
+*.js.map
+
+# Ignorar archivos generados por Visual Studio Code (si se utiliza)
+.vscode/
+
+# Ignorar archivos generados por Rider (si se utiliza)
+.idea/
+*.iml
+*.ipr
+*.iws
+*.sln.iml
+.idea/

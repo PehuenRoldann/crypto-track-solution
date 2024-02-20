@@ -1,0 +1,21 @@
+
+.main-container {
+    background-color: #232D3F;
+}
+
+.button-color{
+    background-color: #008170;
+    font-weight: bold;
+    color: white;
+    border-radius: 20px;
+    border-width: 0;
+}
+
+.button-color:hover {
+    background-color: white;
+    color: black;
+}
+
+.button-image {
+    border-radius: 20px;
+}
