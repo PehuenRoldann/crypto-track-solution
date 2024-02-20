@@ -27,7 +27,6 @@ namespace CryptoTrackApp.src.db
 		.WithOne(s => s.User)
 		.HasForeignKey( s => s.UserId )
 		.IsRequired();
-	      
 	    });
 
 	  modelBuilder.Entity<Subscription>(sub => {

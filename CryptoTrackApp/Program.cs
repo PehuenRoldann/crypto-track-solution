@@ -13,7 +13,6 @@ namespace CryptoTrackApp
 
             var app = new Application("org.CryptoTrackApp.CryptoTrackApp", GLib.ApplicationFlags.None);
             app.Register(GLib.Cancellable.Current);
-
             var win = new LoginWindow();
             app.AddWindow(win);
 
