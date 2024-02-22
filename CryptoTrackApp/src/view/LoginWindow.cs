@@ -45,10 +45,12 @@ namespace CryptoTrackApp.src.view
             _loginButton.StyleContext.AddClass("button-color");
             _signInButton.StyleContext.AddClass("sign-in-button");
             _passVisibilityButton.StyleContext.AddClass("button-image");
+	    _logo.StyleContext.AddClass("logo-image");
         }
         private void _ConfigButtons () {
             _passVisibilityButton.ButtonReleaseEvent += PassVisibilityChanged;
             _loginButton.ButtonReleaseEvent += _LoginUserEvent;
+	    _signInButton.ButtonReleaseEvent += _SignUpEvent;
         }
 
         private void _ConfigInputs () {
@@ -99,11 +101,16 @@ namespace CryptoTrackApp.src.view
         }
 
         private void _LoginUser(IUserServices pUserServices) {
-            System.Console.WriteLine("Login with: " + this._passwordInput.Text+ "; "+this._emailInput.Text);
             AppResponse response = pUserServices.LoginUser(this._passwordInput.Text,
                                                             this._emailInput.Text);
-            System.Console.WriteLine(response);
+            System.Console.WriteLine(response.message);
         }
+
+	private void _SignUpEvent(object sender, ButtonReleaseEventArgs a) {
+	  var signUpWindow = new SignUpWindow(); 
+	  signUpWindow.Show();
+	  this.Destroy();
+	}
 
     }
 

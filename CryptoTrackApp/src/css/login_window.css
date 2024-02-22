@@ -1,6 +1,7 @@
 
 .main-container {
-    background-color: #232D3F;
+    background: rgb(0,0,0);
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(1,3,24,1) 6%, rgba(1,4,38,1) 50%, rgba(1,3,24,1) 94%, rgba(0,0,0,1) 100%);
 }
 
 .button-color{
@@ -18,4 +19,8 @@
 
 .button-image {
     border-radius: 20px;
+}
+
+.logo-image{
+  margin-top: 100;
 }

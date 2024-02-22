@@ -20,13 +20,16 @@ namespace CryptoTrackApp.src.db
 	{
 	  modelBuilder.Entity<User>(user => {
 	      user.HasKey( u => u.Id);
-	      user.Property(u => u.Email).HasMaxLength(200).IsRequired();
+	      user.HasAlternateKey( u => u.Email );
+	      user.Property( u => u.Status ).IsRequired();
+	      //user.Property(u => u.Email).HasMaxLength(200).IsRequired();
 		  user.Property( u => u.BirthDate).HasColumnType("date").IsRequired();
 	      user.Property(u => u.Password).IsRequired();
 	      user.HasMany(u => u.Subscriptions)
 		.WithOne(s => s.User)
 		.HasForeignKey( s => s.UserId )
 		.IsRequired();
+	      user.Property( u => u.UserName ).IsRequired();
 	    });
 
 	  modelBuilder.Entity<Subscription>(sub => {

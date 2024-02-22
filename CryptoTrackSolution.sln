@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoTrackApp", "CryptoTrackApp\CryptoTrackApp.csproj", "{442B5BA4-7D28-4BC1-B686-0EF5ABECF76F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoTrackTest", "CryptoTrackTest\CryptoTrackTest.csproj", "{E659213A-401D-4A87-BC15-B869A240B304}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{442B5BA4-7D28-4BC1-B686-0EF5ABECF76F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{442B5BA4-7D28-4BC1-B686-0EF5ABECF76F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{442B5BA4-7D28-4BC1-B686-0EF5ABECF76F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E659213A-401D-4A87-BC15-B869A240B304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E659213A-401D-4A87-BC15-B869A240B304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E659213A-401D-4A87-BC15-B869A240B304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E659213A-401D-4A87-BC15-B869A240B304}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
