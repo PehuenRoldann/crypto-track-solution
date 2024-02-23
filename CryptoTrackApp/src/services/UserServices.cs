@@ -18,13 +18,13 @@ namespace CryptoTrackApp.src.services
 	    //response.message = "Login was wrong";
             //return response;
 	//}
-	public AppResponse LoginUser(string pPassword, string pEmail) {
+	public async  Task<AppResponse> LoginUser(string pPassword, string pEmail) {
 	  
-	  AppResponse response = new AppResponse();
 
 	  try
 	  {
-	    User? user = repository.Login(pEmail, pPassword);
+	    User? user = await repository.Login(pEmail, pPassword);
+	    
 	    if (user == null) {
 	      return new AppResponse(status: "Failure", message: "The proportioned email is not registered.");
 	    }

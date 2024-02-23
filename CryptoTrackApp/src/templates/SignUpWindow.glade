@@ -1,62 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.2 -->
+<!-- Generated with glade 3.40.0 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkWindow" id="SignUpWindow">
+    <property name="width-request">1280</property>
+    <property name="height-request">720</property>
     <property name="can-focus">False</property>
     <property name="title" translatable="yes">Sign Up</property>
     <property name="default-width">1280</property>
     <property name="default-height">720</property>
     <child>
-      <object class="GtkFixed">
+      <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="margin-top">50</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkBox">
+          <object class="GtkImage" id="_logo">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-start">100</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">You are just one step away from using Crypto Track App!</property>
-                <property name="justify">center</property>
-                <property name="xalign">0.5</property>
-                <property name="yalign">0.5</property>
-                <attributes>
-                  <attribute name="font-desc" value="Arimo Nerd Font Bold 30"/>
-                  <attribute name="foreground" value="#000000000000"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Just fill the form and press the register button to start using the app!</property>
-                <property name="justify">center</property>
-                <property name="xalign">0.5</property>
-                <property name="yalign">0.5</property>
-                <attributes>
-                  <attribute name="font-desc" value="Arimo Nerd Font Propo 20"/>
-                  <attribute name="foreground" value="#000000000000"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
+            <property name="halign">center</property>
+            <property name="pixbuf">../assets/images/ctapp_logo.png</property>
+            <style>
+              <class name="logo"/>
+            </style>
           </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="halign">center</property>
+            <property name="label" translatable="yes">You are one step away from using CTA!
+Just fill the form and press sign up to start using the app.</property>
+            <property name="justify">center</property>
+            <attributes>
+              <attribute name="font-desc" value="Arimo Nerd Font Italic 16"/>
+            </attributes>
+            <style>
+              <class name="title"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
         </child>
         <child>
           <!-- n-columns=2 n-rows=3 -->
@@ -65,8 +58,9 @@
             <property name="height-request">80</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
             <property name="row-spacing">40</property>
-            <property name="column-spacing">20</property>
             <child>
               <object class="GtkBox">
                 <property name="width-request">100</property>
@@ -84,10 +78,10 @@
                     <property name="xalign">1</property>
                     <attributes>
                       <attribute name="font-desc" value="Arimo Nerd Font 14"/>
-                      <attribute name="foreground" value="#000000000000"/>
+                      <attribute name="foreground" value="#ffffffffffff"/>
                     </attributes>
                     <style>
-                      <class name="entryLabel"/>
+                      <class name="entry-label"/>
                     </style>
                   </object>
                   <packing>
@@ -138,10 +132,10 @@
                     <property name="xalign">1</property>
                     <attributes>
                       <attribute name="font-desc" value="Arimo Nerd Font 14"/>
-                      <attribute name="foreground" value="#000000000000"/>
+                      <attribute name="foreground" value="#ffffffffffff"/>
                     </attributes>
                     <style>
-                      <class name="entryLabel"/>
+                      <class name="entry-label"/>
                     </style>
                   </object>
                   <packing>
@@ -198,10 +192,10 @@
                     <property name="xalign">1</property>
                     <attributes>
                       <attribute name="font-desc" value="Arimo Nerd Font 14"/>
-                      <attribute name="foreground" value="#000000000000"/>
+                      <attribute name="foreground" value="#ffffffffffff"/>
                     </attributes>
                     <style>
-                      <class name="entryLabel"/>
+                      <class name="entry-label"/>
                     </style>
                   </object>
                   <packing>
@@ -251,10 +245,10 @@
                     <property name="xalign">1</property>
                     <attributes>
                       <attribute name="font-desc" value="Arimo Nerd Font 14"/>
-                      <attribute name="foreground" value="#000000000000"/>
+                      <attribute name="foreground" value="#ffffffffffff"/>
                     </attributes>
                     <style>
-                      <class name="entryLabel"/>
+                      <class name="entry-label"/>
                     </style>
                   </object>
                   <packing>
@@ -304,10 +298,10 @@
                     <property name="xalign">1</property>
                     <attributes>
                       <attribute name="font-desc" value="Arimo Nerd Font 14"/>
-                      <attribute name="foreground" value="#000000000000"/>
+                      <attribute name="foreground" value="#ffffffffffff"/>
                     </attributes>
                     <style>
-                      <class name="entryLabel"/>
+                      <class name="entry-label"/>
                     </style>
                   </object>
                   <packing>
@@ -359,10 +353,10 @@
                     <property name="xalign">1</property>
                     <attributes>
                       <attribute name="font-desc" value="Arimo Nerd Font 14"/>
-                      <attribute name="foreground" value="#000000000000"/>
+                      <attribute name="foreground" value="#ffffffffffff"/>
                     </attributes>
                     <style>
-                      <class name="entryLabel"/>
+                      <class name="entry-label"/>
                     </style>
                   </object>
                   <packing>
@@ -397,12 +391,90 @@
             </child>
           </object>
           <packing>
-            <property name="x">120</property>
-            <property name="y">150</property>
+            <property name="expand">True</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkButtonBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="halign">center</property>
+            <property name="margin-top">20</property>
+            <property name="spacing">200</property>
+            <property name="layout-style">center</property>
+            <child>
+              <object class="GtkButton" id="_signUpButton">
+                <property name="width-request">200</property>
+                <property name="height-request">50</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="label" translatable="yes">Sign Up!</property>
+                    <attributes>
+                      <attribute name="font-desc" value="Arimo Nerd Font Propo Bold 16"/>
+                    </attributes>
+                  </object>
+                </child>
+                <style>
+                  <class name="sign-up-button"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButtonBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="layout-style">start</property>
+            <child>
+              <object class="GtkButton" id="_cancelButton">
+                <property name="label" translatable="yes">Cancel</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="margin-start">10</property>
+                <style>
+                  <class name="cancel-button"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <style>
+          <class name="main-container"/>
+        </style>
       </object>
     </child>
+    <style>
+      <class name="main-window"/>
+    </style>
   </object>
   <object class="GtkDialog">
     <property name="can-focus">False</property>

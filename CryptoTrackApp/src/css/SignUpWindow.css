@@ -1,0 +1,49 @@
+.main-container {
+background: #0F0F0F;
+}
+
+.logo {
+
+}
+
+.title {
+  
+}
+
+.entry-label{
+
+  color: white;
+
+}
+
+.sign-up-button {
+background-color: #008170;
+border-radius: 20px;
+color: white;
+}
+
+.sign-up-button:hover {
+background-color: white;
+color: black;
+}
+
+.cancel-button{
+background-color: #005B41;
+border-radius: 20px;
+color: white;
+}
+
+.cancel-button:hover {
+background-color: white;
+color: black;
+}
+
+.entryBox {
+border-radius: 10px;
+background-color: #607274;
+color: black;
+}
+
+.entryBox:focus{
+background-color: white;
+}

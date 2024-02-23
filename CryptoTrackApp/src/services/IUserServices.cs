@@ -24,7 +24,7 @@ namespace CryptoTrackApp.src.services
         Returns a AppResponse with status 200 if the login was successful,
         or 40x if there is a problem with the login.
         */
-        AppResponse LoginUser(String pPassword, String pEmail);
+        Task<AppResponse> LoginUser(String pPassword, String pEmail);
 	AppResponse AddUser(string pEmail, string pPassword, string pUserName, DateTime pBirthDate);
 	Task<AppResponse> IsEmailAvailable(string pEmail);
     }

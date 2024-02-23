@@ -1,266 +1,334 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.2 -->
+<!-- Generated with glade 3.40.0 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkWindow" id="LoginWindow">
     <property name="width-request">800</property>
     <property name="height-request">600</property>
     <property name="can-focus">False</property>
+    <property name="title" translatable="yes">Crypto Track App - Logins</property>
     <property name="default-width">800</property>
     <property name="default-height">600</property>
     <child>
-      <object class="GtkBox">
+      <object class="GtkViewport">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkImage" id="_logo">
+          <object class="GtkViewport">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="halign">center</property>
-            <property name="margin-bottom">30</property>
-            <property name="pixbuf">../assets/images/ctapp_logo.png</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="halign">center</property>
             <property name="valign">center</property>
-            <property name="label" translatable="yes">Email</property>
-            <property name="justify">center</property>
-            <attributes>
-              <attribute name="font-desc" value="FreeSans Semi-Bold 16"/>
-              <attribute name="weight" value="bold"/>
-            </attributes>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkEntry" id="_emailInput">
-            <property name="width-request">400</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="halign">center</property>
-            <property name="placeholder-text" translatable="yes">youremail@addres.com</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="_emailProblemLabel">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="margin-top">10</property>
-            <property name="margin-bottom">10</property>
-            <property name="label" translatable="yes">* There is a problem with your email.</property>
-            <attributes>
-              <attribute name="style" value="italic"/>
-              <attribute name="foreground" value="#c0c01c1c2828"/>
-            </attributes>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">4</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="halign">center</property>
-            <property name="valign">center</property>
-            <property name="label" translatable="yes">Password</property>
-            <attributes>
-              <attribute name="font-desc" value="FreeSans Semi-Bold 16"/>
-            </attributes>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">5</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
             <child>
-              <object class="GtkLayout">
+              <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="halign">start</property>
-                <property name="margin-end">30</property>
-                <property name="width">110</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="_passwordInput">
-                <property name="width-request">400</property>
-                <property name="height-request">28</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="halign">center</property>
-                <property name="valign">center</property>
-                <property name="visibility">False</property>
-                <property name="invisible-char">•</property>
-                <property name="placeholder-text" translatable="yes">YourPassword123</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkAlignment">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkEventBox" id="_passVisibilityButton">
+                  <object class="GtkImage" id="_logo">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="halign">start</property>
+                    <property name="halign">center</property>
+                    <property name="margin-top">40</property>
+                    <property name="margin-bottom">39</property>
+                    <property name="pixbuf">../assets/images/ctapp_logo.png</property>
+                    <style>
+                      <class name="logo-image"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="margin-top">10</property>
+                    <property name="label" translatable="yes">Email</property>
+                    <property name="justify">center</property>
+                    <attributes>
+                      <attribute name="font-desc" value="FreeSans Semi-Bold 16"/>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="_emailInput">
+                    <property name="width-request">400</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="halign">center</property>
+                    <property name="placeholder-text" translatable="yes">youremail@addres.com</property>
+                    <style>
+                      <class name="entryBox"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="_emailProblemLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-top">10</property>
+                    <property name="margin-bottom">10</property>
+                    <property name="label" translatable="yes">* There is a problem with your email.</property>
+                    <attributes>
+                      <attribute name="style" value="italic"/>
+                      <attribute name="foreground" value="#c0c01c1c2828"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="label" translatable="yes">Password</property>
+                    <attributes>
+                      <attribute name="font-desc" value="FreeSans Semi-Bold 16"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkImage" id="_imageButton">
-                        <property name="width-request">28</property>
-                        <property name="height-request">28</property>
+                      <object class="GtkLayout">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="halign">start</property>
+                        <property name="margin-end">30</property>
+                        <property name="width">110</property>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="_passwordInput">
+                        <property name="width-request">400</property>
+                        <property name="height-request">28</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="halign">center</property>
                         <property name="valign">center</property>
-                        <property name="margin-start">1</property>
-                        <property name="pixbuf">../assets/images/toggle_visibility_white_open.ico</property>
+                        <property name="visibility">False</property>
+                        <property name="invisible-char">•</property>
+                        <property name="placeholder-text" translatable="yes">YourPassword123</property>
                         <style>
-                          <class name="button-image"/>
+                          <class name="entryBox"/>
                         </style>
                       </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkAlignment">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkEventBox" id="_passVisibilityButton">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="halign">start</property>
+                            <child>
+                              <object class="GtkImage" id="_imageButton">
+                                <property name="width-request">28</property>
+                                <property name="height-request">28</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="halign">start</property>
+                                <property name="valign">center</property>
+                                <property name="margin-start">1</property>
+                                <property name="pixbuf">../assets/images/toggle_visibility_white_open.ico</property>
+                                <style>
+                                  <class name="button-image"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
                     </child>
                   </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">6</property>
+                  </packing>
                 </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">7</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="_passProblemLabel">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="margin-top">10</property>
-            <property name="margin-bottom">10</property>
-            <property name="label" translatable="yes">* There is a problem with your password</property>
-            <attributes>
-              <attribute name="style" value="italic"/>
-              <attribute name="foreground" value="#c0c01c1c2828"/>
-            </attributes>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">7</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <child>
-              <object class="GtkButton" id="_loginButton">
-                <property name="label" translatable="yes">Login</property>
-                <property name="width-request">150</property>
-                <property name="height-request">28</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
-                <property name="halign">end</property>
-                <property name="valign">center</property>
-                <property name="margin-end">10</property>
-                <property name="margin-top">10</property>
-                <property name="margin-bottom">10</property>
+                <child>
+                  <object class="GtkLabel" id="_passProblemLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-top">10</property>
+                    <property name="margin-bottom">10</property>
+                    <property name="label" translatable="yes">* There is a problem with your password</property>
+                    <attributes>
+                      <attribute name="style" value="italic"/>
+                      <attribute name="foreground" value="#c0c01c1c2828"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">7</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButtonBox" id="_buttonsBox">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="spacing">20</property>
+                    <property name="layout-style">center</property>
+                    <child>
+                      <object class="GtkButton" id="_loginButton">
+                        <property name="label" translatable="yes">Login</property>
+                        <property name="width-request">150</property>
+                        <property name="height-request">28</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="halign">end</property>
+                        <property name="valign">center</property>
+                        <property name="margin-end">10</property>
+                        <property name="margin-top">10</property>
+                        <property name="margin-bottom">10</property>
+                        <style>
+                          <class name="button-color"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="_signInButton">
+                        <property name="label" translatable="yes">Sign Up</property>
+                        <property name="width-request">150</property>
+                        <property name="height-request">28</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="halign">start</property>
+                        <property name="margin-start">10</property>
+                        <property name="margin-top">10</property>
+                        <property name="margin-bottom">10</property>
+                        <style>
+                          <class name="button-color"/>
+                          <class name="sign-in-button"/>
+                        </style>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">8</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLayout">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">9</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinner" id="_spinner">
+                    <property name="width-request">40</property>
+                    <property name="height-request">40</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-bottom">39</property>
+                    <property name="active">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">False</property>
+                    <property name="position">10</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="_loginProblem">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-top">10</property>
+                    <property name="margin-bottom">10</property>
+                    <property name="label" translatable="yes">* There is a problem with the login</property>
+                    <attributes>
+                      <attribute name="style" value="italic"/>
+                      <attribute name="foreground" value="#c0c01c1c2828"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">12</property>
+                  </packing>
+                </child>
                 <style>
-                  <class name="button-color"/>
+                  <class name="main-container"/>
                 </style>
               </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
             </child>
-            <child>
-              <object class="GtkButton" id="_signInButton">
-                <property name="label" translatable="yes">Sign Up</property>
-                <property name="width-request">150</property>
-                <property name="height-request">28</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
-                <property name="halign">start</property>
-                <property name="margin-start">10</property>
-                <property name="margin-top">10</property>
-                <property name="margin-bottom">10</property>
-                <style>
-                  <class name="button-color"/>
-                  <class name="sign-in-button"/>
-                </style>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
+            <style>
+              <class name="viewport"/>
+            </style>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">8</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLayout">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">9</property>
-          </packing>
         </child>
         <style>
-          <class name="main-container"/>
+          <class name="viewport"/>
         </style>
       </object>
     </child>
+    <style>
+      <class name=".main-window"/>
+    </style>
   </object>
 </interface>

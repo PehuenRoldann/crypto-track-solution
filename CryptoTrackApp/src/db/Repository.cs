@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 namespace CryptoTrackApp.src.db {
   public class Repository : IRepository {
     
-    public User? Login (string pEmail, string pPassword) {
+    public async Task<User?> Login (string pEmail, string pPassword) {
 
       try {
 	using (var context = new CryptoTrackAppContext()) {
-	return context.Users.FirstOrDefault(u => u.Email == pEmail);
+	return await context.Users.FirstOrDefaultAsync(u => u.Email == pEmail);
 
 	}
       } 
