@@ -1,7 +1,8 @@
 using System;
 using Gtk;
 using CryptoTrackApp.src.view;
-
+using CryptoTrackApp.src.services;
+using CryptoTrackApp.src.view_managment;
 namespace CryptoTrackApp
 {
     class Program
@@ -10,13 +11,13 @@ namespace CryptoTrackApp
         public static void Main(string[] args)
         {
             Application.Init();
-
             var app = new Application("org.CryptoTrackApp.CryptoTrackApp", GLib.ApplicationFlags.None);
             app.Register(GLib.Cancellable.Current);
-            var win = new LoginWindow();
-            app.AddWindow(win);
+	    
 
-            win.Show();
+	    IViewManager vw = ViewManager.GetInstance();
+	    vw.App = app;
+	    vw.ChangeView(newViewClass: "Login");
             Application.Run();
         }
     }

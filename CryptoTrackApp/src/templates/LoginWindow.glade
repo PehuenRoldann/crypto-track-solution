@@ -20,6 +20,8 @@
             <property name="valign">center</property>
             <child>
               <object class="GtkBox">
+                <property name="width-request">1280</property>
+                <property name="height-request">720</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
@@ -212,6 +214,7 @@
                 </child>
                 <child>
                   <object class="GtkButtonBox" id="_buttonsBox">
+                    <property name="height-request">55</property>
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="spacing">20</property>
@@ -282,10 +285,8 @@
                 </child>
                 <child>
                   <object class="GtkSpinner" id="_spinner">
-                    <property name="width-request">40</property>
-                    <property name="height-request">40</property>
+                    <property name="height-request">55</property>
                     <property name="can-focus">False</property>
-                    <property name="margin-bottom">39</property>
                     <property name="active">True</property>
                   </object>
                   <packing>

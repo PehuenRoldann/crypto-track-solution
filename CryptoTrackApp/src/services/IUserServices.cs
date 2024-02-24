@@ -26,7 +26,7 @@ namespace CryptoTrackApp.src.services
         */
         Task<AppResponse> LoginUser(String pPassword, String pEmail);
 	AppResponse AddUser(string pEmail, string pPassword, string pUserName, DateTime pBirthDate);
-	Task<AppResponse> IsEmailAvailable(string pEmail);
+	Task<bool> IsEmailAvailable(string pEmail);
     }
 }
 

@@ -70,20 +70,21 @@ namespace CryptoTrackApp.src.services
 
 	  return response;
 	}
+	
 
-	public async Task<AppResponse> IsEmailAvailable(string pEmail)
-	{
-	  AppResponse response = new AppResponse();
-	  if (await repository.ExistEmail(pEmail)) 
-	  {
-	    response.status = "Failure";
-	    response.message = "The email is already registered";
-	    return response;
+
+	public async Task<bool> IsEmailAvailable(string pEmail)
+	{	
+	  try {
+
+	    bool res = await repository.ExistEmail(pEmail);
+	    return !res;
+
+	  } 
+	  catch (Exception error) {
+	    Console.WriteLine("Error at CryptoTrackApp.src.services.UserServices: "+ error.Message);
+	    throw new Exception(error.Message);
 	  }
-
-	  response.status = "Success";
-	  response.message = "The email es available";
-	  return response;
 	}
   }
 }

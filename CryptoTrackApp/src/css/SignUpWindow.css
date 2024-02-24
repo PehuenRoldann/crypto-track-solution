@@ -21,10 +21,13 @@ background-color: #008170;
 border-radius: 20px;
 color: white;
 }
-
 .sign-up-button:hover {
 background-color: white;
 color: black;
+}
+
+.sign-up-button-disable {
+  background-color: grey;
 }
 
 .cancel-button{
@@ -40,7 +43,7 @@ color: black;
 
 .entryBox {
 border-radius: 10px;
-background-color: #607274;
+background-color: #f0eee9;
 color: black;
 }
 

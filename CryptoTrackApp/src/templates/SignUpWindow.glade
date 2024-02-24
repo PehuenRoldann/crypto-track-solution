@@ -11,6 +11,8 @@
     <property name="default-height">720</property>
     <child>
       <object class="GtkBox">
+        <property name="width-request">1280</property>
+        <property name="height-request">720</property>
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
@@ -210,6 +212,8 @@ Just fill the form and press sign up to start using the app.</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="caps-lock-warning">False</property>
+                    <property name="primary-icon-activatable">False</property>
+                    <property name="primary-icon-sensitive">False</property>
                     <property name="placeholder-text" translatable="yes">max_power@email.com</property>
                     <property name="input-purpose">email</property>
                     <style>
@@ -475,55 +479,5 @@ Just fill the form and press sign up to start using the app.</property>
     <style>
       <class name="main-window"/>
     </style>
-  </object>
-  <object class="GtkDialog">
-    <property name="can-focus">False</property>
-    <property name="type-hint">dialog</property>
-    <child internal-child="vbox">
-      <object class="GtkBox">
-        <property name="can-focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox">
-            <property name="can-focus">False</property>
-            <property name="layout-style">end</property>
-            <child>
-              <object class="GtkButton" id="_calendarConfirm">
-                <property name="label" translatable="yes">Confirm</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkCalendar" id="_calendar">
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="margin-bottom">24</property>
-            <property name="year">2024</property>
-            <property name="month">1</property>
-            <property name="day">22</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
   </object>
 </interface>
