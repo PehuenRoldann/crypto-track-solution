@@ -1,4 +1,3 @@
-using System;
 using Gtk;
 
 namespace CryptoTrackApp.src.view {

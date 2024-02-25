@@ -33,16 +33,16 @@ namespace CryptoTrackApp.src.view_managment {
 
     public Application? App {get {return this._app; } set {this._app = value; }}
 
-    public void ChangeView(string viewClass, View? oldView=null)
+    public void ChangeView(string pNewViewClass, View? pOldView=null)
     {
 
       View? win = null;
-      switch (viewClass) {
+      switch (pNewViewClass.ToLower()) {
 	
-	case "SignUp":
+	case "signup":
 	  win = new SignUpView(new UserServices());
 	  break;
-	case "Login":
+	case "login":
 	  win = new LoginView(new UserServices());
 	  break;
 	default:
@@ -50,16 +50,41 @@ namespace CryptoTrackApp.src.view_managment {
 	  
       }
 
-      if (oldView != null) {
+      if (pOldView != null) {
 
-	if (oldView.IsMaximized) {win.Maximize();}
-	win.SetStyle(oldView.CurrentStyle);
+	if (pOldView.IsMaximized) {win.Maximize();}
+	win.SetStyle(pOldView.CurrentStyle);
       }
       this.App.AddWindow(win);
       win.Show();
       
-      if (oldView != null) {this.App.RemoveWindow(oldView); oldView.Destroy(); }
+      if (pOldView != null) {this.App.RemoveWindow(pOldView); pOldView.Destroy(); }
     }
+
+    //public Dialog ShowDateSelector () {
+      
+      //var dialog = new DateSelectionDialog();
+      
+      //return dialog;
+    //}
+
+    //public Dialog? GetDialog(string pDialogClass) {
+
+      //Dialog? dialog;
+
+      //switch (pDialogClass.ToLower()) {
+
+	//case "dateselectiondialog":
+	  //Console.WriteLine("Creando dialog");
+	  //dialog = new DateSelectionDialog();
+	  //break;
+        //default:
+	  //dialog =  null;
+	  //break;
+      //}
+
+      //return dialog;
+    //}
 
   }
 }

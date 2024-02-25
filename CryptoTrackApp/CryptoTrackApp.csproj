@@ -25,4 +25,9 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.22" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="./src/assets/icons/check_valid.png" />
+    <EmbeddedResource Include="./src/assets/icons/check_invalid.png" />
+    <!-- Agrega más iconos según sea necesario -->
+  </ItemGroup>
 </Project>
