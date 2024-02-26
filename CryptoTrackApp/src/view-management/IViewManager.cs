@@ -8,6 +8,6 @@ namespace CryptoTrackApp.src.view_managment {
     public Application App {get; set;}
     public void ChangeView(string newViewClass, View? oldView=null);
     //public DateSelectionDialog ShowDateSelector();
-    //public Dialog? GetDialog(string pDialogClass);
+    public Dialog GetDialog(Window pParent, string pTitle, int pWidth = 400, int pHeight = 300);
   }
 }

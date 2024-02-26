@@ -400,6 +400,7 @@ Just fill the form and press sign up to start using the app.</property>
         </child>
         <child>
           <object class="GtkButtonBox">
+            <property name="height-request">50</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="halign">center</property>
@@ -441,6 +442,20 @@ Just fill the form and press sign up to start using the app.</property>
           </packing>
         </child>
         <child>
+          <object class="GtkSpinner" id="_spinner">
+            <property name="height-request">40</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="margin-top">20</property>
+            <property name="active">True</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkButtonBox">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
@@ -466,7 +481,7 @@ Just fill the form and press sign up to start using the app.</property>
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">4</property>
+            <property name="position">5</property>
           </packing>
         </child>
         <style>

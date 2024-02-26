@@ -20,7 +20,7 @@ namespace CryptoTrackApp.src.view {
     [UI] Entry? _birthDateEntry = null;
     [UI] Button? _signUpButton = null;
     [UI] Button? _cancelButton = null;
-//    [UI] Label? _emailProblemLabel = null;
+    [UI] Spinner? _spinner = null;
     private IUserServices userServices;
 
     private readonly string CSS_PATH = "./src/css/SignUpWindow.css";
@@ -40,6 +40,7 @@ namespace CryptoTrackApp.src.view {
       this.SetStyle("dark");
       this.CheckSignUpButton();
       this.ConfigHandlers();
+      this._spinner.Hide();
 
     }
 
@@ -51,7 +52,7 @@ namespace CryptoTrackApp.src.view {
     public override void ConfigButtons() {
       this._cancelButton.ButtonReleaseEvent += CancelButtonReleased;
     }
-    
+     
     private void ConfigHandlers () {
       this._emailEntry.Changed += EmailCheck;
       this._emailEntry.Changed += ConfirmMailCheck;
@@ -60,6 +61,7 @@ namespace CryptoTrackApp.src.view {
       this._passwordEntry.Changed += ConfirmPasswordCheck;
       this._confPasswordEntry.Changed += ConfirmPasswordCheck;
       this._birthDateEntry.FocusGrabbed += ShowDateSelector;
+      this._signUpButton.ButtonReleaseEvent += SignUpPressed;
     }
 // ---- EVENTS HANDLERS --------------------------------------------
     private void CancelButtonReleased(object sender, ButtonReleaseEventArgs a) {
@@ -81,7 +83,7 @@ namespace CryptoTrackApp.src.view {
 	  currentDate =  DateTime.ParseExact(this._birthDateEntry.PlaceholderText, "dd-MM-yyyy", CultureInfo.InvariantCulture);
 	}
 
-        Gtk.Calendar calendar = new Gtk.Calendar();
+  Gtk.Calendar calendar = new Gtk.Calendar();
 	calendar.Year = currentDate.Year;
 	calendar.Month = currentDate.Month;
 	calendar.Day = currentDate.Day;
@@ -103,11 +105,80 @@ namespace CryptoTrackApp.src.view {
 
 	//a.RetVal = true;
     }
+
+    private async void SignUpPressed (object sender, ButtonReleaseEventArgs args) {
+
+
+      this._signUpButton.Hide();
+      this._spinner.Show();
+
+      Dialog dialog = ViewManager.GetInstance().GetDialog(this, "Result");
+      Label label = new Label();
+      Image image;
+      Button dialogButton = new Button();
+      var emailCheck = await this.CheckEmailAvailable();
+
+      if (emailCheck == null) {
+	      label.Text = "There has been a problem with the request, try again later.";
+	      image = new Image(IconManager.invalid_icon);
+	      dialogButton.Label = "Close";
+	      dialogButton.Released += (obj, ev) => {
+	        this._spinner.Hide();
+	        this._signUpButton.Show();
+	        dialogButton.Parent.Destroy();
+	      };
+      }
+      else if (!emailCheck.Value) {
+	      label.Text = "There is a user with this email already!\nPlease use other email.";
+	      image = new Image(IconManager.invalid_icon);
+      }
+      else {
+
+        object[] response = await Task.Run(() => {
+	        return this.userServices.AddUser(
+	        this._emailEntry.Text,
+	        this._passwordEntry.Text,
+	        this._userNameEntry.Text,
+	        DateTime.ParseExact(this._birthDateEntry.Text, "dd-MM-yyyy", CultureInfo.InstalledUICulture)
+	        );
+	      });
+        switch (response[0]) {
+          case "Success":
+            label.Text = "Usuario creado exitosamente!";
+                  PixbufAnimation animation = new PixbufAnimation("src/assets/gifs/checkmark_light.gif");
+            image = new Image(animation);
+          break;
+          case "Failure":
+            label.Text = "Error: " + response[1];
+            image = new Image(IconManager.invalid_icon);
+          break;
+          default:
+                  label.Text = "Error: " + response[1];
+            image = new Image(IconManager.invalid_icon);
+          break;
+        }
+      }
+
+      dialog.ContentArea.Add(image);
+      dialog.ContentArea.Add(label);
+      dialog.ContentArea.Add(dialogButton);
+      dialog.ChildVisible = true;
+      dialog.ShowAll();
+
+    }
+
+
 // ---- VALIDATORS ---------------------------------------------------------------
     private void CheckSignUpButton(){
     // If all the validators are TRUE, the SignUp button can listen to events.
     // If one validator is FALSE, disable the SignUp button and change its style.
-      if (this.isEmailValid && this.isConfEmailValid && this.isPasswordValid && this.isPasswordConfirmed) {
+      if (this.isEmailValid && this.isConfEmailValid && this.isPasswordValid 
+	  && this.isPasswordConfirmed) {
+	Console.WriteLine("-------------------SignUpActivated--------------------------"); // Debug
+	Console.WriteLine("Email: " + this.isEmailValid); // Debug
+	Console.WriteLine("EmailConfirm: " + this.isConfEmailValid); // Debug
+	Console.WriteLine("Pass: " + this.isPasswordConfirmed); // Debug 
+	Console.WriteLine("PassConfirm: " + this.isPasswordConfirmed); // Debug 
 	this._signUpButton.Sensitive = true;
 	this._signUpButton.StyleContext.RemoveClass("sign-up-button-disable");
       }
@@ -117,73 +188,85 @@ namespace CryptoTrackApp.src.view {
       }
     }
 
-    private async void EmailCheck(object sender, EventArgs e)
-    {
-      string patron = @"^(?!$)[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.]+$";
+    private void EmailCheck(object sender, EventArgs e) {
+
+      this.isEmailValid = false;
+      //string patron = @"^(?!$)[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.]+$";
+      string patron = @"^(?!$)[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[com|ar|]+$";
       Entry entry = (Entry)sender;
       string email = entry.Text;
       
             
-      if (!Regex.IsMatch(email, patron) || email == "")
-      {
+      if (!Regex.IsMatch(email, patron) || email == "") {
+
 	entry.SetIconFromPixbuf(EntryIconPosition.Secondary, IconManager.invalid_icon);
 	entry.SecondaryIconTooltipText = "The email format is invalid, please intreduce a valid\nemail format, ej: your_email@address.com";
-        this.isEmailValid = false;
       }
       else {
+	this.isEmailValid = true;
+	entry.SetIconFromPixbuf(EntryIconPosition.Secondary, IconManager.valid_icon);
+	entry.SecondaryIconTooltipText = "This email is valid.";
+      }
+
+    }
+
+
+    ///<summary>
+    ///Check if the email is available to register a new user.
+    ///</summary>
+    ///<returns>
+    ///True: if the email is available.
+    ///False: if the email es not available.
+    ///Null: if there was a problem with the query.
+    ///</returns>
+    private async Task<bool?> CheckEmailAvailable () {
+        Entry entry = this._emailEntry;
+	string email = entry.Text;
+	bool? available;
 	try{
-	    bool available = await Task.Run( () => userServices.IsEmailAvailable(email));
-	    if (!available)
-	    {
+	    available = await Task.Run( () => userServices.IsEmailAvailable(email));
+	    if (available.HasValue && !available.Value) {
 	      Application.Invoke((sender, args) => 
 		{
 		  entry.SetIconFromPixbuf(EntryIconPosition.Secondary, IconManager.invalid_icon);
 		  entry.SecondaryIconTooltipText = "This email is already registered!";
-		  this.isEmailValid = false;
+		  this.isEmailValid = false; 
 		});
-	    }
-	    else
-	    {
-	      Application.Invoke((sender, args) => 
-		{
-		  entry.SetIconFromPixbuf(EntryIconPosition.Secondary, IconManager.valid_icon);
-		  entry.SecondaryIconTooltipText = "This email is valid.";
-		  this.isEmailValid = true;
-		});
-	    }
-
+	     }
 	  }
 	  catch (Exception error) {
 	    Console.WriteLine("Error at CryptoTrackApp.src.view.SignUpView.EmailCheckAvailable: " + error.Message);
+	    available = null;
           }
+	  finally {
+	    this.CheckSignUpButton();
+	  }
 
-	}
-
-      this.CheckSignUpButton();
-
-      }
-
-    private void ConfirmMailCheck(object sender, EventArgs e)
-    {
-      if (this._emailEntry.Text != this._confEmailEntry.Text)
-      {
-	this._confEmailEntry.SetIconFromPixbuf(EntryIconPosition.Secondary, IconManager.invalid_icon);
-	this._confEmailEntry.SecondaryIconTooltipText = "The emails must be the same!";
-	this.isConfEmailValid = false;
-      } 
-      else 
-      {
-	this._confEmailEntry.SetIconFromPixbuf(EntryIconPosition.Secondary, IconManager.valid_icon);
-	this._confEmailEntry.SecondaryIconTooltipText = "The emails are the same.";
-	this.isConfEmailValid = true;
-      }
-
-      this.CheckSignUpButton();
-
+	return available;
     }
+
+
+
+    private void ConfirmMailCheck(object sender, EventArgs e) {
+
+      this.isConfEmailValid = false;
+	if (this._emailEntry.Text != this._confEmailEntry.Text) {
+	  this._confEmailEntry.SetIconFromPixbuf(EntryIconPosition.Secondary, IconManager.invalid_icon);
+	  this._confEmailEntry.SecondaryIconTooltipText = "The emails must be the same!";
+        } 
+        else {
+	  this._confEmailEntry.SetIconFromPixbuf(EntryIconPosition.Secondary, IconManager.valid_icon);
+	  this._confEmailEntry.SecondaryIconTooltipText = "The emails are the same.";
+	  this.isConfEmailValid = true;
+	}
+      this.CheckSignUpButton();
+    }
+
+
 
     private void PasswordCheck(object sender, EventArgs e) {
 
+      this.isPasswordValid = false;
       string pass = this._passwordEntry.Text;
       bool atLeast = pass.Length >= 6;
       bool haveNumber = Regex.IsMatch(pass, @"\d");
@@ -195,27 +278,32 @@ namespace CryptoTrackApp.src.view {
 	this._passwordEntry.SetIconFromPixbuf(EntryIconPosition.Secondary, IconManager.valid_icon);
       }
       else {
-	this.isPasswordValid = false;
 	this._passwordEntry.SetIconFromPixbuf(EntryIconPosition.Secondary, IconManager.invalid_icon);
 	this._passwordEntry.SecondaryIconTooltipText = "Passwords must have:\n- 1 Uppercase character.\n- 1 Digit.\n- 1 Special character.\n- 6 Characters at least.";
       }
 
       this.CheckSignUpButton();
     }
+
+
+
     private void ConfirmPasswordCheck (object sender, EventArgs e) {
+
+      this.isPasswordConfirmed = false;
       string input = this._confPasswordEntry.Text;
       string pass = this._passwordEntry.Text;
 
       if (input != pass) {
 	this._confPasswordEntry.SetIconFromPixbuf(EntryIconPosition.Secondary, IconManager.invalid_icon);
 	this._confPasswordEntry.SecondaryIconTooltipText = "Passwords should be the same!";
-	this.isPasswordConfirmed = false;
       }
       else {
 	this._confPasswordEntry.SetIconFromPixbuf(EntryIconPosition.Secondary, IconManager.valid_icon);
 	this._confPasswordEntry.SecondaryIconTooltipText = "Passwords are equal.";
 	this.isPasswordConfirmed = true;
       }
+
+      this.CheckSignUpButton();
     }
 
   

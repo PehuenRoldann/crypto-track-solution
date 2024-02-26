@@ -28,6 +28,10 @@
   <ItemGroup>
     <EmbeddedResource Include="./src/assets/icons/check_valid.png" />
     <EmbeddedResource Include="./src/assets/icons/check_invalid.png" />
+    <EmbeddedResource Include="./src/assets/gifs/checkmark_dark.gif" />
+    <EmbeddedResource Include="./src/assets/gifs/checkmark_light.gif" />
+    <EmbeddedResource Include="./src/assets/icons/wait-48.png" />
+    <EmbeddedResource Include="./src/assets/icons/wait-96.png" />
     <!-- Agrega más iconos según sea necesario -->
   </ItemGroup>
 </Project>

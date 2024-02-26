@@ -5,7 +5,7 @@ namespace CryptoTrackApp.src.db {
 
   public interface IRepository {
 
-    void AddUser(User pUser);
+    object[] AddUser(User pUser);
     Task<User?> Login(string pEmail, string pPassword);
     Task<bool> ExistEmail(string pEmail);
     

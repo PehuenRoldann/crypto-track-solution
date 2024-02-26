@@ -42,11 +42,17 @@ namespace CryptoTrackApp.src.services
 	  }
 
 	}
-
-	public AppResponse AddUser(string pEmail, string pPassword, string pUserName, DateTime pBirthDate)
+        
+	/// <summary>
+	/// This adds a new user to the database.
+	/// </summary>
+	/// <returns>
+	/// A object[] where [0]: status of the query, [1]: message.
+	/// </returns>
+	public object[] AddUser(string pEmail, string pPassword, string pUserName, DateTime pBirthDate)
 	{
-	  AppResponse response = new AppResponse();
-
+	  //AppResponse response = new AppResponse();
+          object[] response = new object[2];
 	  CryptoTrackAppContext context = new CryptoTrackAppContext();
 	  User newUser = new User();
 	  newUser.Email = pEmail;
@@ -55,17 +61,14 @@ namespace CryptoTrackApp.src.services
 	  newUser.BirthDate = pBirthDate;
 	  newUser.Id = Guid.NewGuid();
 	  newUser.Status = true;
-
-	  try{
-	    repository.AddUser(newUser);
-	    response.status = "Success";
-	    response.message = "User created.";
-
-	  } catch (Exception error) {
-	    
-	    response.status = "Failure";
-	    response.message = error.Message;
-
+	  object[] res = repository.AddUser(newUser);
+	  response[0] = res[0];
+	  
+	  if (res[1].GetType() == typeof(User)){
+	    response[1] = "User created succesfuly!";
+	  }
+	  else {
+	    response[1] = res[1];
 	  }
 
 	  return response;

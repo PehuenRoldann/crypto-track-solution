@@ -25,7 +25,7 @@ namespace CryptoTrackApp.src.services
         or 40x if there is a problem with the login.
         */
         Task<AppResponse> LoginUser(String pPassword, String pEmail);
-	AppResponse AddUser(string pEmail, string pPassword, string pUserName, DateTime pBirthDate);
+	object[] AddUser(string pEmail, string pPassword, string pUserName, DateTime pBirthDate);
 	Task<bool> IsEmailAvailable(string pEmail);
     }
 }

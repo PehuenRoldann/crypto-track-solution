@@ -56,35 +56,18 @@ namespace CryptoTrackApp.src.view_managment {
 	win.SetStyle(pOldView.CurrentStyle);
       }
       this.App.AddWindow(win);
+      win.Maximize();
       win.Show();
       
       if (pOldView != null) {this.App.RemoveWindow(pOldView); pOldView.Destroy(); }
     }
 
-    //public Dialog ShowDateSelector () {
-      
-      //var dialog = new DateSelectionDialog();
-      
-      //return dialog;
-    //}
+    public Dialog GetDialog(Window pParent, string pTitle, int pWidth = 400, int pHeight = 300) {
 
-    //public Dialog? GetDialog(string pDialogClass) {
-
-      //Dialog? dialog;
-
-      //switch (pDialogClass.ToLower()) {
-
-	//case "dateselectiondialog":
-	  //Console.WriteLine("Creando dialog");
-	  //dialog = new DateSelectionDialog();
-	  //break;
-        //default:
-	  //dialog =  null;
-	  //break;
-      //}
-
-      //return dialog;
-    //}
+      Dialog dialog = new Dialog(pTitle, pParent, DialogFlags.Modal);
+      dialog.SetDefaultSize(pWidth, pHeight);
+      return dialog;
+    }
 
   }
 }

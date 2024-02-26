@@ -25,23 +25,36 @@ namespace CryptoTrackApp.src.db {
 
       }
     }
-    public void AddUser(User pUser) {
-      
+    
+    /// <summary>
+    /// This method add a new User to the database.
+    /// </summary>
+    /// <returns>
+    /// A object[2] where [1]: status ("Success" or "Failure")
+    /// <br> [2]: User or error.Message
+    /// </returns>
+    public object[] AddUser(User pUser) {
+      object[] response = new object[2];
       try
       {
 
 	using (var context = new CryptoTrackAppContext()) {
-	  context.Add(pUser);
+	  User newUser = context.Add(pUser).Entity;
 	  context.SaveChanges();
+	  response[1] = newUser;
 	}
+
+	response[0] = "Success";
 
       }
       catch (Exception error)
       {
 	Console.WriteLine("~~~~~~~~~~~~~~~~~~Error: " + error.Message);
-	throw new Exception(error.Message);
+	response[0] = "Failure";
+	response[1] = error.Message;
       }
 
+      return response;
     }
 
     public async Task<bool> ExistEmail(string pEmail) {
