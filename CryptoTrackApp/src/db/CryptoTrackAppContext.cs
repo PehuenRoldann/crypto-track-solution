@@ -37,7 +37,7 @@ namespace CryptoTrackApp.src.db
 	      sub.Property(s => s.CurrencyId).IsRequired();
 	      sub.Property(s => s.NotificationUmbral).IsRequired();
 	      sub.Property(s => s.FollowDate).HasColumnType("timestamp with time zone").IsRequired();	    
-	      sub.Property(s => s.UnfollowDate).HasColumnType("timestamp with time zone");
+	      sub.Property(s => s.UnfollowDate).HasColumnType("timestamp with time 	zone");
 	      });
 
 		modelBuilder.Entity<Subscription>().HasData(
