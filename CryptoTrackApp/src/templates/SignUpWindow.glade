@@ -3,8 +3,6 @@
 <interface>
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkWindow" id="SignUpWindow">
-    <property name="width-request">1280</property>
-    <property name="height-request">720</property>
     <property name="can-focus">False</property>
     <property name="title" translatable="yes">Sign Up</property>
     <property name="default-width">1280</property>
@@ -446,7 +444,6 @@ Just fill the form and press sign up to start using the app.</property>
             <property name="height-request">40</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-top">20</property>
             <property name="active">True</property>
           </object>
           <packing>

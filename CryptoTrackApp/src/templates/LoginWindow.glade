@@ -18,8 +18,6 @@
             <property name="valign">center</property>
             <child>
               <object class="GtkBox">
-                <property name="width-request">1280</property>
-                <property name="height-request">720</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>

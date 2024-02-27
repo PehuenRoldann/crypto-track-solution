@@ -7,6 +7,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.services;
 using CryptoTrackApp.src.view_managment;
+using System.Net.WebSockets;
+using Atk;
+/* using GLib; */
 
 namespace CryptoTrackApp.src.view {
   public class SignUpView : View
@@ -75,35 +78,33 @@ namespace CryptoTrackApp.src.view {
     // Creates a Dialog with a Gtk.Calendar to select the birth date.
 
         Dialog dialog = new Dialog("Selector de Fecha", this, DialogFlags.Modal, ButtonsType.OkCancel);
-	DateTime currentDate = new DateTime();
-	if (this._birthDateEntry.Text != "") {
-	  currentDate =  DateTime.ParseExact(this._birthDateEntry.Text, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-	}
-	else {
-	  currentDate =  DateTime.ParseExact(this._birthDateEntry.PlaceholderText, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-	}
+	      DateTime currentDate = new DateTime();
+        if (this._birthDateEntry.Text != "") {
+          currentDate =  DateTime.ParseExact(this._birthDateEntry.Text, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+        }
+        else {
+          currentDate =  DateTime.ParseExact(this._birthDateEntry.PlaceholderText, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+        }
 
-  Gtk.Calendar calendar = new Gtk.Calendar();
-	calendar.Year = currentDate.Year;
-	calendar.Month = currentDate.Month;
-	calendar.Day = currentDate.Day;
-	Button calendarButton = new Button();
-	calendarButton.Label = "Confirm";
+        Gtk.Calendar calendar = new Gtk.Calendar();
+        calendar.Year = currentDate.Year;
+        calendar.Month = currentDate.Month;
+        calendar.Day = currentDate.Day;
+        Button calendarButton = new Button();
+        calendarButton.Label = "Confirm";
 
-	calendarButton.ButtonReleaseEvent += (obj, ev) => {
+        calendarButton.ButtonReleaseEvent += (obj, ev) => {
 
-	  DateTime selectedDate = new DateTime (calendar.Year, calendar.Month + 1 , calendar.Day);
-	  ((Entry)sender).Text = selectedDate.ToString("dd-MM-yyyy");
+          DateTime selectedDate = new DateTime (calendar.Year, calendar.Month + 1 , calendar.Day);
+          ((Entry)sender).Text = selectedDate.ToString("dd-MM-yyyy");
 
-	  dialog.Hide();
-	};
-
+          dialog.Hide();
+          this.CheckSignUpButton();
+        }; 
         dialog.ContentArea.Add(calendar);
-	dialog.ContentArea.Add(calendarButton);
+        dialog.ContentArea.Add(calendarButton);
 
         dialog.ShowAll();
-
-	//a.RetVal = true;
     }
 
     private async void SignUpPressed (object sender, ButtonReleaseEventArgs args) {
@@ -112,25 +113,22 @@ namespace CryptoTrackApp.src.view {
       this._signUpButton.Hide();
       this._spinner.Show();
 
-      Dialog dialog = ViewManager.GetInstance().GetDialog(this, "Result");
-      Label label = new Label();
+      /* Dialog dialog = ViewManager.GetInstance().GetDialog(this, "Result"); */
+      string message = "";
       Image image;
-      Button dialogButton = new Button();
+      string buttonText = "";
+
       var emailCheck = await this.CheckEmailAvailable();
 
       if (emailCheck == null) {
-	      label.Text = "There has been a problem with the request, try again later.";
+	      message = "There has been a problem with the request, try again later.";
 	      image = new Image(IconManager.invalid_icon);
-	      dialogButton.Label = "Close";
-	      dialogButton.Released += (obj, ev) => {
-	        this._spinner.Hide();
-	        this._signUpButton.Show();
-	        dialogButton.Parent.Destroy();
-	      };
+	      buttonText= "Close";
       }
       else if (!emailCheck.Value) {
-	      label.Text = "There is a user with this email already!\nPlease use other email.";
+	      message = "There is a user with this email already!\nPlease use other email.";
 	      image = new Image(IconManager.invalid_icon);
+        buttonText= "Close";
       }
       else {
 
@@ -144,25 +142,40 @@ namespace CryptoTrackApp.src.view {
 	      });
         switch (response[0]) {
           case "Success":
-            label.Text = "Usuario creado exitosamente!";
-                  PixbufAnimation animation = new PixbufAnimation("src/assets/gifs/checkmark_light.gif");
+            message = "Usuario creado exitosamente!";
+            PixbufAnimation animation = new PixbufAnimation("src/assets/gifs/checkmark_light.gif");
             image = new Image(animation);
+            buttonText = "Login";
           break;
           case "Failure":
-            label.Text = "Error: " + response[1];
+            message = "Error: " + response[1];
             image = new Image(IconManager.invalid_icon);
+            buttonText = "Colse";
           break;
           default:
-                  label.Text = "Error: " + response[1];
+            message = "Error: " + response[1];
             image = new Image(IconManager.invalid_icon);
+            buttonText = "Close";
           break;
         }
       }
 
-      dialog.ContentArea.Add(image);
-      dialog.ContentArea.Add(label);
-      dialog.ContentArea.Add(dialogButton);
-      dialog.ChildVisible = true;
+      Dialog dialog = ViewManager.GetInstance().GetMessageDialog(this, "Title", message, image, buttonText);
+      
+      if (buttonText == "Login") {
+        dialog.ButtonReleaseEvent += (obj, ev) => {
+          ViewManager.GetInstance().ChangeView("Login", this);
+          dialog.Destroy();
+        };
+      }
+      else {
+        dialog.ButtonReleaseEvent += (obj, ev) => {
+        dialog.Destroy();
+        this._spinner.Hide();
+        this._signUpButton.ShowAll();
+      };
+      }
+
       dialog.ShowAll();
 
     }
@@ -173,7 +186,7 @@ namespace CryptoTrackApp.src.view {
     // If all the validators are TRUE, the SignUp button can listen to events.
     // If one validator is FALSE, disable the SignUp button and change its style.
       if (this.isEmailValid && this.isConfEmailValid && this.isPasswordValid 
-	  && this.isPasswordConfirmed) {
+	  && this.isPasswordConfirmed && this._birthDateEntry.Text != "") {
 	Console.WriteLine("-------------------SignUpActivated--------------------------"); // Debug
 	Console.WriteLine("Email: " + this.isEmailValid); // Debug
 	Console.WriteLine("EmailConfirm: " + this.isConfEmailValid); // Debug
