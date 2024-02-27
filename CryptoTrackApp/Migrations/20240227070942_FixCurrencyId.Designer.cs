@@ -3,6 +3,7 @@ using System;
 using CryptoTrackApp.src.db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CryptoTrackApp.Migrations
 {
     [DbContext(typeof(CryptoTrackAppContext))]
-    partial class CryptoTrackAppContextModelSnapshot : ModelSnapshot
+    [Migration("20240227070942_FixCurrencyId")]
+    partial class FixCurrencyId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +37,7 @@ namespace CryptoTrackApp.Migrations
                         .HasColumnName("currency_id");
 
                     b.Property<DateTime>("FollowDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp")
                         .HasColumnName("follow_date");
 
                     b.Property<double>("NotificationUmbral")
@@ -43,7 +45,7 @@ namespace CryptoTrackApp.Migrations
                         .HasColumnName("notification_umbral");
 
                     b.Property<DateTime?>("UnfollowDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp")
                         .HasColumnName("unfollow_date");
 
                     b.Property<Guid>("UserId")
@@ -57,32 +59,6 @@ namespace CryptoTrackApp.Migrations
                         .HasDatabaseName("ix_subscriptions_user_id");
 
                     b.ToTable("subscriptions", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            SubscriptionId = new Guid("02a521e0-8625-4fe4-8425-51a36e753c6b"),
-                            CurrencyId = "bitcoin",
-                            FollowDate = new DateTime(2024, 2, 27, 7, 45, 28, 749, DateTimeKind.Utc).AddTicks(9638),
-                            NotificationUmbral = 0.5,
-                            UserId = new Guid("4d266202-d63e-4caf-a87f-6ef56e0dd1b6")
-                        },
-                        new
-                        {
-                            SubscriptionId = new Guid("f8d07281-b9bd-4137-9f42-a6faecbba632"),
-                            CurrencyId = "dia",
-                            FollowDate = new DateTime(2024, 2, 27, 7, 45, 28, 749, DateTimeKind.Utc).AddTicks(9642),
-                            NotificationUmbral = 0.5,
-                            UserId = new Guid("4d266202-d63e-4caf-a87f-6ef56e0dd1b6")
-                        },
-                        new
-                        {
-                            SubscriptionId = new Guid("7fefd8e7-65c4-4457-9cd1-b58acd83f36b"),
-                            CurrencyId = "solana",
-                            FollowDate = new DateTime(2024, 2, 27, 7, 45, 28, 749, DateTimeKind.Utc).AddTicks(9645),
-                            NotificationUmbral = 0.5,
-                            UserId = new Guid("4d266202-d63e-4caf-a87f-6ef56e0dd1b6")
-                        });
                 });
 
             modelBuilder.Entity("CryptoTrackApp.src.models.User", b =>
