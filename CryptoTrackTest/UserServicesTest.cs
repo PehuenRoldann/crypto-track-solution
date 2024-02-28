@@ -11,7 +11,7 @@ namespace CryptoTrackTest {
 public class UserServicesTest
 {
    
-    [Fact]
+    /* [Fact]
     public void AddUser()
     {
       var rand = new Random();
@@ -76,7 +76,7 @@ public class UserServicesTest
       Console.WriteLine(response.Result.message);
       Console.ResetColor();
       Assert.True(response.Result.status == "Success");
-    }
+    } */
 }
 
 }

@@ -25,14 +25,7 @@ namespace CryptoTrackApp.src.db {
 
       }
     }
-    
-    /// <summary>
-    /// This method add a new User to the database.
-    /// </summary>
-    /// <returns>
-    /// A object[2] where [1]: status ("Success" or "Failure")
-    /// <br> [2]: User or error.Message
-    /// </returns>
+
     public object[] AddUser(User pUser) {
       object[] response = new object[2];
       try
