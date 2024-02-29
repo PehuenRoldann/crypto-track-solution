@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.models;
 
@@ -9,6 +11,6 @@ namespace CryptoTrackApp.src.db
         public Task<Currency> GetCurrency(string pId);
         public Task<Currency[]> GetCurrencies(string[] pIds);
         public Task<Currency[]> GetCurrencies(int offset = 0, int limit = 100);
-        
+        public Task<List<(DateTime, double)>> GetHistory(string pId);
     }
 }

@@ -64,9 +64,16 @@ namespace CryptoTrackTest
         }
 
 
-        /* [Fact]
-        public async void GetCurrencyDetail_true(){
+        [Fact]
+        public async void GetHistory()
+        {
+            string wantedId = "casper";
+            double expectedValue = Double.Parse("0.03875038988142513354");
+            ICurrencyServices service = new CurrencyServices();
+            IList<(DateTime, double)> historyValues = await service.GetHistory(wantedId);
+            
+            Assert.Equal(expectedValue, historyValues[179].Item2);
 
-        } */
+        } 
     }
 }

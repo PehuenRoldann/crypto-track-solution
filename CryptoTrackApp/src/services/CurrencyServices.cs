@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -107,6 +108,36 @@ namespace CryptoTrackApp.src.services
                 Console.WriteLine($"CurrencyService-Error: {error.Message}");
                 throw new Exception(error.Message);
             }
+        }
+
+        public async Task<List<(DateTime, double)>> GetHistory(string pCurrencyId)
+        {
+            try 
+            {
+                List<(DateTime, double)> historyValues = await this.cryptoApi.GetHistory(pCurrencyId);
+
+                /* foreach (var tupla in historyValues)
+                {
+
+                    if ( DateTime.Now.Subtract(tupla.Item1).TotalDays >  182.5)
+                    {
+                        historyValues.Remove(tupla);
+                    }
+
+                } */
+                // 182 days aprox. to 6 months:
+                return historyValues.TakeLast(182).ToList();
+
+                /* return historyValues; */
+
+            }
+            catch (Exception error) {
+
+                Console.WriteLine($"CurrencyService-Error: {error.Message}");
+                throw new Exception(error.Message);
+            }
+
+            
         }
     }
 }

@@ -4,6 +4,8 @@ using CryptoTrackApp.src.models;
 using RestSharp;
 using Newtonsoft.Json;
 using System.Linq;
+using CryptoTrackApp.Migrations;
+using System.Collections.Generic;
 
 namespace CryptoTrackApp.src.db
 {
@@ -17,6 +19,26 @@ namespace CryptoTrackApp.src.db
             this.options = new RestClientOptions(baseUrl);
         }
 
+// ------------------------ AUXILIAR METHODS --------------------------------------------------------
+        private T Deserialize<T>(string pSerializedData) {
+
+            var jsonData = JsonConvert.DeserializeObject<dynamic>(pSerializedData);
+            var currencyDataJson = jsonData["data"].ToString();
+            return JsonConvert.DeserializeObject<T>(currencyDataJson);
+        }
+
+
+
+// ----------------------- INTERFACE IMPLEMENTATIONS ------------------------------------------------------------
+
+        /// <summary>
+        /// Gets the selected currency from the Coin Api service.
+        /// </summary>
+        /// <param name="pIds">Currency's Id we want to query.</param>
+        /// <returns>Currency</returns>
+        /// <exception cref="Exception">
+        /// Throws an exception when the Http status of the response is different from Ok (200).
+        /// <exception
         public async Task<Currency[]> GetCurrencies(string[] pIds)
         {
             string queryIds = pIds[0];
@@ -38,6 +60,18 @@ namespace CryptoTrackApp.src.db
             }
         }
 
+        /// <summary>
+        /// Gets a number of "pLimit" currencies form the Coin Api.
+        /// By default the currencies are ordered by rank, use "pOffsett" to skip determinated number.
+        /// </summary>
+        /// <param name="pOffset">Number of currencies to query.</param>
+        /// <param name="pLimit">Number of currencies to skip.</param>
+        /// <returns>
+        /// An array with currencies from Coin Api.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Throws an exception when the Http status of the response is different from Ok (200).
+        /// <exception
         public async Task<Currency[]> GetCurrencies(int pOffset = 0, int pLimit = 100)
         {
             using (RestClient client = new RestClient(options)) {
@@ -53,6 +87,16 @@ namespace CryptoTrackApp.src.db
             }
         }
 
+        /// <summary>
+        /// Gets the currencies with the given ids from Coin Api.
+        /// </summary>
+        /// <param name="pId">Ids to query for.</param>
+        /// <returns>
+        /// An array with currencies from Coin Api.
+        /// </returns>
+        /// <exception cref="Exception">
+        /// Throws an exception when the Http status of the response is different from Ok (200).
+        /// <exception
         public async Task<Currency> GetCurrency(string pId)
         {
             using (RestClient client = new RestClient (options)) {
@@ -65,19 +109,40 @@ namespace CryptoTrackApp.src.db
                 }
 
                 return this.Deserialize<Currency>(response.Content);
+                
             }
         }
 
+        public async Task<List<(DateTime, double)>> GetHistory(string pId)
+        {
+            using (RestClient client = new RestClient (options))
+            {
 
-// ------------------------ AUXILIAR METHODS --------------------------------------------------------
-        private T Deserialize<T>(string pSerializedData) {
+                RestRequest request = new RestRequest($"assets/{pId}/history?interval=d1");
+                RestResponse response = await client.GetAsync(request);
 
-            var jsonData = JsonConvert.DeserializeObject<dynamic>(pSerializedData);
-            var currencyDataJson = jsonData["data"].ToString();
-            return JsonConvert.DeserializeObject<T>(currencyDataJson);
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    throw new Exception($"Error: {response.StatusCode}. Description: {response.StatusDescription}");
+                }
+
+                Dictionary<string, string>[] data = this.Deserialize<Dictionary<string, string>[]>(response.Content);
+                List<(DateTime, double)> historyValues = new List<(DateTime, double)>();
+
+                foreach (Dictionary<string, string> item in data)
+                {
+                    DateTime historyDate = new DateTime(1970, 1, 1, 0, 0 ,0 ,0, DateTimeKind.Utc);
+                    historyDate = historyDate.AddMilliseconds(Double.Parse(item["time"])).ToLocalTime();
+
+                    double historyValue = Double.Parse(item["priceUsd"]);
+
+                    historyValues.Add((historyDate, historyValue));
+                }
+
+                return historyValues;
+            }
+            
         }
-
-
-
     }
+
 }
