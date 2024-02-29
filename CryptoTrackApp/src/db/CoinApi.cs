@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CryptoTrackApp.src.models;
 using RestSharp;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace CryptoTrackApp.src.db
 {
@@ -16,9 +17,25 @@ namespace CryptoTrackApp.src.db
             this.options = new RestClientOptions(baseUrl);
         }
 
-        public Task<Currency[]> GetCurrencies(string[] pIds)
+        public async Task<Currency[]> GetCurrencies(string[] pIds)
         {
-            throw new NotImplementedException();
+            string queryIds = pIds[0];
+
+            foreach (var id in pIds.Skip(1)){
+                queryIds += $",{id}";
+            }
+
+            using (RestClient client = new RestClient(options)) {
+
+                RestRequest request = new RestRequest($"assets?ids={queryIds}");
+                RestResponse response = await client.GetAsync(request);
+
+                if (response.StatusCode != System.Net.HttpStatusCode.OK) {
+                    throw new Exception($"Error: {response.StatusCode}. Description: {response.StatusDescription}");
+                }
+
+                return this.Deserialize<Currency[]>(response.Content);
+            }
         }
 
         public async Task<Currency[]> GetCurrencies(int pOffset = 0, int pLimit = 100)
@@ -51,6 +68,8 @@ namespace CryptoTrackApp.src.db
             }
         }
 
+
+// ------------------------ AUXILIAR METHODS --------------------------------------------------------
         private T Deserialize<T>(string pSerializedData) {
 
             var jsonData = JsonConvert.DeserializeObject<dynamic>(pSerializedData);

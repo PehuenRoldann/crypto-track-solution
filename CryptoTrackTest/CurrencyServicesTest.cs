@@ -41,17 +41,27 @@ namespace CryptoTrackTest
             Assert.Equal("chiliz", currencyData[4]["Id"]);
 
         }
-/*
-        [Fact]
+
+       [Fact]
         public async void GetCurrenciesOnlySelectedIds() {
 
             ICurrencyServices service = new CurrencyServices();
             string[] ids = new string[] {"bitcoin", "zilliqa", "usd-coin", "ethereum", "cardano"};
-            IDictionary<string, object> result = await service.GetCurrencies(ids);
-            IDictionary<string, object>[] currencies = (IDictionary<string, object>[])result["data"];
+            IDictionary<string, string>[] currencies = await service.GetCurrencies(ids);
             Assert.True(ids.Contains(currencies[3]["Id"]));
 
-        } */
+        }
+
+
+        [Fact]
+        public async void GetCurrenciesOnlySelectedIds_OneNotExist() {
+
+            ICurrencyServices service = new CurrencyServices();
+            string[] ids = new string[] {"bitcoin", "zilliqa", "usd-coin", "argentum-coin", "cardano"};
+            IDictionary<string, string>[] currencies = await service.GetCurrencies(ids);
+            Assert.Equal(4, currencies.Length);
+
+        }
 
 
         /* [Fact]

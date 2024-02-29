@@ -18,6 +18,36 @@ namespace CryptoTrackApp.src.services
             this.cryptoApi = new CoinApi();
         }
 
+//----------------------- AUXILIAR METHODS ----------------------------------------------------------
+
+        private IDictionary<string, string> CurrencyToDictionary (Currency pCurrency) {
+            
+            IDictionary<string, string> currencyData = new Dictionary<string, string>();
+
+            foreach (var property in pCurrency.GetType().GetProperties()) {
+
+                if (property.GetValue(pCurrency) == null) {
+                    currencyData.Add(property.Name, "");
+                }
+                else {
+                    currencyData.Add(property.Name, property.GetValue(pCurrency).ToString());
+                }
+                
+            }
+
+            return currencyData;
+        }
+
+        private IDictionary<string, string>[] CurrencyToDictionary(Currency[] pCurrencies) {
+
+            return pCurrencies.Select(item => {
+
+                return this.CurrencyToDictionary(item);
+
+            }).ToArray();
+
+        }       
+
 // ------------------- INTERFACE IMPLEMENTATIONS -------------------------------------------------
 
         /// <summary>
@@ -65,95 +95,18 @@ namespace CryptoTrackApp.src.services
                 throw new Exception(error.Message);
             }
         }
-/*
-        /// <summary>
-        /// Gets all the curriencies that matches the ids passed as parameters.
-        /// </summary>
-        /// <param name="pIds">Ids to match.</param>
-        /// <returns>
-        /// An Array with dictionaries that contains currency information.
-        /// </returns>
-        public async Task<IDictionary<string, object>> GetCurrencies (string[] pIds) {
-            
-            String idsParam = pIds[0];
-            for (var i = 1; i < pIds.Length; i++) {
 
-                idsParam += $",{pIds[i]}";
-            }
-
-            IDictionary<string, object> result = new Dictionary<string, object>();
-            result.Add("status", null);
-            result.Add("data", null);
-
-            using (var client = new RestClient(options)) {
-
-                
-
-                var request = new RestRequest($"assets?ids={idsParam}");
-                RestResponse response = await client.GetAsync(request);
-                
-                try {
-                    result["status"] = response.StatusCode.ToString();
-
-                    if (response.StatusCode != System.Net.HttpStatusCode.OK){
-                        Console.WriteLine($"Petition fail: {response.StatusDescription}");   
-                        result["data"] = response.StatusDescription;
-                    }
-
-                    else {
-
-                        result["data"] = this.FromResponseToDictionaries(response);
-
-                    }
-
-                }
-                catch (Exception error) {
-                    Console.WriteLine($"Unexpected Error: {error.Message}");
-                    result["data"] = error.Message;
-                }
-            }
-
-            return result;
-            
-        } 
-
-
-        public Task<IDictionary<int, double>> GetHistory(string pCurrencyId)
+        public async Task<IDictionary<string, string>[]> GetCurrencies(string[] pIds)
         {
-            throw new NotImplementedException();
-        }
- */
+            try {
 
-//----------------------- AUXILIAR METHODS ----------------------------------------------------------
-
-        private IDictionary<string, string> CurrencyToDictionary (Currency pCurrency) {
-            
-            IDictionary<string, string> currencyData = new Dictionary<string, string>();
-
-            foreach (var property in pCurrency.GetType().GetProperties()) {
-
-                if (property.GetValue(pCurrency) == null) {
-                    currencyData.Add(property.Name, "");
-                }
-                else {
-                    currencyData.Add(property.Name, property.GetValue(pCurrency).ToString());
-                }
-                
+                Currency[] currencyData = await this.cryptoApi.GetCurrencies(pIds);
+                return this.CurrencyToDictionary(currencyData);
             }
-
-            return currencyData;
+            catch (Exception error) {
+                Console.WriteLine($"CurrencyService-Error: {error.Message}");
+                throw new Exception(error.Message);
+            }
         }
-
-        private IDictionary<string, string>[] CurrencyToDictionary(Currency[] pCurrencies) {
-
-            return pCurrencies.Select(item => {
-
-                return this.CurrencyToDictionary(item);
-
-            }).ToArray();
-
-        }
-
-        
     }
 }
