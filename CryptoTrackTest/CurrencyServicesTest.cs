@@ -1,10 +1,8 @@
 using System;
 using CryptoTrackApp.src.services;
-using CryptoTrackApp.src.models;
-using System.Threading.Tasks;
 using Xunit;
 using System.Collections.Generic;
-using Xunit.Sdk;
+using CryptoTrackApp.src.models;
 using System.Linq;
 
 namespace CryptoTrackTest
@@ -18,22 +16,19 @@ namespace CryptoTrackTest
 
             ICurrencyServices service = new CurrencyServices();
 
-            IDictionary<string, object>? currencyData = await service.GetCurrency(wantedId);
+            IDictionary<string, string> currency = await service.GetCurrency(wantedId);
 
-            Assert.Equal(wantedId, currencyData["Id"]);
+            Assert.Equal(wantedId, currency["Id"]);
         }
 
         [Fact]
         public async void GetCurrency_null () 
         {
-            string wantedId = "peroniacoin";
+            string wantedId = "argentum-coin";
 
             ICurrencyServices service = new CurrencyServices();
 
-            IDictionary<string, object>? currencyData = await service.GetCurrency(wantedId);
-
-            Assert.Null(currencyData);
-
+            await Assert.ThrowsAsync<Exception>(async () => await service.GetCurrency(wantedId));
         }
 
         [Fact]
@@ -41,22 +36,20 @@ namespace CryptoTrackTest
         {
 
             ICurrencyServices service = new CurrencyServices();
-            IDictionary<string, object>[] currencyData = await service.GetCurrencies(offset:50, limit:100);
-            Assert.Equal("raydium", currencyData[95]["Id"]);  
+            IDictionary<string, string>[] currencyData = await service.GetCurrencies(offset:50, limit:100);
+            Console.WriteLine($"Cantidad: {currencyData.Length}");
+            Assert.Equal("chiliz", currencyData[4]["Id"]);
 
         }
-
-        /* [Fact]
-        public async void GetCurrenciesWithFilter () {
+/*
+        [Fact]
+        public async void GetCurrenciesOnlySelectedIds() {
 
             ICurrencyServices service = new CurrencyServices();
             string[] ids = new string[] {"bitcoin", "zilliqa", "usd-coin", "ethereum", "cardano"};
-            IDictionary<string, object>[]? result = await service.GetCurrencies(ids);
-            Console.WriteLine("~~~~~~~~~~Cantidad encontrados: " + result.Length);
-            foreach (var item in result) {
-                Console.WriteLine(item["Name"]);
-            } 
-            Assert.True(ids.Contains(result[1]["Id"]));
+            IDictionary<string, object> result = await service.GetCurrencies(ids);
+            IDictionary<string, object>[] currencies = (IDictionary<string, object>[])result["data"];
+            Assert.True(ids.Contains(currencies[3]["Id"]));
 
         } */
 

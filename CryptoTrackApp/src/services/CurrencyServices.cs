@@ -1,118 +1,71 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using CryptoTrackApp.src.models;
-using RestSharp;
-using Newtonsoft.Json;
 using System.Linq;
+using System.Threading.Tasks;
+using CryptoTrackApp.src.db;
+using CryptoTrackApp.src.models;
+
 
 
 namespace CryptoTrackApp.src.services
 {
     public class CurrencyServices : ICurrencyServices
     {
-        private string baseUrl = "https://api.coincap.io/v2/";
-        private RestClientOptions options;
+        private ICryptoApi cryptoApi;
 
-        public CurrencyServices () {
+        public CurrencyServices() {
 
-            this.options = new RestClientOptions(baseUrl);
+            this.cryptoApi = new CoinApi();
         }
 
-        public async Task<IDictionary<string, object>? > GetCurrency(string pCurrencyId)
+// ------------------- INTERFACE IMPLEMENTATIONS -------------------------------------------------
+
+        /// <summary>
+        /// Returns a currency with the given Id.
+        /// </summary>
+        /// <param name="pCurrencyId">Id of the currency we want to return</param>
+        /// <returns>
+        /// IDictionary<string, string> with the currency information.
+        /// </returns>
+        public async Task<IDictionary<string, string>> GetCurrency(string pCurrencyId)
         {
 
-            using (var client = new RestClient(options)) {
-                var request = new RestRequest($"{baseUrl}assets/{pCurrencyId}", Method.Get);
-                RestResponse response = await client.GetAsync(request);
-
-               try {
-
-                    if (response.StatusCode != System.Net.HttpStatusCode.OK) {
-                        Console.WriteLine($">>>> Query Failure: {response.StatusCode.ToString()},{response.StatusDescription}");
-                        return null;
-                    }
-                    
-                    var jsonData = JsonConvert.DeserializeObject<dynamic>(response.Content);
-                    var currencyDataJson = jsonData["data"].ToString();
-                    Currency currency = JsonConvert.DeserializeObject<Currency>(currencyDataJson);
-
-                    return this.CurrencyToDictionary(currency);
-               }
-               catch (Exception error) {
-                Console.WriteLine($"Unexpected Error: {error.Message}");
-                return null;
-               }
+            try {
+                Currency currency = await this.cryptoApi.GetCurrency(pCurrencyId);
+                return this.CurrencyToDictionary(currency);
             }
+            catch (Exception error) {
+
+                Console.WriteLine($"CurrencyService-Error: {error.Message}");
+                throw new Exception(error.Message);
+            }
+
         }
 
         /// <summary>
-        /// Gets all the currencies in the database.
+        /// Returs a collection with the information of crypto currencies.
         /// </summary>
+        /// <param name="pOffset">The number of currencies we have already queried before.</param>
+        /// <param name="pLimit">The number of currencies we want to receive.</param>
         /// <returns>
-        /// An Array with dictionaries that contains currency info.
+        /// A collection if Dictionary<string, string> with the currency information as an Array.
         /// </returns>
-        public async Task<IDictionary<string, object>[]?> GetCurrencies(int pOffset = 0, int pLimit = 100)
+        /// <exception cref="Exception">
+        /// If the query fails for some reason.
+        /// </exception>
+        public async Task<IDictionary<string, string>[]> GetCurrencies(int pOffset = 0, int pLimit = 100)
         {
-           using (var client = new RestClient(options)) {
+            try {
 
-                var request = new RestRequest($"{baseUrl}assets?offset={pOffset}&limit={pLimit}", Method.Get);
-                RestResponse response = await client.GetAsync(request);
-
-                try{
-                    if (response.StatusCode != System.Net.HttpStatusCode.OK) {
-                        Console.WriteLine($">>>> Query Failure: {response.StatusCode.ToString()},{response.StatusDescription}");
-                        return null;
-                    }
-
-                    var jsonData = JsonConvert.DeserializeObject<dynamic>(response.Content);
-                    var currencyDataJson = jsonData["data"].ToString();
-                    Currency[] currencies = JsonConvert.DeserializeObject<Currency[]>(currencyDataJson);
-
-                    return currencies.Select(item => {
-
-                        return this.CurrencyToDictionary(item);
-
-                    }).ToArray();
-                }
-                catch (Exception error) {
-                    Console.WriteLine($"Unexpected Error: {error.Message}");
-                    return null;
-                }
-
-           }
-        }
-        /* public async Task<IDictionary<string, object>[]?> GetCurrencies() {
-
-            using (var client = new RestClient(options)) {
-
-                var request = new RestRequest($"{baseUrl}assets/", Method.Get);
-                RestResponse response = await client.GetAsync(request);
-
-                try{
-                    if (response.StatusCode != System.Net.HttpStatusCode.OK) {
-                        Console.WriteLine($">>>> Query Failure: {response.StatusCode.ToString()},{response.StatusDescription}");
-                        return null;
-                    }
-
-                    var jsonData = JsonConvert.DeserializeObject<dynamic>(response.Content);
-                    var currencyDataJson = jsonData["data"].ToString();
-                    Currency[] currencies = JsonConvert.DeserializeObject<Currency[]>(currencyDataJson);
-
-                    return currencies.Select(item => {
-
-                        return this.CurrencyToDictionary(item);
-
-                    }).ToArray();
-                }
-                catch (Exception error) {
-                    Console.WriteLine($"Unexpected Error: {error.Message}");
-                    return null;
-                }
-                
+                Currency[] currencyData = await this.cryptoApi.GetCurrencies(offset: pOffset, limit: pLimit);
+                return this.CurrencyToDictionary(currencyData);
             }
-        } */
-
+            catch (Exception error) {
+                Console.WriteLine($"CurrencyService-Error: {error.Message}");
+                throw new Exception(error.Message);
+            }
+        }
+/*
         /// <summary>
         /// Gets all the curriencies that matches the ids passed as parameters.
         /// </summary>
@@ -120,39 +73,87 @@ namespace CryptoTrackApp.src.services
         /// <returns>
         /// An Array with dictionaries that contains currency information.
         /// </returns>
-        public async Task<IDictionary<string, object>[]?> GetCurrencies (string[] pIds) {
+        public async Task<IDictionary<string, object>> GetCurrencies (string[] pIds) {
+            
+            String idsParam = pIds[0];
+            for (var i = 1; i < pIds.Length; i++) {
 
-            /* IDictionary<string, object>[]? curriencies = await this.GetCurrencies();
-
-            if (curriencies == null) {
-                return null;
+                idsParam += $",{pIds[i]}";
             }
 
-            return curriencies.Where(item => pIds.Contains(item["Id"]) ).ToArray(); */
-            throw new NotImplementedException();
+            IDictionary<string, object> result = new Dictionary<string, object>();
+            result.Add("status", null);
+            result.Add("data", null);
+
+            using (var client = new RestClient(options)) {
+
+                
+
+                var request = new RestRequest($"assets?ids={idsParam}");
+                RestResponse response = await client.GetAsync(request);
+                
+                try {
+                    result["status"] = response.StatusCode.ToString();
+
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK){
+                        Console.WriteLine($"Petition fail: {response.StatusDescription}");   
+                        result["data"] = response.StatusDescription;
+                    }
+
+                    else {
+
+                        result["data"] = this.FromResponseToDictionaries(response);
+
+                    }
+
+                }
+                catch (Exception error) {
+                    Console.WriteLine($"Unexpected Error: {error.Message}");
+                    result["data"] = error.Message;
+                }
+            }
+
+            return result;
+            
         } 
 
 
-        public IDictionary<int, double> GetHistory(string pCurrencyId, DateTime pFrom, DateTime pTo)
+        public Task<IDictionary<int, double>> GetHistory(string pCurrencyId)
         {
             throw new NotImplementedException();
         }
+ */
 
+//----------------------- AUXILIAR METHODS ----------------------------------------------------------
 
-
-        private IDictionary<string, object> CurrencyToDictionary (Currency pCurrency) {
+        private IDictionary<string, string> CurrencyToDictionary (Currency pCurrency) {
             
-            IDictionary<string, object> currencyData = new Dictionary<string, object>();
+            IDictionary<string, string> currencyData = new Dictionary<string, string>();
 
             foreach (var property in pCurrency.GetType().GetProperties()) {
 
-                currencyData.Add(property.Name, property.GetValue(pCurrency));
+                if (property.GetValue(pCurrency) == null) {
+                    currencyData.Add(property.Name, "");
+                }
+                else {
+                    currencyData.Add(property.Name, property.GetValue(pCurrency).ToString());
+                }
+                
             }
 
             return currencyData;
         }
 
-        
+        private IDictionary<string, string>[] CurrencyToDictionary(Currency[] pCurrencies) {
 
+            return pCurrencies.Select(item => {
+
+                return this.CurrencyToDictionary(item);
+
+            }).ToArray();
+
+        }
+
+        
     }
 }
