@@ -2,7 +2,7 @@ using Gtk;
 
 namespace CryptoTrackApp.src.view {
 
-  public abstract class View : Gtk.Window 
+  public abstract class View : ApplicationWindow 
   {
     public string CSS_PATH_DARK = "";
     public string CSS_PATH_LIGHT = "";
@@ -11,7 +11,7 @@ namespace CryptoTrackApp.src.view {
 
     public View(string TEMPLATE) : this(new Builder(TEMPLATE + ".glade"),TEMPLATE) {
       
-      this.ConfigButtons();
+      this.ConfigEventHandlers();
       this.ConfigImages();
     }
 
@@ -51,7 +51,7 @@ namespace CryptoTrackApp.src.view {
       Application.Quit();
     }
 
-    public abstract void ConfigButtons(); // Use this method to configure the events for your buttons.
+    public abstract void ConfigEventHandlers(); // Use this method to configure the events for your buttons.
 
     public abstract void ConfigImages(); // use this method to configure your images.
   }

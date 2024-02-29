@@ -36,33 +36,28 @@ namespace CryptoTrackApp.src.view
 
 	public LoginView(IUserServices pUserServices) : base("LoginWindow") 
 	{
-	  this.CSS_PATH_DARK = "./src/css/login_window.css";
-	  this.CSS_PATH_LIGHT = "";
-	  this.SetStyle("dark");
-	  _emailProblemLabel.Text = " ";
-          _passProblemLabel.Text = " ";
-          _loginProblem.Text = " ";
-          this._spinner.Hide();
-          this._buttonsBox.Homogeneous = true;
-	  this.UserServices = pUserServices;
-	  this._ConfigInputs();
+	    this.CSS_PATH_DARK = "./src/css/login_window.css";
+	    this.CSS_PATH_LIGHT = "";
+	    this.SetStyle("dark");
+	    _emailProblemLabel.Text = " ";
+        _passProblemLabel.Text = " ";
+        _loginProblem.Text = " ";
+        this._spinner.Hide();
+        this._buttonsBox.Homogeneous = true;
+	    this.UserServices = pUserServices;
 	}
 
 	
 	public IUserServices? UserServices {get { return this._userServices; } set { this._userServices = value; }}
 	
-        public override void ConfigButtons()
+        public override void ConfigEventHandlers()
         {
           _passVisibilityButton.ButtonReleaseEvent += PassVisibilityChanged;
           _loginButton.ButtonReleaseEvent += _LoginUserEvent;
           _signInButton.ButtonReleaseEvent += _SignUpEvent;
+          _emailInput.Changed += EmailCheck;
         }
 
-        private void _ConfigInputs()
-        {
-            _emailInput.Changed += EmailCheck;
-
-        }
         public override void ConfigImages()
         {
             _imageButton.File = this.BUTTON_IMAGE_OPEN_PATH;
