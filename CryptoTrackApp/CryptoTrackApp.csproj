@@ -35,6 +35,7 @@
     <EmbeddedResource Include="./src/assets/icons/wait-48.png" />
     <EmbeddedResource Include="./src/assets/icons/wait-96.png" />
     <EmbeddedResource Include="./src/assets/icons/img_not_found.png" />
+    <EmbeddedResource Include="./src/assets/icons/currency/*.png" />
     <!-- Agrega más iconos según sea necesario -->
   </ItemGroup>
 </Project>

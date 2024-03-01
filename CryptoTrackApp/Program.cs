@@ -2,7 +2,7 @@ using System;
 using Gtk;
 using CryptoTrackApp.src.view;
 using CryptoTrackApp.src.services;
-using CryptoTrackApp.src.view_managment;
+using CryptoTrackApp.src.view.Controllers;
 namespace CryptoTrackApp
 {
     class Program

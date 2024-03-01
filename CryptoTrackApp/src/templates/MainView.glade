@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.40.0 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
-  <object class="GtkApplicationWindow">
+  <object class="GtkApplicationWindow" id="MainView">
     <property name="can-focus">False</property>
     <property name="default-width">1280</property>
     <property name="default-height">720</property>
@@ -17,10 +17,10 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <child>
-              <object class="GtkImage">
+              <object class="GtkImage" id="_logoImg">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="margin-start">10</property>
+                <property name="margin-start">20</property>
                 <property name="pixbuf">../assets/images/logo_v2.png</property>
               </object>
               <packing>
@@ -141,6 +141,9 @@
                 <property name="position">3</property>
               </packing>
             </child>
+            <style>
+              <class name="nav-bar"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -149,28 +152,18 @@
           </packing>
         </child>
         <child>
-          <object class="GtkPaned" id="_panel">
+          <object class="GtkBox" id="_panel">
             <property name="visible">True</property>
-            <property name="can-focus">True</property>
+            <property name="can-focus">False</property>
             <child>
               <placeholder/>
             </child>
             <child>
-              <object class="GtkTreeView" id="_subsGtkTree">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <child internal-child="selection">
-                  <object class="GtkTreeSelection"/>
-                </child>
-              </object>
-              <packing>
-                <property name="resize">True</property>
-                <property name="shrink">True</property>
-              </packing>
+              <placeholder/>
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
@@ -183,6 +176,8 @@
         </child>
       </object>
     </child>
+    <style>
+      <class name="main-window"/>
+    </style>
   </object>
-  <object class="GtkListStore" id="_subsList"/>
 </interface>
