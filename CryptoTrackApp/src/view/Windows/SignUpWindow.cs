@@ -135,32 +135,30 @@ namespace CryptoTrackApp.src.view.Windows {
             }
             else {
 
-                object[] response = await Task.Run(() => {
-                    return this.userServices.AddUser(
-                    this._emailEntry.Text,
-                    this._passwordEntry.Text,
-                    this._userNameEntry.Text,
-                    DateTime.ParseExact(this._birthDateEntry.Text, "dd-MM-yyyy", CultureInfo.InstalledUICulture)
-                    );
-                });
-                switch (response[0]) {
-                case "Success":
-                    message = "Usuario creado exitosamente!";
+                try
+                {
+                    await Task.Run(() => {
+                        return this.userServices.AddUserAsync(
+                            this._emailEntry.Text,
+                            this._passwordEntry.Text,
+                            this._userNameEntry.Text,
+                            DateTime.ParseExact(this._birthDateEntry.Text, "dd-MM-yyyy", CultureInfo.InstalledUICulture)
+                        );
+                    });
+
                     PixbufAnimation animation = new PixbufAnimation("src/assets/gifs/checkmark_light.gif");
                     image = new Image(animation);
+                    message = "Usuario creado exitosamente!";
                     buttonText = "Login";
-                break;
-                case "Failure":
-                    message = "Error: " + response[1];
-                    image = new Image(IconManager.invalid_icon);
-                    buttonText = "Colse";
-                break;
-                default:
-                    message = "Error: " + response[1];
-                    image = new Image(IconManager.invalid_icon);
-                    buttonText = "Close";
-                break;
+
                 }
+                catch (Exception error)
+                {
+                    image = new Image(IconManager.invalid_icon);
+                    message = $"Error: {error.Message}";
+                    buttonText = "Colse";
+                }
+
             }
 
             Dialog dialog = ViewManager.GetInstance().GetMessageDialog(this, "Title", message, image, buttonText);
@@ -248,7 +246,7 @@ namespace CryptoTrackApp.src.view.Windows {
         ///False: if the email es not available.
         ///Null: if there was a problem with the query.
         ///</returns>
-        private async Task<bool?> CheckEmailAvailable () 
+        private async Task<bool?> CheckEmailAvailable()
         {
             Entry entry = this._emailEntry;
             string email = entry.Text;
@@ -299,6 +297,7 @@ namespace CryptoTrackApp.src.view.Windows {
             {
                 this._confEmailEntry.SetIconFromPixbuf(EntryIconPosition.Secondary, IconManager.valid_icon);
                 this._confEmailEntry.SecondaryIconTooltipText = "The emails are the same.";
+                this.isConfEmailValid = true;
             }
 
             this.CheckSignUpButton();
@@ -346,7 +345,7 @@ namespace CryptoTrackApp.src.view.Windows {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ConfirmPasswordCheck (object sender, EventArgs e)
+        private void ConfirmPasswordCheck(object sender, EventArgs e)
         {
 
             this.isPasswordConfirmed = false;

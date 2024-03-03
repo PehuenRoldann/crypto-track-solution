@@ -1,13 +1,12 @@
-.main-window{
-  
-background-color: #0F0F0F;
-}
-.main-container {
+.main-window{  
 background: #0F0F0F;
 }
+/* .main-container {
+background: #0F0F0F;
+} */
 
 .button-color{
-    background-color: #008170;
+    background: #008170;
     font-weight: bold;
     color: white;
     border-radius: 20px;
@@ -15,7 +14,7 @@ background: #0F0F0F;
 }
 
 .button-color:hover {
-    background-color: white;
+    background: white;
     color: black;
 }
 

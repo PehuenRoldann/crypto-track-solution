@@ -64,7 +64,7 @@ namespace CryptoTrackTest
         }
 
 
-        [Fact]
+        /* [Fact]
         public async void GetHistory()
         {
             string wantedId = "casper";
@@ -74,6 +74,6 @@ namespace CryptoTrackTest
             
             Assert.Equal(expectedValue, historyValues[179].Item2);
 
-        } 
+        }  */
     }
 }

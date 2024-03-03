@@ -1,13 +1,23 @@
+using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using CryptoTrackApp.src.models;
 
-namespace CryptoTrackApp.src.db {
+namespace CryptoTrackApp.src.db
+{
 
-  public interface IRepository {
+    public interface IRepository
+    {
 
-    object[] AddUser(User pUser);
-    Task<User?> Login(string pEmail, string pPassword);
-    Task<bool> ExistEmail(string pEmail);
-    
-  }
+        /* object[] AddUser(User pUser); */
+        public Task<User?> Login(string pEmail, string pPassword);
+        public Task<bool> ExistEmail(string pEmail);
+        public Task AddSubscriptionAsync(Subscription sub);
+        public Task AddUserAsync(User user);
+        public Task<Subscription> GetSubscriptionAsync(Guid userId, string currencyId);
+        public Task<List<Subscription>> GetSubscriptionAsync(Guid userId);
+        public Task<User> GetUserAsync(Guid userId);
+        public Task UpdateSubscriptionAsync(Subscription sub);
+        public Task UpdateUserAsync(User user);
+    }
 }

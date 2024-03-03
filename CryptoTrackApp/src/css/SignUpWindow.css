@@ -17,36 +17,36 @@ background: #0F0F0F;
 }
 
 .sign-up-button {
-background-color: #008170;
+background: #008170;
 border-radius: 20px;
 color: white;
 }
 .sign-up-button:hover {
-background-color: white;
+background: white;
 color: black;
 }
 
 .sign-up-button-disable {
-  background-color: grey;
+  background: grey;
 }
 
 .cancel-button{
-background-color: #005B41;
+background: #005B41;
 border-radius: 20px;
 color: white;
 }
 
 .cancel-button:hover {
-background-color: white;
+background: white;
 color: black;
 }
 
 .entryBox {
 border-radius: 10px;
-background-color: #f0eee9;
+background: #f0eee9;
 color: black;
 }
 
 .entryBox:focus{
-background-color: white;
+background: white;
 }

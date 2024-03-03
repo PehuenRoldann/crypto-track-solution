@@ -36,6 +36,7 @@ namespace CryptoTrackApp.src.view.Windows
 
 	public LoginView(IUserServices pUserServices) : base("LoginWindow") 
 	{
+      this._loginButton.StyleContext.AddClass("button-color");
 	    this.CSS_PATH_DARK = "./src/css/login_window.css";
 	    this.CSS_PATH_LIGHT = "";
 	    this.SetStyle("dark");
