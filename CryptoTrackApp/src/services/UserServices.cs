@@ -10,27 +10,29 @@ namespace CryptoTrackApp.src.services
     {
 	IRepository repository = new PostgreRepository();
 
-	public async  Task<AppResponse> LoginUser(string pPassword, string pEmail) {
-	  
-
+	/// <summary>
+	/// Login an user if it's registered in the database.
+	/// </summary>
+	/// <param name="pPassword">User's password to login.</param>
+	/// <param name="pEmail">User's email password to login.</param>
+	/// <returns>
+	/// A string with the user's Id if the loggin is success.<br>
+	/// Null if there is not user with the given email.
+	/// </returns>
+	/// <exception cref="InvalidOperationException"> If the passwords doesn't match. </exception>
+	/// <exception cref="Exception">If there has been an unexpected error while login.</exception>
+	public async Task<string?> LoginUser(string pPassword, string pEmail)
+	{
 	  try
 	  {
-	    User? user = await repository.Login(pEmail, pPassword);
-	    
-	    if (user == null) {
-	      return new AppResponse(status: "Failure", message: "The proportioned email is not registered.");
-	    }
-
-	    if (user.Password != pPassword) {
-	      return new AppResponse(status: "Failure", message: "Incorret password.");
-	    }
-	    
-	    return new AppResponse(status: "Success", message: "Login successful.");
-
+	    User? user = await repository.GetUserAsync(pEmail);
+		if (user!=null && user.Password != pPassword){throw new InvalidOperationException("Wrong password!");}
+		else {return user.Id.ToString();}
+		return null;
 	  }
-	  catch (Exception error) {
-	    Console.WriteLine(error.Message);
-	    return new AppResponse(status: "Failure", message: error.Message);
+	  catch (Exception error)
+	  {
+		throw new Exception($"Error while login: {error.Message}");
 	  }
 
 	}

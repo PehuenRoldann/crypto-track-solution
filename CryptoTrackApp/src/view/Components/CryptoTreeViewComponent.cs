@@ -13,12 +13,12 @@ namespace CryptoTrackApp.src.view.Components
 
             listStore = new ListStore(typeof(Pixbuf), typeof(string), typeof(int), typeof(double), typeof(float));
 
-            listStore.AppendValues(Pixbuf.LoadFromResource("CryptoTrackApp.src.assets.icons.currency.btc.png"),
+            /* listStore.AppendValues(Pixbuf.LoadFromResource("CryptoTrackApp.src.assets.icons.currency.btc.png"),
             "bitcoin", 1, 19332.2, 0.4);
             listStore.AppendValues(Pixbuf.LoadFromResource("CryptoTrackApp.src.assets.icons.currency.btc.png"),
             "dogecoin", 3, 193.54, 0.1);
             listStore.AppendValues(Pixbuf.LoadFromResource("CryptoTrackApp.src.assets.icons.currency.dai.png"),
-            "dai", 145, 1, 0.3); 
+            "dai", 145, 1, 0.3);  */
         
             treeView = new TreeView(listStore);
 

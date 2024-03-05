@@ -16,7 +16,8 @@ namespace CryptoTrackApp.src.db
         public Task AddUserAsync(User user);
         public Task<Subscription> GetSubscriptionAsync(Guid userId, string currencyId);
         public Task<List<Subscription>> GetSubscriptionAsync(Guid userId);
-        public Task<User> GetUserAsync(Guid userId);
+        public Task<User?> GetUserAsync(Guid userId);
+        public Task<User?> GetUserAsync(string email);
         public Task UpdateSubscriptionAsync(Subscription sub);
         public Task UpdateUserAsync(User user);
     }

@@ -11,22 +11,21 @@ namespace CryptoTrackApp.src.db
     public class PostgreRepository : IRepository
     {
     
-        public async Task<User?> Login (string pEmail, string pPassword) {
+        public async Task<User?> Login(string pEmail, string pPassword)
+        {
 
-            try {
-                using (var context = new CryptoTrackAppContext())
+            using (var context = new CryptoTrackAppContext())
+            {
+                
+                try
                 {
                     return await context.Users.FirstOrDefaultAsync(u => u.Email == pEmail);
                 }
-            } 
-            catch (Exception error)
-            {
-                Console.WriteLine(error.Message);
-                throw new Exception(
-                    "An unexpected error has happend while loggin. Try Again. \n" +
-                    "If the problem persist, contact the support."
-                    );
-
+                catch (Exception error)
+                {
+                    Logger.LogErrorAsync("Error while login", error);
+                    throw new Exception("Message");
+                }
             }
         }
         public async Task<bool> ExistEmail(string pEmail)
@@ -103,9 +102,26 @@ namespace CryptoTrackApp.src.db
             }
         }
 
-        public Task<User> GetUserAsync(Guid userId)
+        public Task<User?> GetUserAsync(Guid userId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<User?> GetUserAsync(string email)
+        {
+            using (var context = new CryptoTrackAppContext())
+            {
+                try
+                {
+                    return await context.Users.FirstOrDefaultAsync(user => user.Email == email);
+                }
+
+                catch(Exception error)
+                {
+                    Logger.LogErrorAsync("Error while getting user.", error);
+                    throw new Exception(error.Message);
+                }
+            }
         }
 
         public Task UpdateSubscriptionAsync(Subscription sub)

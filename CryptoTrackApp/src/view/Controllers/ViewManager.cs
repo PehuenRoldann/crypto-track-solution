@@ -70,7 +70,16 @@ namespace CryptoTrackApp.src.view.Controllers
       if (pOldView != null) {this.App.RemoveWindow(pOldView); pOldView.Destroy(); }
     }
 
-
+    public void ShowMainView(View pParent, string pUserId)
+    {
+      View win = new MainView(pUserId, new SubscriptionServices(), new CurrencyServices());
+      this.App.AddWindow(win);
+      win.SetDefaultSize(900, 500);
+      win.Move(0,0);
+      if (pParent.IsMaximized) {win.Maximize();}
+      win.Show();
+      pParent.Destroy();
+    }
 
     public MessageDialog GetMessageDialog(
       View pParent, string pTitle, string pMessage,

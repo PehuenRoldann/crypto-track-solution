@@ -112,18 +112,17 @@ namespace CryptoTrackApp.src.view.Windows
             this._signInButton.Visible = false;
             this._buttonsBox.Hide();
             this._spinner.Show();
-            bool res = await this._LoginUser(this.UserServices);
+            string? res = await this._LoginUser(this.UserServices);
             this._spinner.Hide();
             this._buttonsBox.Show();
             this._loginButton.Visible = true;
             this._signInButton.Visible = true;
 
-            if (res)
+            if (res != null)
             {
                 Console.WriteLine("Login...");
-                var newView = new MainView();
-                newView.ShowAll();
-                this.Destroy();
+                var vw = ViewManager.GetInstance();
+                vw.ShowMainView(this, res);
             }
 
           }
@@ -134,16 +133,30 @@ namespace CryptoTrackApp.src.view.Windows
 
         }
 
-        private async Task<bool> _LoginUser(IUserServices pUserServices)
+        private async Task<string?> _LoginUser(IUserServices pUserServices)
         {
-          AppResponse response = await pUserServices.LoginUser(this._passwordInput.Text, this._emailInput.Text);
-          System.Console.WriteLine(response.message);
-          if (response.status == "Failure")
+          try
           {
-            this._loginProblem.Text = "* " + response.message;
-            return false;
+            string? response = await pUserServices.LoginUser(this._passwordInput.Text, this._emailInput.Text);
+
+            if (response == null)
+            {
+            this._loginProblem.Text = "* The proportioned email is not registered";
+            }
+
+            return response;
           }
-            return true;
+          catch (InvalidOperationException)
+          {
+            this._loginProblem.Text = "* The proportioned password is wrong!";
+          }
+          catch (Exception)
+          {
+            this._loginProblem.Text = "* There has been an unknown problem while login, please try again."
+                                      +"\nIf the problem persist, contact the support.";
+          }
+          
+          return null;
         }
 
         private void _SignUpEvent(object sender, ButtonReleaseEventArgs a)
