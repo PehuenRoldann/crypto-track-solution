@@ -29,7 +29,7 @@ namespace CryptoTrackApp.src.view.Windows
 
         private IUserServices? _userServices = null;
 	
-        private readonly string LOGO_PATH = "./src/assets/images/ctapp_logo.png";
+        private readonly string LOGO_PATH = "./src/assets/images/logo_226x226.png";
         private readonly string BUTTON_IMAGE_OPEN_PATH = "./src/assets/images/toggle_visibility_white_open.ico";
         private readonly string BUTTON_IMAGE_CLOSE_PATH = "./src/assets/images/toggle_visibility_white_close.ico";
 
@@ -162,7 +162,7 @@ namespace CryptoTrackApp.src.view.Windows
         private void _SignUpEvent(object sender, ButtonReleaseEventArgs a)
         {
           IViewManager vw = ViewManager.GetInstance();
-          vw.ChangeView("SignUp", this);
+          vw.ShowSignUpView(this);
         }
 
     }

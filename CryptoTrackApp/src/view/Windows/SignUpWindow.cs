@@ -70,7 +70,7 @@ namespace CryptoTrackApp.src.view.Windows {
         /// <param name="a"></param>
         private void CancelButtonReleased(object sender, ButtonReleaseEventArgs a) {
             IViewManager vw = ViewManager.GetInstance();
-            vw.ChangeView("Login", this);
+            vw.ShowLoginView(this);
         }
 
         /// <summary>
@@ -163,18 +163,20 @@ namespace CryptoTrackApp.src.view.Windows {
 
             Dialog dialog = ViewManager.GetInstance().GetMessageDialog(this, "Title", message, image, buttonText);
             
-            if (buttonText == "Login") {
+            if (buttonText == "Login")
+            {
                 dialog.ButtonReleaseEvent += (obj, ev) => {
-                ViewManager.GetInstance().ChangeView("Login", this);
-                dialog.Destroy();
+                    dialog.Destroy();
+                    ViewManager.GetInstance().ShowLoginView(this);
                 };
             }
-            else {
+            else
+            {
                 dialog.ButtonReleaseEvent += (obj, ev) => {
-                dialog.Destroy();
-                this._spinner.Hide();
-                this._signUpButton.ShowAll();
-            };
+                    dialog.Destroy();
+                    this._spinner.Hide();
+                    this._signUpButton.ShowAll();
+                };
             }
 
             dialog.ShowAll();
