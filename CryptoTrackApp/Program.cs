@@ -1,7 +1,5 @@
 using System;
 using Gtk;
-using CryptoTrackApp.src.view;
-using CryptoTrackApp.src.services;
 using CryptoTrackApp.src.view.Controllers;
 namespace CryptoTrackApp
 {
@@ -17,7 +15,7 @@ namespace CryptoTrackApp
 
             IViewManager vw = ViewManager.GetInstance();
             vw.App = app;
-            vw.ShowLoginView();
+            vw.ShowFollowView();
             Application.Run();
         }
     }

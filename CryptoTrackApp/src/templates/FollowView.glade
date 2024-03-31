@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.40.0 -->
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkRadioMenuItem" id="radiomenuitem1_tendency">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="draw-as-radio">True</property>
+  </object>
+  <object class="GtkRadioMenuItem" id="radiomenuitem_priece">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="draw-as-radio">True</property>
+  </object>
+  <object class="GtkMenu" id="menu1">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <child>
+      <object class="GtkRadioMenuItem">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="label" translatable="yes">None</property>
+        <property name="use-underline">True</property>
+        <property name="draw-as-radio">True</property>
+        <property name="group">radiomenuitem_priece</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRadioMenuItem">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="label" translatable="yes">High Price</property>
+        <property name="use-underline">True</property>
+        <property name="draw-as-radio">True</property>
+        <property name="group">radiomenuitem_priece</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRadioMenuItem">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="label" translatable="yes">Low Priece</property>
+        <property name="use-underline">True</property>
+        <property name="draw-as-radio">True</property>
+        <property name="group">radiomenuitem_priece</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRadioMenuItem">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="label" translatable="yes">Growing Tendency</property>
+        <property name="use-underline">True</property>
+        <property name="draw-as-radio">True</property>
+        <property name="group">radiomenuitem1_tendency</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRadioMenuItem">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="label" translatable="yes">Lowering Tendency</property>
+        <property name="use-underline">True</property>
+        <property name="draw-as-radio">True</property>
+        <property name="group">radiomenuitem1_tendency</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="default-width">600</property>
+    <property name="default-height">400</property>
+    <child>
+      <object class="GtkBox" id="_mainContainer">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">Follow a new currencie!</property>
+            <attributes>
+              <attribute name="font-desc" value="Arimo Nerd Font Propo Bold 20"/>
+            </attributes>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">Below you have the available currencies to follow</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="_searchContainer">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="margin-top">20</property>
+            <child type="center">
+              <object class="GtkSearchEntry">
+                <property name="width-request">300</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="primary-icon-name">edit-find-symbolic</property>
+                <property name="primary-icon-activatable">False</property>
+                <property name="primary-icon-sensitive">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkAspectFrame">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-start">100</property>
+                <property name="hexpand">True</property>
+                <property name="label-xalign">0</property>
+                <property name="shadow-type">none</property>
+                <property name="obey-child">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="pack-type">end</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkMenuButton">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="focus-on-click">False</property>
+                <property name="receives-default">True</property>
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
+                <property name="popup">menu1</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="label" translatable="yes">Filters</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack-type">end</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFlowBox" id="_flowBox">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

@@ -13,6 +13,7 @@ namespace CryptoTrackApp.src.view.Controllers
     public Application App {get; set;}
     // public void ChangeView(string newViewClass, View? oldView=null);
     public void ShowLoginView(View? pParent = null);
+    public void ShowFollowView(View? pParent = null);
     public void ShowSignUpView(View pParent);
     public void ShowMainView(View pParent, string pUserId);
     //public DateSelectionDialog ShowDateSelector();

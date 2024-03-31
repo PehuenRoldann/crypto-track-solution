@@ -42,6 +42,14 @@ namespace CryptoTrackApp.src.view.Controllers
       View win = new LoginView(new UserServices());
       this.InitView(win, pParent);
     }
+
+    public void ShowFollowView(View? pParent = null)
+    {
+      View win = new FollowView();
+      this.InitView(win, pParent);
+        
+    }
+
     public void ShowSignUpView(View pParent)
     {
       View win = new SignUpView(new UserServices());
@@ -52,6 +60,7 @@ namespace CryptoTrackApp.src.view.Controllers
       View win = new MainView(pUserId, new SubscriptionServices(), new CurrencyServices());
       this.InitView(win, pParent);
     }
+    
 
     private void InitView(View win, View? pParent)
     {

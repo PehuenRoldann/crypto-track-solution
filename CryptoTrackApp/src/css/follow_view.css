@@ -1,0 +1,17 @@
+.main-container{
+    background: #0F0F0F;
+}
+
+.flow-box {
+    border-radius: 15px;
+    background: #232D3F;
+    padding: 10px;
+    margin: 10px;
+}
+
+.crypto-card{
+    border-radius: 15px;
+    background: #526D82;
+    padding: 10px;
+    
+}
