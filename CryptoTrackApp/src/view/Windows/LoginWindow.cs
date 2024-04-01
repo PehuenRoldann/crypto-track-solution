@@ -112,7 +112,11 @@ namespace CryptoTrackApp.src.view.Windows
             this._signInButton.Visible = false;
             this._buttonsBox.Hide();
             this._spinner.Show();
-            string? res = await this._LoginUser(this.UserServices);
+
+            string? res = await Task<string?>.Run( async () => {
+              return await this._LoginUser(this.UserServices);
+            });
+
             this._spinner.Hide();
             this._buttonsBox.Show();
             this._loginButton.Visible = true;
@@ -122,7 +126,8 @@ namespace CryptoTrackApp.src.view.Windows
             {
                 Console.WriteLine("Login...");
                 var vw = ViewManager.GetInstance();
-                vw.ShowMainView(this, res);
+                vw.UserId = res;
+                vw.ShowView("main");
             }
 
           }
@@ -161,8 +166,8 @@ namespace CryptoTrackApp.src.view.Windows
 
         private void _SignUpEvent(object sender, ButtonReleaseEventArgs a)
         {
-          IViewManager vw = ViewManager.GetInstance();
-          vw.ShowSignUpView(this);
+          ViewManager vw = ViewManager.GetInstance();
+          vw.ShowView("signup", this);
         }
 
     }

@@ -11,6 +11,7 @@ namespace CryptoTrackApp.src.db
         public DbSet<User> Users {get; set;}
         public DbSet<Subscription> Subscriptions {get; set;}
         private String CONNECTION = Environment.GetEnvironmentVariable("PGSQL_CONNECTION");
+		
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder
             .UseNpgsql(CONNECTION)

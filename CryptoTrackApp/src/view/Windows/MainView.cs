@@ -4,6 +4,7 @@ using Gtk;
 using Gdk;
 using UI = Gtk.Builder.ObjectAttribute;
 using CryptoTrackApp.src.view.Components;
+using CryptoTrackApp.src.view.Controllers;
 using CryptoTrackApp.src.services;
 using System.Threading.Tasks;
 using Pango;
@@ -13,6 +14,7 @@ namespace CryptoTrackApp.src.view.Windows
 {
     public class MainView : View
     {
+        [UI] private Button _followButton;
         [UI] private Image _logoImg;
         [UI] private Box _panel;
         private Spinner _spinner = new Spinner();
@@ -49,6 +51,7 @@ namespace CryptoTrackApp.src.view.Windows
         public override void ConfigEventHandlers()
         {
             Console.WriteLine("Configuring event handlers.......");
+            this._followButton.ButtonReleaseEvent += FollowButtonReleased;
         }
 
         public override void ConfigImages()
@@ -165,5 +168,13 @@ namespace CryptoTrackApp.src.view.Windows
             warning.Justify = Justification.Center;
             return warning;
         }
+
+        private void FollowButtonReleased (object sender, ButtonReleaseEventArgs args)
+        {
+            ViewManager vw = ViewManager.GetInstance();
+            vw.ShowView("follow");
+        }
     }
+
+
 }

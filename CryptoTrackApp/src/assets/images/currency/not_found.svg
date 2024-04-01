@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="168pt"
+   height="168pt"
+   viewBox="0 0 168 168"
+   version="1.1"
+   id="svg3"
+   sodipodi:docname="not_found.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     id="namedview3"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="pt"
+     inkscape:zoom="1.5178571"
+     inkscape:cx="112"
+     inkscape:cy="112.32941"
+     inkscape:window-width="1366"
+     inkscape:window-height="639"
+     inkscape:window-x="311"
+     inkscape:window-y="1112"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="surface1606" />
+  <g
+     id="surface1606">
+    <path
+       style="stroke:none;fill-rule:nonzero;fill:#fffafa;fill-opacity:1"
+       d="M 168 84 C 168 130.390625 130.390625 168 84 168 C 37.609375 168 0 130.390625 0 84 C 0 37.609375 37.609375 0 84 0 C 130.390625 0 168 37.609375 168 84 "
+       id="path1" />
+    <text
+       xml:space="preserve"
+       style="font-size:35.2016px;font-family:Likhan;-inkscape-font-specification:Likhan;text-align:center;text-anchor:middle;fill:#232324;fill-opacity:1;stroke:#000001;stroke-width:0.37716;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       x="81.016022"
+       y="51.731239"
+       id="text3"
+       transform="scale(1.038056,0.96333919)"><tspan
+         sodipodi:role="line"
+         id="tspan3"
+         style="font-size:35.2016px;stroke-width:0.37716;fill:#232324;fill-opacity:1;stroke:#000001;stroke-opacity:1"
+         x="81.016022"
+         y="51.731239">Icon</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:35.2016px;stroke-width:0.37716;fill:#232324;fill-opacity:1;stroke:#000001;stroke-opacity:1"
+         x="81.016022"
+         y="95.733238"
+         id="tspan4">Not</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:35.2016px;stroke-width:0.37716;fill:#232324;fill-opacity:1;stroke:#000001;stroke-opacity:1"
+         x="81.016022"
+         y="139.73524"
+         id="tspan5">Found</tspan></text>
+  </g>
+</svg>

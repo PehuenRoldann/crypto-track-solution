@@ -13,9 +13,10 @@ namespace CryptoTrackApp
             app.Register(GLib.Cancellable.Current);
 	    
 
-            IViewManager vw = ViewManager.GetInstance();
+            ViewManager vw = ViewManager.GetInstance();
             vw.App = app;
-            vw.ShowFollowView();
+            // vw.ShowFollowView();
+            vw.ShowView("login");
             Application.Run();
         }
     }

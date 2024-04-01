@@ -14,23 +14,27 @@ namespace CryptoTrackApp.src.services
     {
         private ICryptoApi cryptoApi;
 
-        public CurrencyServices() {
+        public CurrencyServices()
+        {
 
             this.cryptoApi = new CoinApi();
         }
 
 //----------------------- AUXILIAR METHODS ----------------------------------------------------------
 
-        private IDictionary<string, string> CurrencyToDictionary (Currency pCurrency) {
+        private IDictionary<string, string> CurrencyToDictionary (Currency pCurrency)
+        {
             
             IDictionary<string, string> currencyData = new Dictionary<string, string>();
 
             foreach (var property in pCurrency.GetType().GetProperties()) {
 
-                if (property.GetValue(pCurrency) == null) {
+                if (property.GetValue(pCurrency) == null)
+                {
                     currencyData.Add(property.Name, "");
                 }
-                else {
+                else
+                {
                     currencyData.Add(property.Name, property.GetValue(pCurrency).ToString());
                 }
                 
@@ -39,7 +43,8 @@ namespace CryptoTrackApp.src.services
             return currencyData;
         }
 
-        private IDictionary<string, string>[] CurrencyToDictionary(Currency[] pCurrencies) {
+        private IDictionary<string, string>[] CurrencyToDictionary(Currency[] pCurrencies)
+        {
 
             return pCurrencies.Select(item => {
 
@@ -47,7 +52,7 @@ namespace CryptoTrackApp.src.services
 
             }).ToArray();
 
-        }       
+        }
 
 // ------------------- INTERFACE IMPLEMENTATIONS -------------------------------------------------
 
@@ -112,26 +117,16 @@ namespace CryptoTrackApp.src.services
 
         public async Task<List<(DateTime, double)>> GetHistory(string pCurrencyId)
         {
-            try 
+            try
             {
                 List<(DateTime, double)> historyValues = await this.cryptoApi.GetHistory(pCurrencyId);
 
-                /* foreach (var tupla in historyValues)
-                {
-
-                    if ( DateTime.Now.Subtract(tupla.Item1).TotalDays >  182.5)
-                    {
-                        historyValues.Remove(tupla);
-                    }
-
-                } */
                 // 182 days aprox. to 6 months:
                 return historyValues.TakeLast(182).ToList();
 
-                /* return historyValues; */
-
             }
-            catch (Exception error) {
+            catch (Exception error)
+            {
 
                 Console.WriteLine($"CurrencyService-Error: {error.Message}");
                 throw new Exception(error.Message);

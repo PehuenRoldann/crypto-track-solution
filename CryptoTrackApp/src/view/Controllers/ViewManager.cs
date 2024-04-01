@@ -10,7 +10,8 @@ namespace CryptoTrackApp.src.view.Controllers
 
   public class ViewManager : IViewManager
   {
-    
+    public string UserId {get; set;}
+
     private Application? _app;
 
     private static ViewManager _instance;
@@ -37,30 +38,35 @@ namespace CryptoTrackApp.src.view.Controllers
 
     public Application? App {get {return this._app; } set {this._app = value; }}
 
-    public void ShowLoginView(View? pParent = null)
-    {
-      View win = new LoginView(new UserServices());
-      this.InitView(win, pParent);
-    }
 
-    public void ShowFollowView(View? pParent = null)
+    public void ShowView(string pViewType, View? pParent = null)
     {
-      View win = new FollowView();
-      this.InitView(win, pParent);
+      View win;
+      switch (pViewType.ToLower())
+      {
+        case "login":
+          win = new LoginView(new UserServices());
+          break;
         
-    }
+        case "signup":
+          win = new SignUpView(new UserServices());
+          break;
+        
+        case "main":
+          win = new MainView(this.UserId, new SubscriptionServices(), new CurrencyServices());
+          break;
+        
+        case "follow":
+          win = new FollowView();
+          break;
+        
+        default:
+          win = new LoginView(new UserServices());
+          break;
+      }
 
-    public void ShowSignUpView(View pParent)
-    {
-      View win = new SignUpView(new UserServices());
       this.InitView(win, pParent);
     }
-    public void ShowMainView(View pParent, string pUserId)
-    {
-      View win = new MainView(pUserId, new SubscriptionServices(), new CurrencyServices());
-      this.InitView(win, pParent);
-    }
-    
 
     private void InitView(View win, View? pParent)
     {
