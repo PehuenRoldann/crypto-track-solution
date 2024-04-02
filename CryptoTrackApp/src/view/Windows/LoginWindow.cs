@@ -127,7 +127,7 @@ namespace CryptoTrackApp.src.view.Windows
                 Console.WriteLine("Login...");
                 var vw = ViewManager.GetInstance();
                 vw.UserId = res;
-                vw.ShowView("main");
+                vw.ShowView("main", this);
             }
 
           }

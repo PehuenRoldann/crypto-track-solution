@@ -13,10 +13,14 @@ namespace CryptoTrackApp.src.view.Windows
         [UI] private Box _searchContainer;
         [UI] private FlowBox _flowBox;
 
-        private ICurrencyServices currencyServices = new CurrencyServices();
+        private ICurrencyServices _curService;
+        private ISubscriptionServices _subService;
         
-        public FollowView () : base("FollowView")
+        public FollowView (ISubscriptionServices pSubService, ICurrencyServices pCurService)
+        : base("FollowView")
         {
+            this._curService = pCurService;
+            this._subService = pSubService;
 
             this.CSS_PATH_DARK = "./src/css/follow_view.css";
 	        this.CSS_PATH_LIGHT = "";
@@ -42,20 +46,12 @@ namespace CryptoTrackApp.src.view.Windows
 
         private async void LoadFlowBox()
         {
-            // var cryptos = new List<string>() {"dai", "btc", "cob", "cnd", "dat", "doge", "dth", "eth"};
-
-            IDictionary<string, string> [] cryptos = await currencyServices.GetCurrencies(offset: 0, limit: 50);
-
-            /* foreach (string crypto in cryptos)
-            {
-                var cryptoCard = new CryptoCard(crypto);
-                cryptoCard.StyleContext.AddClass("crypto-card");
-                this._flowBox.Add(cryptoCard);
-            } */
-
+            IDictionary<string, string> [] cryptos = await this._curService.GetCurrencies(offset: 0,
+                                                                                         limit: 50);
             foreach (IDictionary<string, string> crypto in cryptos)
             {
-                var cryptoCard = new CryptoCard(crypto["Symbol"].ToLower(), crypto["Name"], crypto["Id"]);
+                var cryptoCard = new CryptoCard(this._subService, crypto["Symbol"].ToLower(),
+                    crypto["Name"], crypto["Id"]);
                 cryptoCard.StyleContext.AddClass("crypto-card");
                 this._flowBox.Add(cryptoCard);
             }

@@ -1,19 +1,26 @@
 using System;
 using Gtk;
+using UI = Gtk.Builder.ObjectAttribute;
+using System.Threading.Tasks;
+using CryptoTrackApp.src.services;
+using CryptoTrackApp.src.view.Controllers;
 
 namespace CryptoTrackApp.src.view.Components
 {
     public class CryptoCard : Gtk.Box
     {
-        public string CryptoName;
-        public string CryptoId;
+        [UI] private Button _followButton;
+        public string CryptoName {get; set; }
+        public string CryptoId {get; set; }
+        private ISubscriptionServices _subService;
 
-        public CryptoCard (string pCryptoSymbol = "btc", string pCryptoName = "Bitcoin",
-         string pCryptoId = "") {
-
+        public CryptoCard (ISubscriptionServices pSubscriptionService, string pCryptoSymbol = "",
+            string pCryptoName = "", string pCryptoId = "")
+        {
+            this._subService = pSubscriptionService;
             this.CryptoName = pCryptoName;
             this.CryptoId = pCryptoId;
-            // SetDefaultSize(400, 200);
+            
             this.WidthRequest = 100;
             this.HeightRequest = 200;
             this.Expand = false;
@@ -21,7 +28,9 @@ namespace CryptoTrackApp.src.view.Components
             
             var name_label = new Gtk.Label(pCryptoName);
 
-            var follow_btn = new Gtk.Button("Follow");
+            this._followButton = new Gtk.Button("Follow");
+            this._followButton.ButtonReleaseEvent += FollowButtonReleased;
+
             var info_btn = new Gtk.Button("+Info");
 
             Gdk.Pixbuf pixbuf;
@@ -43,10 +52,27 @@ namespace CryptoTrackApp.src.view.Components
             // Añadir la imagen al contenedor vertical
             this.PackStart(name_label, false, false, 0);
             this.PackStart(image, false, false, 0);
-            this.PackEnd(follow_btn, false, false, 0);
+            this.PackEnd(this._followButton, false, false, 0);
             this.PackEnd(info_btn, false, false, 0);
 
             ShowAll();
+        }
+
+        private async void FollowButtonReleased (object sender, ButtonReleaseEventArgs args)
+        {
+            Console.WriteLine($"Follow button from {this.CryptoId} pressed.");
+            try
+            {
+                await Task.Run(() => {
+                    this._subService.AddSubscriptionAsync(ViewManager.GetInstance().UserId, this.CryptoId);
+                });
+                this._followButton.Label = "Already following";
+                this._followButton.CanFocus = false;
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error.Message);
+            }
         }
     }
 }

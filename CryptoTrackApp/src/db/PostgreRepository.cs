@@ -64,7 +64,20 @@ namespace CryptoTrackApp.src.db
 
         public async Task AddSubscriptionAsync(Subscription sub)
         {
-            throw new NotImplementedException();
+            using (var context = new CryptoTrackAppContext())
+            {
+                try
+                {
+                    await context.Subscriptions.AddAsync(sub);
+                    context.SaveChanges();
+                }
+                catch (Exception error) 
+                {
+                    Console.WriteLine("Error while subscribing!");
+                    await Logger.LogErrorAsync("Error while adding a new subscription", error);
+                    throw new Exception(error.Message);
+                }
+            }
         }
 
         public async Task<Subscription> GetSubscriptionAsync(Guid userId, string currencyId)

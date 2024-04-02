@@ -7,6 +7,16 @@ namespace CryptoTrackTest
 {
     public class SubscriptionServicesTest
     {
+
+        [Fact]
+        public async void AddSubscriptionTest()
+        {
+            string userId = "7a43853d-b414-4432-b00c-5fd18f77abf6";
+            string currencyId = "dai";
+            ISubscriptionServices services = new SubscriptionServices();
+            services.AddSubscriptionAsync(userId, currencyId);
+        }
+
         [Fact]
         public async void GetSubscriptionsTest ()
         {

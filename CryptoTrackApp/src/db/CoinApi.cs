@@ -4,7 +4,6 @@ using CryptoTrackApp.src.models;
 using RestSharp;
 using Newtonsoft.Json;
 using System.Linq;
-using CryptoTrackApp.Migrations;
 using System.Collections.Generic;
 
 namespace CryptoTrackApp.src.db

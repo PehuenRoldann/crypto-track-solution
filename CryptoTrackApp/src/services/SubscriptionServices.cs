@@ -10,9 +10,14 @@ namespace CryptoTrackApp.src.services
     public class SubscriptionServices : ISubscriptionServices
     {
         private IRepository repository = new PostgreRepository();
-        public void AddSubscriptionAsync(string userId, string currencyId)
+        public async void AddSubscriptionAsync(string userId, string currencyId)
         {
-            throw new NotImplementedException();
+            Subscription sub = new Subscription();
+            sub.SubscriptionId = Guid.NewGuid();
+            sub.CurrencyId = currencyId;
+            sub.UserId = Guid.Parse(userId);
+            sub.FollowDate = DateTime.UtcNow;
+            await repository.AddSubscriptionAsync(sub);
         }
 
         public Task<string> GetOneSubscriptionAsync(string userId, string currencyId)

@@ -57,7 +57,7 @@ namespace CryptoTrackApp.src.view.Controllers
           break;
         
         case "follow":
-          win = new FollowView();
+          win = new FollowView(new SubscriptionServices(), new CurrencyServices());
           break;
         
         default:

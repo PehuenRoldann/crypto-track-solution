@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CryptoTrackApp.Migrations
 {
     [DbContext(typeof(CryptoTrackAppContext))]
-    [Migration("20240221035144_Email")]
-    partial class Email
+    [Migration("20240402155531_FirstMigration")]
+    partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,12 +31,13 @@ namespace CryptoTrackApp.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("subscription_id");
 
-                    b.Property<Guid>("CurrencyId")
-                        .HasColumnType("uuid")
+                    b.Property<string>("CurrencyId")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("currency_id");
 
                     b.Property<DateTime>("FollowDate")
-                        .HasColumnType("timestamp")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("follow_date");
 
                     b.Property<double>("NotificationUmbral")
@@ -44,7 +45,7 @@ namespace CryptoTrackApp.Migrations
                         .HasColumnName("notification_umbral");
 
                     b.Property<DateTime?>("UnfollowDate")
-                        .HasColumnType("timestamp")
+                        .HasColumnType("timestamp with time 	zone")
                         .HasColumnName("unfollow_date");
 
                     b.Property<Guid>("UserId")
@@ -58,6 +59,32 @@ namespace CryptoTrackApp.Migrations
                         .HasDatabaseName("ix_subscriptions_user_id");
 
                     b.ToTable("subscriptions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            SubscriptionId = new Guid("02a521e0-8625-4fe4-8425-51a36e753c6b"),
+                            CurrencyId = "bitcoin",
+                            FollowDate = new DateTime(2024, 4, 2, 15, 55, 30, 770, DateTimeKind.Utc).AddTicks(1810),
+                            NotificationUmbral = 0.5,
+                            UserId = new Guid("7a43853d-b414-4432-b00c-5fd18f77abf6")
+                        },
+                        new
+                        {
+                            SubscriptionId = new Guid("f8d07281-b9bd-4137-9f42-a6faecbba632"),
+                            CurrencyId = "dia",
+                            FollowDate = new DateTime(2024, 4, 2, 15, 55, 30, 770, DateTimeKind.Utc).AddTicks(1814),
+                            NotificationUmbral = 0.5,
+                            UserId = new Guid("7a43853d-b414-4432-b00c-5fd18f77abf6")
+                        },
+                        new
+                        {
+                            SubscriptionId = new Guid("7fefd8e7-65c4-4457-9cd1-b58acd83f36b"),
+                            CurrencyId = "solana",
+                            FollowDate = new DateTime(2024, 4, 2, 15, 55, 30, 770, DateTimeKind.Utc).AddTicks(1818),
+                            NotificationUmbral = 0.5,
+                            UserId = new Guid("7a43853d-b414-4432-b00c-5fd18f77abf6")
+                        });
                 });
 
             modelBuilder.Entity("CryptoTrackApp.src.models.User", b =>
@@ -97,6 +124,17 @@ namespace CryptoTrackApp.Migrations
                         .HasName("ak_users_email");
 
                     b.ToTable("users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7a43853d-b414-4432-b00c-5fd18f77abf6"),
+                            BirthDate = new DateTime(2000, 4, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "pehuen@gmail.com",
+                            Password = "Password123!",
+                            Status = true,
+                            UserName = "Pehuén"
+                        });
                 });
 
             modelBuilder.Entity("CryptoTrackApp.src.models.Subscription", b =>

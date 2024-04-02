@@ -43,7 +43,7 @@ namespace CryptoTrackApp.Migrations
                         .HasColumnName("notification_umbral");
 
                     b.Property<DateTime?>("UnfollowDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp with time 	zone")
                         .HasColumnName("unfollow_date");
 
                     b.Property<Guid>("UserId")
@@ -63,25 +63,25 @@ namespace CryptoTrackApp.Migrations
                         {
                             SubscriptionId = new Guid("02a521e0-8625-4fe4-8425-51a36e753c6b"),
                             CurrencyId = "bitcoin",
-                            FollowDate = new DateTime(2024, 2, 27, 7, 45, 28, 749, DateTimeKind.Utc).AddTicks(9638),
+                            FollowDate = new DateTime(2024, 4, 2, 15, 55, 30, 770, DateTimeKind.Utc).AddTicks(1810),
                             NotificationUmbral = 0.5,
-                            UserId = new Guid("4d266202-d63e-4caf-a87f-6ef56e0dd1b6")
+                            UserId = new Guid("7a43853d-b414-4432-b00c-5fd18f77abf6")
                         },
                         new
                         {
                             SubscriptionId = new Guid("f8d07281-b9bd-4137-9f42-a6faecbba632"),
                             CurrencyId = "dia",
-                            FollowDate = new DateTime(2024, 2, 27, 7, 45, 28, 749, DateTimeKind.Utc).AddTicks(9642),
+                            FollowDate = new DateTime(2024, 4, 2, 15, 55, 30, 770, DateTimeKind.Utc).AddTicks(1814),
                             NotificationUmbral = 0.5,
-                            UserId = new Guid("4d266202-d63e-4caf-a87f-6ef56e0dd1b6")
+                            UserId = new Guid("7a43853d-b414-4432-b00c-5fd18f77abf6")
                         },
                         new
                         {
                             SubscriptionId = new Guid("7fefd8e7-65c4-4457-9cd1-b58acd83f36b"),
                             CurrencyId = "solana",
-                            FollowDate = new DateTime(2024, 2, 27, 7, 45, 28, 749, DateTimeKind.Utc).AddTicks(9645),
+                            FollowDate = new DateTime(2024, 4, 2, 15, 55, 30, 770, DateTimeKind.Utc).AddTicks(1818),
                             NotificationUmbral = 0.5,
-                            UserId = new Guid("4d266202-d63e-4caf-a87f-6ef56e0dd1b6")
+                            UserId = new Guid("7a43853d-b414-4432-b00c-5fd18f77abf6")
                         });
                 });
 
@@ -122,6 +122,17 @@ namespace CryptoTrackApp.Migrations
                         .HasName("ak_users_email");
 
                     b.ToTable("users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7a43853d-b414-4432-b00c-5fd18f77abf6"),
+                            BirthDate = new DateTime(2000, 4, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "pehuen@gmail.com",
+                            Password = "Password123!",
+                            Status = true,
+                            UserName = "Pehuén"
+                        });
                 });
 
             modelBuilder.Entity("CryptoTrackApp.src.models.Subscription", b =>
