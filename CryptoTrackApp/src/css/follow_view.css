@@ -11,7 +11,35 @@
 
 .crypto-card{
     border-radius: 15px;
-    background: #526D82;
+    background: #1b2331;
     padding: 10px;
     
+}
+
+.card-button{
+    font-weight: bold;
+    color: white;
+    border-radius: 20px;
+    border-width: 0;
+    margin: 2px;
+}
+
+.card-button:hover {
+    background: white;
+    color: black;
+}
+
+.follow-button {
+    background: #008170;
+}
+.unfollow-button{
+    background: #ED2B2A;
+}
+
+.info-button{
+    background: #0d68ad;
+}
+
+.card-image {
+    margin: 10px;
 }
