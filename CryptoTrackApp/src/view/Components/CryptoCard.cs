@@ -85,11 +85,16 @@ namespace CryptoTrackApp.src.view.Components
                         this.CryptoId);
                     });
                     this._followButton.Label = "Unfollow";
+                    this._followButton.StyleContext.RemoveClass("follow-button");
+                    this._followButton.StyleContext.AddClass("unfollow-button");
                     // this._followButton.CanFocus = false;
                 }
                 else
                 {
                     Console.WriteLine("Tried to unfollow but the feature isn't implemented");
+                    this._followButton.Label = "Follow";
+                    this._followButton.StyleContext.RemoveClass("unfollow-button");
+                    this._followButton.StyleContext.AddClass("follow-button");
                     // this._followButton.Label = "Follow";
                     // this._followButton.CanFocus = false;
                 }
