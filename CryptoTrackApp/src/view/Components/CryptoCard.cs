@@ -12,15 +12,17 @@ namespace CryptoTrackApp.src.view.Components
         [UI] private Button _followButton;
         public string CryptoName {get; set; }
         public string CryptoId {get; set; }
+        public bool AlreadyFollow {get; set; }
         private ISubscriptionServices _subService;
 
         public CryptoCard (ISubscriptionServices pSubscriptionService, string pCryptoSymbol = "",
-            string pCryptoName = "", string pCryptoId = "")
+            string pCryptoName = "", string pCryptoId = "", bool pAlreadyFollow = false)
         {
             this._subService = pSubscriptionService;
             this.CryptoName = pCryptoName;
             this.CryptoId = pCryptoId;
-            
+            this.AlreadyFollow = pAlreadyFollow;
+
             this.WidthRequest = 100;
             this.HeightRequest = 200;
             this.Expand = false;
@@ -28,7 +30,8 @@ namespace CryptoTrackApp.src.view.Components
             
             var name_label = new Gtk.Label(pCryptoName);
 
-            this._followButton = new Gtk.Button("Follow");
+            if (this.AlreadyFollow) { this._followButton = new Gtk.Button("Unfollow"); }
+            else {this._followButton = new Gtk.Button("Follow");}
             this._followButton.ButtonReleaseEvent += FollowButtonReleased;
 
             var info_btn = new Gtk.Button("+Info");
@@ -66,7 +69,7 @@ namespace CryptoTrackApp.src.view.Components
                 await Task.Run(() => {
                     this._subService.AddSubscriptionAsync(ViewManager.GetInstance().UserId, this.CryptoId);
                 });
-                this._followButton.Label = "Already following";
+                this._followButton.Label = "Following";
                 this._followButton.CanFocus = false;
             }
             catch (Exception error)
