@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.models;
 using RestSharp;
@@ -10,11 +11,15 @@ namespace CryptoTrackApp.src.db
 {
     public class CoinApi : ICryptoApi
     {
-        private string baseUrl = "https://api.coincap.io/v2";
+        // private string baseUrl = "https://api.coincap.io/v2";
+        private string baseUrl = "";
         private RestClientOptions options;
 
         public CoinApi() {
 
+            string configRaw = File.ReadAllText("./src/conf.json");
+			var configJsonData = JsonConvert.DeserializeObject<dynamic>(configRaw);
+			baseUrl = configJsonData["coin_api_url"].ToString();
             this.options = new RestClientOptions(baseUrl);
         }
 

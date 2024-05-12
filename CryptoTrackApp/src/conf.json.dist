@@ -1,3 +1,4 @@
 {
+    "coin_api_url": "https://api.coincap.io/v2",
     "db_connection": "Here goes your db connection string"
 }
