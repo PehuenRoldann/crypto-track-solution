@@ -16,7 +16,6 @@ namespace CryptoTrackApp.src.db
 
             using (var context = new CryptoTrackAppContext())
             {
-                
                 try
                 {
                     return await context.Users.FirstOrDefaultAsync(u => u.Email == pEmail);

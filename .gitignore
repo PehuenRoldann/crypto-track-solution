@@ -5,6 +5,8 @@ run_test_class
 run_test
 run_test_method
 
+# Ignorar archivos de configuración de la app
+conf.json
 
 # Ignorar archivos generados por Visual Studio
 .vscode/
