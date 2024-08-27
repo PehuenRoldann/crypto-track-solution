@@ -1,0 +1,19 @@
+name: Sync to GitLab
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Push to GitLab
+      run: |
+        git remote add gitlab https://gitlab.com/roldanpehuen/crypto-track-solution
+        git push gitlab main
+
