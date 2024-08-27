@@ -15,7 +15,7 @@ namespace CryptoTrackApp.src.view.Windows
         [UI] private FlowBox _flowBox;
         [UI] private Button _loadMoreBtn;
 
-        private List<string> Following {get; set;}
+        private List<string> _following {get; set;}
         private ICurrencyServices _curService;
         private ISubscriptionServices _subService;
 
@@ -54,20 +54,21 @@ namespace CryptoTrackApp.src.view.Windows
         private async void LoadFlowBox()
         {
             this._loadMoreBtn.Hide();
-            this.Following = await this._subService.GetFollowedCryptosIdsAsync(ViewManager.GetInstance().UserId);
+
+            if (this._following == null) {
+                this._following = await this._subService.GetFollowedCryptosIdsAsync(ViewManager.GetInstance().UserId);
+            }
+
             IDictionary<string, string> [] cryptos = await this._curService.GetCurrencies(offset: this._offset,
                                                                                          limit: this._limit);
             foreach (IDictionary<string, string> crypto in cryptos)
             {
                 var cryptoCard = new CryptoCard(this._subService, crypto["Symbol"].ToLower(),
-                    crypto["Name"], crypto["Id"], this.Following.Contains(crypto["Id"]));
+                    crypto["Name"], crypto["Id"], this._following.Contains(crypto["Id"]));
                 cryptoCard.StyleContext.AddClass("crypto-card");
                 this._flowBox.Add(cryptoCard);
             }
-            //this._loadMoreBtn = new Gtk.Button();
-            //this._loadMoreBtn.Label = "Load More Currencies";
-            // this._loadMoreBtn.Visible = true;
-            //this._flowBox.Add(this._loadMoreBtn);
+
             this._loadMoreBtn.Show();
         }
 
@@ -78,5 +79,7 @@ namespace CryptoTrackApp.src.view.Windows
             this._limit+= 50;
             this.LoadFlowBox();
         }
+
+        
     }
 }
