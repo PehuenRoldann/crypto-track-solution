@@ -36,15 +36,15 @@ namespace CryptoTrackApp.src.view.Windows
 
 	public LoginView(IUserServices pUserServices) : base("LoginWindow") 
 	{
-      this._loginButton.StyleContext.AddClass("button-color");
+      this._loginButton!.StyleContext.AddClass("button-color");
 	    this.CSS_PATH_DARK = "./src/css/login_window.css";
 	    this.CSS_PATH_LIGHT = "";
 	    this.SetStyle("dark");
-	    _emailProblemLabel.Text = " ";
-      _passProblemLabel.Text = " ";
-      _loginProblem.Text = " ";
-      this._spinner.Hide();
-      this._buttonsBox.Homogeneous = true;
+	    _emailProblemLabel!.Text = " ";
+      _passProblemLabel!.Text = " ";
+      _loginProblem!.Text = " ";
+      this._spinner!.Hide();
+      this._buttonsBox!.Homogeneous = true;
 	    this.UserServices = pUserServices;
 	}
 
@@ -55,8 +55,10 @@ namespace CryptoTrackApp.src.view.Windows
         {
           _passVisibilityButton.ButtonReleaseEvent += PassVisibilityChanged;
           _loginButton.ButtonReleaseEvent += _LoginUserEvent;
+          _loginButton.Clicked += _LoginUserEvent!;
+          this.KeyReleaseEvent += OnKeyReleaseEvent;
           _signInButton.ButtonReleaseEvent += _SignUpEvent;
-          _emailInput.Changed += EmailCheck;
+          _emailInput.Changed += EmailCheck!;
         }
 
         public override void ConfigImages()
@@ -101,7 +103,18 @@ namespace CryptoTrackApp.src.view.Windows
             }
         }
 
-        private async void _LoginUserEvent(object sender, ButtonReleaseEventArgs a)
+         protected void OnKeyReleaseEvent(object sender, KeyReleaseEventArgs args)
+        {
+            // Verificar si la tecla presionada es Enter
+            if (args.Event.Key == Gdk.Key.Return || args.Event.Key == Gdk.Key.KP_Enter)
+            {
+                this._loginButton.Activate(); // Activa el botón programáticamente
+            }
+        }
+
+        // private void OnClickedLoginButton (object sender, Button)
+
+        private async void _LoginUserEvent(object sender, EventArgs a)
         {
 
           if (isEmailValid && isPasswordValid)
@@ -114,7 +127,7 @@ namespace CryptoTrackApp.src.view.Windows
             this._spinner.Show();
 
             string? res = await Task<string?>.Run( async () => {
-              return await this._LoginUser(this.UserServices);
+              return await this._LoginUser(this.UserServices!);
             });
 
             this._spinner.Hide();
