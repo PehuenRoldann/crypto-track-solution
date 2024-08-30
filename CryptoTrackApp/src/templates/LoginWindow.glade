@@ -13,7 +13,6 @@
           <object class="GtkViewport">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="valign">center</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
@@ -26,7 +25,6 @@
                     <property name="halign">center</property>
                     <property name="margin-top">40</property>
                     <property name="margin-bottom">39</property>
-                    <property name="pixbuf">../assets/images/ctapp_logo.png</property>
                     <style>
                       <class name="logo-image"/>
                     </style>
@@ -166,7 +164,6 @@
                                 <property name="halign">start</property>
                                 <property name="valign">center</property>
                                 <property name="margin-start">1</property>
-                                <property name="pixbuf">../assets/images/toggle_visibility_white_open.ico</property>
                                 <style>
                                   <class name="button-image"/>
                                 </style>
@@ -313,7 +310,7 @@
               </object>
             </child>
             <style>
-              <class name="viewport"/>
+              <class name="viewport-child"/>
             </style>
           </object>
         </child>
@@ -323,7 +320,7 @@
       </object>
     </child>
     <style>
-      <class name=".main-window"/>
+      <class name="main-window"/>
     </style>
   </object>
 </interface>

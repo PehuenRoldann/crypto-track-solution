@@ -67,15 +67,26 @@ namespace CryptoTrackApp.src.view.Controllers
 
       this.InitView(win, pParent);
     }
+    
 
+    public void ClearAllCssProviders(CssProvider provider)
+      {
+        var screen = Screen.Default;
+        StyleContext.RemoveProviderForScreen(screen, provider);
+      }
     private void InitView(View win, View? pParent)
     {
+      // Quitar el estilo aplicado previamente
       this.App.AddWindow(win);
       win.SetDefaultSize(1280, 720);
       /* win.Move(0,0); */
       if (pParent != null && pParent.IsMaximized) {win.Maximize();}
       win.Show();
-      if (pParent != null) {this.App.RemoveWindow(pParent); pParent.Destroy();}
+      if (pParent != null) {
+        this.ClearAllCssProviders(pParent.cssProvider);
+        this.App.RemoveWindow(pParent);
+        pParent.Destroy();
+        }
     }
 
     public MessageDialog GetMessageDialog(View pParent, string pTitle, string pMessage,Image pImage,
