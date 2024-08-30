@@ -35,10 +35,8 @@ namespace CryptoTrackApp.src.view.Windows {
         private bool isPasswordConfirmed = false;
     // ---- CONSTRUCTOR ------------------------------------------------------------
         public SignUpView(IUserServices pUserServices) : base("SignUpWindow") {
-        this.CSS_PATH_DARK = "./src/css/SignUpWindow.css";
-        this.CSS_PATH_LIGHT = "./src/css/SignUpWindow.css";
         this.userServices = pUserServices;
-        this.SetStyle("dark");
+        this.SetStyle("./src/css/SignUpWindow.css");
         this.CheckSignUpButton();
         this._spinner.Hide();
 

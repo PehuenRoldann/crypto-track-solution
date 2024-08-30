@@ -37,8 +37,8 @@ namespace CryptoTrackApp.src.view.Windows
             this.ConfigNotificationsArea();
             this.InitPanel();
             DeleteEvent += OnDelete;
-            this.CSS_PATH_DARK = "./src/css/main_view.css";
-            this.SetStyle("dark");
+            /* this.CSS_PATH_DARK = "./src/css/main_view.css"; */
+            this.SetStyle("./src/css/main_view.css");
             this._panel.ShowAll();
         }
 

@@ -5,9 +5,9 @@ namespace CryptoTrackApp.src.view.Windows
 
   public abstract class View : ApplicationWindow 
   {
-    public string CSS_PATH_DARK = "";
+/*     public string CSS_PATH_DARK = "";
     public string CSS_PATH_LIGHT = "";
-    private string _currentStyle = "";
+    private string _currentStyle = ""; */
     private CssProvider cssProvider = new CssProvider();
 
     public View(string TEMPLATE) : this(new Builder(TEMPLATE + ".glade"),TEMPLATE) {
@@ -22,11 +22,11 @@ namespace CryptoTrackApp.src.view.Windows
       DeleteEvent += Window_DeleteEvent;     
     }
 
-    public string CurrentStyle {get {return this._currentStyle;}}
+/*     public string CurrentStyle {get {return this._currentStyle;}} */
 
-    public void SetStyle(string pStyle) { // Method for switching the color pallet.
+    public void SetStyle(string cssPath) { // Method for switching the color pallet.
       
-      string cssPath = "";
+      /* string cssPath = "";
 
       switch (pStyle.ToLower()) {
 	case "dark":
@@ -41,7 +41,7 @@ namespace CryptoTrackApp.src.view.Windows
 	  cssPath = this.CSS_PATH_DARK;
 	  this._currentStyle = "default";
 	  break;
-      }
+      } */
 
       cssProvider.LoadFromPath(cssPath);
       StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 1000);

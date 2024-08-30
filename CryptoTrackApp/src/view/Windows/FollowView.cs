@@ -34,9 +34,9 @@ namespace CryptoTrackApp.src.view.Windows
             this._subService = pSubService;
 
 
-            this.CSS_PATH_DARK = "./src/css/follow_view.css";
-	        this.CSS_PATH_LIGHT = "";
-            this.SetStyle("dark");
+            /* this.CSS_PATH_DARK = "./src/css/follow_view.css";
+	        this.CSS_PATH_LIGHT = ""; */
+            this.SetStyle("./src/css/follow_view.css");
             
             this._loadMoreBtn!.Hide();
             this._loadMoreBtn.ButtonReleaseEvent += OnLoadMoreBtnRelease;
