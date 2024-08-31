@@ -9,6 +9,7 @@ using CryptoTrackApp.src.services;
 using System.Threading.Tasks;
 using Pango;
 using CryptoTrackApp.src.db;
+using Npgsql.Replication.PgOutput.Messages;
 
 
 namespace CryptoTrackApp.src.view.Windows
@@ -19,8 +20,10 @@ namespace CryptoTrackApp.src.view.Windows
         [UI] private Image _logoImg;
         [UI] private Image _logoutBtnImg;
         [UI] private Box _panel;
+        [UI] private Box _panelMessage;
         private Spinner _spinner = new Spinner();
-        private Label _warning;
+        private Label _message;
+        private Box _noSubscriptionsBox;
         private string _userId;
         private CryptoTreeViewComponent subsTable;
         private ISubscriptionServices subscriptionService;
@@ -28,6 +31,7 @@ namespace CryptoTrackApp.src.view.Windows
 
         private string LOGOUT_IMAGE_PATH = "./src/assets/icons/logout.png";
         private string LOGO_PATH = "./src/assets/images/cta_logo_200x200.png";
+        private string NOT_FOUND_PATH = "./src/assets/images/not_found.png";
 
 
         public MainView(
@@ -44,6 +48,7 @@ namespace CryptoTrackApp.src.view.Windows
             /* this.CSS_PATH_DARK = "./src/css/main_view.css"; */
             this.SetStyle("./src/css/main_view.css");
             this._panel.ShowAll();
+            this._panelMessage.Hide();
         }
 
 // ----------- INITIAL CONFIGURATIONS ---------------------------------------
@@ -80,7 +85,7 @@ namespace CryptoTrackApp.src.view.Windows
 
         }
 
-        public void ConfigNotificationsArea()
+        /* public void ConfigNotificationsArea()
         {
             NotificationsAreaComponent notifArea = new NotificationsAreaComponent();
             notifArea.Vexpand = true;
@@ -88,7 +93,7 @@ namespace CryptoTrackApp.src.view.Windows
             this._panel.Add(notifArea);
             this._panel.SetSizeRequest(300, -1);
         }
-
+ */
         private async Task<bool> LoadSubscriptionsList(){
             
             List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync(this._userId);
@@ -97,11 +102,12 @@ namespace CryptoTrackApp.src.view.Windows
             {
                 return false;
             }
+
             IDictionary<string,string>[] currenciesData;
-            try{
-                currenciesData =  await currencyService.GetCurrencies(cryptosId.ToArray());
-                 foreach (var item in currenciesData)
-                {
+
+            currenciesData =  await currencyService.GetCurrencies(cryptosId.ToArray());
+            foreach (var item in currenciesData)
+            {
                 Pixbuf icon;
                 try 
                 {
@@ -111,7 +117,7 @@ namespace CryptoTrackApp.src.view.Windows
                 {
                     icon = Pixbuf.LoadFromResource("CryptoTrackApp.src.assets.icons.currency.not_found.png");
                 }
-                this.subsTable.AddData(
+                    this.subsTable.AddData(
                     icon,
                     item["Name"],
                     int.Parse(item["Rank"]),
@@ -119,14 +125,8 @@ namespace CryptoTrackApp.src.view.Windows
                     float.Parse(item["ChangePercent24Hr"])
                 );
             }
-            
-            return true;
-            }
-            catch(Exception error) {
-                Console.WriteLine(error.Message);
-                return false;
-            } 
-            
+
+                return true;
             
         }
 
@@ -148,41 +148,83 @@ namespace CryptoTrackApp.src.view.Windows
             /* await Task.Run(() => {
                 this.LoadSubscriptionsList();
             }); */
-            bool haveSubscriptions = await this.LoadSubscriptionsList();
+            try {
+                bool haveSubscriptions = await this.LoadSubscriptionsList();
 
-            if (haveSubscriptions)
-            {
-                this._panel.Add(this.subsTable);
-                this._panel.ReorderChild(this.subsTable, 1);
-                this._spinner.Hide();
-                this.subsTable.ShowAll();
-            }
-            else
-            {
-                this._warning = this.InitWarning();
-                this._panel.Add(this._warning);
-                this._panel.ReorderChild(this._warning, 1);
-                this._spinner.Hide();
-                this._warning.Show();
+                if (haveSubscriptions)
+                {
+
+
+                    this._panel.Add(this.subsTable);
+                    this._panel.ReorderChild(this.subsTable, 1);
+                    this._spinner.Hide();
+                    this.subsTable.ShowAll();
+
+                }
+                else
+                {
+                    // this._message = this.Initmessage();
+                    ShowMessagePanel(
+                        pMessage: "You are not following any crypto yet!\n"+
+                        "Press the follow button in the navbar to start following some currencies.",
+                        pImagePath: this.NOT_FOUND_PATH
+                    );
+                    /* this._panel.Add(this._message);
+                    this._panel.ReorderChild(this._message, 1);
+                    this._spinner.Hide();
+                    this._message.Show(); */
+                }
+
+            } catch (Exception error ) {
+                Console.WriteLine("Error: " + error.GetType());
             }
             
         }
 
-        private Label InitWarning()
+        private void ShowMessagePanel(string pMessage, string pImagePath)
         {
-            FontDescription fontDesc = new FontDescription();
-            fontDesc.Family = "Arimo";
-            fontDesc.Size = (int)(18 * Pango.Scale.PangoScale);
-            fontDesc.Weight = Weight.Bold;
-            Label warning = new Label("You are not following any crypto yet!\n"+
-            "Check press the follow button in the navbar to start following some currencies.");
-            warning.OverrideFont(fontDesc);
-            warning.Halign = Align.Center;
-            warning.Valign = Align.Center;
-            warning.Hexpand = true;
-            warning.Justify = Justification.Center;
-            return warning;
+            /* foreach (Widget child  in this._panel.AllChildren) {
+                child.Hide();
+            } */
+
+            if (this._panelMessage.Children.Length == 0) {
+                // Widget Stylization
+                FontDescription fontDesc = new FontDescription {
+                    Family = "Arimo",
+                    Size = (int)(18 * Pango.Scale.PangoScale),
+                    Weight = Weight.Bold
+                };
+                
+                Label message = new Label {
+                    Halign = Align.Center, Valign = Align.End, Hexpand = true,
+                    Vexpand = true, Justify = Justification.Center
+                };
+
+                message.OverrideFont(fontDesc);
+                message.StyleContext.AddClass("important-label");
+
+                Image img = new Image { Vexpand = true };
+
+                this._panelMessage.Add(message);
+                this._panelMessage.Add(img);
+            }
+
+            var label = this._panelMessage.Children[0] as Label;
+            var image = this._panelMessage.Children[1] as Image;
+
+            if (label != null) {
+                label.Text = pMessage;
+            }
+
+            if (image != null && !string.IsNullOrEmpty(pImagePath)) {
+                image.File = pImagePath;
+            }
+
+            this._spinner.Hide();
+            Console.WriteLine("Se detuvo el spinner!");
+            this._panelMessage.ShowAll();
         }
+
 
         private void FollowButtonReleased (object sender, ButtonReleaseEventArgs args)
         {
