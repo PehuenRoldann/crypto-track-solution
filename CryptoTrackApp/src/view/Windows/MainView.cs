@@ -8,6 +8,7 @@ using CryptoTrackApp.src.view.Controllers;
 using CryptoTrackApp.src.services;
 using System.Threading.Tasks;
 using Pango;
+using CryptoTrackApp.src.db;
 
 
 namespace CryptoTrackApp.src.view.Windows
@@ -16,6 +17,7 @@ namespace CryptoTrackApp.src.view.Windows
     {
         [UI] private Button _followButton;
         [UI] private Image _logoImg;
+        [UI] private Image _logoutBtnImg;
         [UI] private Box _panel;
         private Spinner _spinner = new Spinner();
         private Label _warning;
@@ -23,9 +25,11 @@ namespace CryptoTrackApp.src.view.Windows
         private CryptoTreeViewComponent subsTable;
         private ISubscriptionServices subscriptionService;
         private ICurrencyServices currencyService;
-        
 
-        private string LOGO_PATH = "./src/assets/images/logo_v2.png";
+        private string LOGOUT_IMAGE_PATH = "./src/assets/icons/logout.png";
+        private string LOGO_PATH = "./src/assets/images/cta_logo_200x200.png";
+
+
         public MainView(
             string pUserId,
             ISubscriptionServices pSubService,
@@ -34,9 +38,9 @@ namespace CryptoTrackApp.src.view.Windows
             this._userId = pUserId;
             this.subscriptionService = pSubService;
             this.currencyService = pCurrencyService;
-            this.ConfigNotificationsArea();
+            // this.ConfigNotificationsArea();
             this.InitPanel();
-            DeleteEvent += OnDelete;
+            //DeleteEvent += OnDelete;
             /* this.CSS_PATH_DARK = "./src/css/main_view.css"; */
             this.SetStyle("./src/css/main_view.css");
             this._panel.ShowAll();
@@ -57,6 +61,8 @@ namespace CryptoTrackApp.src.view.Windows
         public override void ConfigImages()
         {
             this._logoImg.File = this.LOGO_PATH;
+            this._logoutBtnImg.File = this.LOGOUT_IMAGE_PATH;
+            Console.WriteLine("Cargando imagenes");
             Console.WriteLine("Configuring images...");
 
         }
@@ -84,15 +90,18 @@ namespace CryptoTrackApp.src.view.Windows
         }
 
         private async Task<bool> LoadSubscriptionsList(){
+            
             List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync(this._userId);
             // List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync("4d266202-d63e-4caf-a87f-6ef56e0dd1b6");
             if (cryptosId.Count == 0)
             {
                 return false;
             }
-            IDictionary<string,string>[] currenciesData =  await currencyService.GetCurrencies(cryptosId.ToArray());
-            foreach (var item in currenciesData)
-            {
+            IDictionary<string,string>[] currenciesData;
+            try{
+                currenciesData =  await currencyService.GetCurrencies(cryptosId.ToArray());
+                 foreach (var item in currenciesData)
+                {
                 Pixbuf icon;
                 try 
                 {
@@ -112,6 +121,11 @@ namespace CryptoTrackApp.src.view.Windows
             }
             
             return true;
+            }
+            catch(Exception error) {
+                Console.WriteLine(error.Message);
+                return false;
+            } 
             
             
         }
@@ -120,6 +134,7 @@ namespace CryptoTrackApp.src.view.Windows
         private async void InitPanel()
         {
             this._spinner.Expand = true;
+            this._spinner.Hexpand = true;
             this._spinner.Visible = true;
             this._spinner.HeightRequest = 80;
             this._spinner.WidthRequest = 80;

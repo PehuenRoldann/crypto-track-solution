@@ -20,6 +20,7 @@ namespace CryptoTrackApp.src.view.Controllers
     
     private ViewManager() {}
 
+
     public static ViewManager GetInstance()
     {
         if (_instance == null)
@@ -74,15 +75,17 @@ namespace CryptoTrackApp.src.view.Controllers
         var screen = Screen.Default;
         StyleContext.RemoveProviderForScreen(screen, provider);
       }
+
     private void InitView(View win, View? pParent)
     {
-      // Quitar el estilo aplicado previamente
       this.App.AddWindow(win);
       win.SetDefaultSize(1280, 720);
       /* win.Move(0,0); */
       if (pParent != null && pParent.IsMaximized) {win.Maximize();}
       win.Show();
+      Console.WriteLine("Hola");
       if (pParent != null) {
+        // Quitar el estilo aplicado previamente
         this.ClearAllCssProviders(pParent.cssProvider);
         this.App.RemoveWindow(pParent);
         pParent.Destroy();

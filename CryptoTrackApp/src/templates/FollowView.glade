@@ -69,40 +69,14 @@
   <object class="GtkWindow">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="default-width">600</property>
-    <property name="default-height">400</property>
+    <property name="title" translatable="yes">Follow a new crypto currency!</property>
+    <property name="default-width">1280</property>
+    <property name="default-height">720</property>
     <child>
       <object class="GtkBox" id="_mainContainer">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="label" translatable="yes">Follow a new currencie!</property>
-            <attributes>
-              <attribute name="font-desc" value="Arimo Nerd Font Propo Bold 20"/>
-            </attributes>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="label" translatable="yes">Below you have the available currencies to follow</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
         <child>
           <object class="GtkBox" id="_searchContainer">
             <property name="visible">True</property>
@@ -116,11 +90,12 @@
                 <property name="primary-icon-name">edit-find-symbolic</property>
                 <property name="primary-icon-activatable">False</property>
                 <property name="primary-icon-sensitive">False</property>
+                <property name="placeholder-text" translatable="yes">Bitcoin</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">0</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
