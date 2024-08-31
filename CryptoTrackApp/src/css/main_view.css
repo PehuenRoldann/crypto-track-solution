@@ -34,3 +34,14 @@
 	color: #F5F5F5;
 	box-shadow: 2px 8px 10px black;
 }
+
+.logout-btn {
+    margin: 20px;
+    padding: 10px;
+}
+
+.logout-btn:hover {
+    
+    background: #48CFCB;
+	box-shadow: 2px 8px 10px black;
+}
