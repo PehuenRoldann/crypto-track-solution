@@ -21,7 +21,11 @@ namespace CryptoTrackApp.src.view.Windows
         [UI] private Image _logoutBtnImg;
         [UI] private Box _panel;
         [UI] private Box _panelMessage;
-        private Spinner _spinner = new Spinner();
+
+        [UI] private AspectFrame _panelTable;
+
+        // private Spinner _spinner = new Spinner();
+        [UI] private Spinner _spinner;
         private Label _message;
         private Box _noSubscriptionsBox;
         private string _userId;
@@ -42,13 +46,13 @@ namespace CryptoTrackApp.src.view.Windows
             this._userId = pUserId;
             this.subscriptionService = pSubService;
             this.currencyService = pCurrencyService;
-            // this.ConfigNotificationsArea();
+            
             this.InitPanel();
-            //DeleteEvent += OnDelete;
+            // DeleteEvent += OnDelete;
             /* this.CSS_PATH_DARK = "./src/css/main_view.css"; */
             this.SetStyle("./src/css/main_view.css");
-            this._panel.ShowAll();
-            this._panelMessage.Hide();
+            //this._panel.ShowAll();
+            //this._panelMessage.Hide();
         }
 
 // ----------- INITIAL CONFIGURATIONS ---------------------------------------
@@ -72,6 +76,66 @@ namespace CryptoTrackApp.src.view.Windows
 
         }
 
+        private async void InitPanel()
+        {
+            this._panel.Halign = Align.Start;
+            ConfigSpinner();
+            this._spinner.Active = true;
+            this._panelMessage.Hide();
+            this._spinner.Show();
+            LoadTablePanel();
+ 
+            
+        }
+
+
+        /// <summary>
+        /// Loads and show the 
+        /// </summary>
+        public async void LoadTablePanel () {
+
+            if (this.subsTable == null) {
+                ConfigSubsList();
+            }
+
+            try {
+                
+                bool haveSubscriptions = await this.LoadSubscriptionsList();
+
+                if (haveSubscriptions)
+                {
+                    this._panel.Add(this.subsTable);
+                    this._panel.ReorderChild(this.subsTable, 1);
+                    // this._panelTable = this.subsTable!;
+                    this._spinner.Hide();
+                    this._panelMessage.Hide();
+                    // this._panelTable.ShowAll();
+                    Console.WriteLine("Monstrar subs table");
+                    this.subsTable.ShowAll();
+
+                }
+                else
+                {
+                    // this._message = this.Initmessage();
+                    ShowMessagePanel(
+                        pMessage: "You are not following any crypto yet!\n"+
+                        "Press the follow button in the navbar to start following some currencies.",
+                        pImagePath: this.NOT_FOUND_PATH
+                    );
+                    /* this._panel.Add(this._message);
+                    this._panel.ReorderChild(this._message, 1);
+                    this._spinner.Hide();
+                    this._message.Show(); */
+                }
+
+            } catch (Exception error ) {
+                Console.WriteLine("Error: " + error.GetType());
+            }
+
+            // List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync("4d266202-d63e-4caf-a87f-6ef56e0dd1b6");
+
+        }
+
         public void ConfigSubsList()
         {
             CryptoTreeViewComponent subsTree = new CryptoTreeViewComponent();
@@ -85,15 +149,6 @@ namespace CryptoTrackApp.src.view.Windows
 
         }
 
-        /* public void ConfigNotificationsArea()
-        {
-            NotificationsAreaComponent notifArea = new NotificationsAreaComponent();
-            notifArea.Vexpand = true;
-            notifArea.StyleContext.AddClass("notification-area");
-            this._panel.Add(notifArea);
-            this._panel.SetSizeRequest(300, -1);
-        }
- */
         private async Task<bool> LoadSubscriptionsList(){
             
             List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync(this._userId);
@@ -130,63 +185,22 @@ namespace CryptoTrackApp.src.view.Windows
             
         }
 
-
-        private async void InitPanel()
-        {
-            this._spinner.Expand = true;
-            this._spinner.Hexpand = true;
-            this._spinner.Visible = true;
-            this._spinner.HeightRequest = 80;
-            this._spinner.WidthRequest = 80;
-            this._spinner.Halign = Align.Center;
-            this._spinner.Valign = Align.Center;
-            this._panel.Add(this._spinner);
-            this._panel.ReorderChild(this._spinner, 1);
-            this._spinner.Active = true;;
-            this._spinner.Show();
-            this.ConfigSubsList();
-            /* await Task.Run(() => {
-                this.LoadSubscriptionsList();
-            }); */
-            try {
-                bool haveSubscriptions = await this.LoadSubscriptionsList();
-
-                if (haveSubscriptions)
-                {
-
-
-                    this._panel.Add(this.subsTable);
-                    this._panel.ReorderChild(this.subsTable, 1);
-                    this._spinner.Hide();
-                    this.subsTable.ShowAll();
-
-                }
-                else
-                {
-                    // this._message = this.Initmessage();
-                    ShowMessagePanel(
-                        pMessage: "You are not following any crypto yet!\n"+
-                        "Press the follow button in the navbar to start following some currencies.",
-                        pImagePath: this.NOT_FOUND_PATH
-                    );
-                    /* this._panel.Add(this._message);
-                    this._panel.ReorderChild(this._message, 1);
-                    this._spinner.Hide();
-                    this._message.Show(); */
-                }
-
-            } catch (Exception error ) {
-                Console.WriteLine("Error: " + error.GetType());
-            }
-            
+        private void ConfigSpinner() {
+                // this._spinner = new Spinner();
+                this._spinner.Expand = true;
+                this._spinner.Hexpand = true;
+                this._spinner.Visible = true;
+                this._spinner.HeightRequest = 80;
+                this._spinner.WidthRequest = 80;
+                this._spinner.Halign = Align.Center;
+                this._spinner.Valign = Align.Center;
+                //this._panel.Add(this._spinner);
+                // this._panel.ReorderChild(this._spinner, 1);
         }
+
 
         private void ShowMessagePanel(string pMessage, string pImagePath)
         {
-            /* foreach (Widget child  in this._panel.AllChildren) {
-                child.Hide();
-            } */
-
             if (this._panelMessage.Children.Length == 0) {
                 // Widget Stylization
                 FontDescription fontDesc = new FontDescription {
@@ -221,6 +235,10 @@ namespace CryptoTrackApp.src.view.Windows
             }
 
             this._spinner.Hide();
+            // this._panelTable.Hide();
+            if (this.subsTable != null) {
+                this.subsTable.Hide();
+            }
             Console.WriteLine("Se detuvo el spinner!");
             this._panelMessage.ShowAll();
         }
