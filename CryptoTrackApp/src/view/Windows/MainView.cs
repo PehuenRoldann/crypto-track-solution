@@ -39,6 +39,7 @@ namespace CryptoTrackApp.src.view.Windows
         private string LOGOUT_IMAGE_PATH = "./src/assets/icons/logout.png";
         private string LOGO_PATH = "./src/assets/images/cta_logo_200x200.png";
         private string NOT_FOUND_PATH = "./src/assets/images/not_found.png";
+        private string SERVER_BURNING_PATH = "./src/assets/images/server_burning.png";
 
 
         public MainView(
@@ -142,7 +143,11 @@ namespace CryptoTrackApp.src.view.Windows
 
             } catch (Exception error ) {
                 Console.WriteLine("Error: " + error.GetType());
-                ShowMessagePanel(error.Message, this.NOT_FOUND_PATH);
+                ShowMessagePanel(
+                    pMessage: "This application uses a third party API to get the currencies info.\n"
+                    +"Please, wait a few seconds and try again.", 
+                    pImagePath: this.SERVER_BURNING_PATH
+                );
             }
 
             // List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync("4d266202-d63e-4caf-a87f-6ef56e0dd1b6");

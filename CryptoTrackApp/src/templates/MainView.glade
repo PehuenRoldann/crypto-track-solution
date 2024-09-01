@@ -70,6 +70,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
+                        <property name="tooltip-text" translatable="yes">Press to reload the currencies panel</property>
                         <property name="hexpand">True</property>
                         <property name="vexpand">True</property>
                         <property name="relief">none</property>
