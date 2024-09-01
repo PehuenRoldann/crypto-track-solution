@@ -16,11 +16,14 @@ namespace CryptoTrackApp.src.view.Windows
 {
     public class MainView : View
     {
+        [UI] private Button _panelBtn;
         [UI] private Button _followButton;
         [UI] private Image _logoImg;
         [UI] private Image _logoutBtnImg;
         [UI] private Box _panel;
         [UI] private Box _panelMessage;
+        // [UI] private ScrolledWindow _scrolledWindow;
+        [UI] private Box _panelScroll;
 
         [UI] private AspectFrame _panelTable;
 
@@ -29,7 +32,7 @@ namespace CryptoTrackApp.src.view.Windows
         private Label _message;
         private Box _noSubscriptionsBox;
         private string _userId;
-        private CryptoTreeViewComponent subsTable;
+        private CryptoTreeViewComponent subsTree;
         private ISubscriptionServices subscriptionService;
         private ICurrencyServices currencyService;
 
@@ -65,6 +68,7 @@ namespace CryptoTrackApp.src.view.Windows
         {
             Console.WriteLine("Configuring event handlers.......");
             this._followButton.ButtonReleaseEvent += FollowButtonReleased;
+            this._panelBtn.ButtonReleaseEvent += PanelButtonReleased;
         }
 
         public override void ConfigImages()
@@ -76,6 +80,13 @@ namespace CryptoTrackApp.src.view.Windows
 
         }
 
+        private void PanelButtonReleased (object sender, ButtonReleaseEventArgs args) {
+            this._panelScroll.Hide();
+            this._panelMessage.Hide();
+            this._spinner.Show();
+            LoadTablePanel();
+        }
+
         private async void InitPanel()
         {
             this._panel.Halign = Align.Start;
@@ -85,7 +96,6 @@ namespace CryptoTrackApp.src.view.Windows
             this._spinner.Show();
             LoadTablePanel();
  
-            
         }
 
 
@@ -94,7 +104,7 @@ namespace CryptoTrackApp.src.view.Windows
         /// </summary>
         public async void LoadTablePanel () {
 
-            if (this.subsTable == null) {
+            if (this.subsTree == null) {
                 ConfigSubsList();
             }
 
@@ -104,14 +114,16 @@ namespace CryptoTrackApp.src.view.Windows
 
                 if (haveSubscriptions)
                 {
-                    this._panel.Add(this.subsTable);
-                    this._panel.ReorderChild(this.subsTable, 1);
+                    Console.WriteLine("Añadienddo sbus tree...");
+                    this._panelScroll.Add(this.subsTree);
+                    // this._panel.ReorderChild(this.subsTable, 1);
                     // this._panelTable = this.subsTable!;
                     this._spinner.Hide();
                     this._panelMessage.Hide();
                     // this._panelTable.ShowAll();
-                    Console.WriteLine("Monstrar subs table");
-                    this.subsTable.ShowAll();
+                    Console.WriteLine("Monstrar subs tree");
+                    this._panelScroll.ShowAll();
+                    // this.subsTree!.ShowAll();
 
                 }
                 else
@@ -130,6 +142,7 @@ namespace CryptoTrackApp.src.view.Windows
 
             } catch (Exception error ) {
                 Console.WriteLine("Error: " + error.GetType());
+                ShowMessagePanel(error.Message, this.NOT_FOUND_PATH);
             }
 
             // List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync("4d266202-d63e-4caf-a87f-6ef56e0dd1b6");
@@ -145,7 +158,7 @@ namespace CryptoTrackApp.src.view.Windows
             subsTree.Halign = Align.Center;
             subsTree.Valign = Align.Center;
             subsTree.StyleContext.AddClass("subs-tree");
-            this.subsTable = subsTree;
+            this.subsTree = subsTree;
 
         }
 
@@ -172,7 +185,7 @@ namespace CryptoTrackApp.src.view.Windows
                 {
                     icon = Pixbuf.LoadFromResource("CryptoTrackApp.src.assets.icons.currency.not_found.png");
                 }
-                    this.subsTable.AddData(
+                    this.subsTree.AddData(
                     icon,
                     item["Name"],
                     int.Parse(item["Rank"]),
@@ -235,10 +248,11 @@ namespace CryptoTrackApp.src.view.Windows
             }
 
             this._spinner.Hide();
+            this._panelScroll.Hide();
             // this._panelTable.Hide();
-            if (this.subsTable != null) {
-                this.subsTable.Hide();
-            }
+           /*  if (this.subsTree != null) {
+                this.subsTree.Hide();
+            } */
             Console.WriteLine("Se detuvo el spinner!");
             this._panelMessage.ShowAll();
         }

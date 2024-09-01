@@ -65,7 +65,7 @@
                     <property name="homogeneous">True</property>
                     <property name="layout-style">center</property>
                     <child>
-                      <object class="GtkButton">
+                      <object class="GtkButton" id="_panelBtn">
                         <property name="label" translatable="yes">Panel</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
@@ -196,7 +196,19 @@
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkBox" id="_panelScroll">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
             </child>
             <child>
               <object class="GtkSpinner" id="_spinner">
