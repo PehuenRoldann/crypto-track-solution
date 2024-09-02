@@ -81,7 +81,6 @@
           <object class="GtkBox" id="_searchContainer">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-top">20</property>
             <child type="center">
               <object class="GtkSearchEntry" id="_searchEntry">
                 <property name="width-request">300</property>
@@ -90,7 +89,10 @@
                 <property name="primary-icon-name">edit-find-symbolic</property>
                 <property name="primary-icon-activatable">False</property>
                 <property name="primary-icon-sensitive">False</property>
-                <property name="placeholder-text" translatable="yes">Bitcoin</property>
+                <property name="placeholder-text" translatable="yes">Search...</property>
+                <style>
+                  <class name="search-entry"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -142,6 +144,9 @@
                 <property name="position">2</property>
               </packing>
             </child>
+            <style>
+              <class name="search-container"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -169,8 +174,14 @@
                     <property name="activate-on-single-click">False</property>
                   </object>
                 </child>
+                <style>
+                  <class name="flowbox-container"/>
+                </style>
               </object>
             </child>
+            <style>
+              <class name="scrollable-container"/>
+            </style>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -217,6 +228,9 @@
                 <property name="receives-default">True</property>
                 <property name="margin-top">10</property>
                 <property name="margin-bottom">10</property>
+                <style>
+                  <class name="load-btn"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -233,5 +247,8 @@
         </child>
       </object>
     </child>
+    <style>
+      <class name="main-window"/>
+    </style>
   </object>
 </interface>

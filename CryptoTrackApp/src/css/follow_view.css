@@ -1,12 +1,37 @@
 .main-container{
-    background: #0F0F0F;
+    background: #424242;
 }
+
+.main-window{
+	background: #424242;
+}
+
+
+.search-container{
+	background: #229799;
+	padding: 10px;
+}
+
+.search-entry{
+	background: white;
+	border: 0;
+	color: black;
+}
+
+.scrollable-container{
+	background-image: url('../assets/images/cta_logo_500x500.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        border: 0px;
+}
+
+/* .flowbox-contianer {
+    background-color: rgba(44, 44, 44, 0.99);
+} */
 
 .flow-box {
     border-radius: 15px;
-    background: #232D3F;
-    padding: 10px;
-    margin: 10px;
+    background-color: rgba(44, 44, 44, 0.98);
 }
 
 .crypto-card{
@@ -49,3 +74,16 @@
     height: 50px;
     background: white;
 } */
+
+
+.load-btn {
+	background: #229799;
+	color: white;
+	font-weight: bold;
+	border-radius: 20px;
+}
+
+.load-btn:hover {
+	background: #48CFCB;
+	box-shadow: 0px 2px 10px black;
+}
