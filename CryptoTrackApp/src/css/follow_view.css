@@ -25,13 +25,10 @@
         border: 0px;
 }
 
-/* .flowbox-contianer {
-    background-color: rgba(44, 44, 44, 0.99);
-} */
 
 .flow-box {
     border-radius: 15px;
-    background-color: rgba(44, 44, 44, 0.98);
+    background-color: rgba(66, 66, 66, 0.98);
 }
 
 .crypto-card{
@@ -68,13 +65,6 @@
 .card-image {
     margin: 10px;
 }
-
-/* .load-more-btn {
-    width: 100px;
-    height: 50px;
-    background: white;
-} */
-
 
 .load-btn {
 	background: #229799;
