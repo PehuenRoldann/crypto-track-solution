@@ -1,40 +1,70 @@
+using System;
+using IO = System.IO;
 using Gtk;
+using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace CryptoTrackApp.src.view.Windows
 {
 
   public abstract class View : ApplicationWindow 
-  {
+{
+      public string _basePath = AppDomain.CurrentDomain.BaseDirectory;
+      public CssProvider cssProvider = new CssProvider();
+      private readonly string[] LOGO_PATH = { "src", "assets", "images", "cta_logo_64x64.ico" };
 
-    public CssProvider cssProvider = new CssProvider();
+      public View(string TEMPLATE) : this(new Builder(TEMPLATE + ".glade"), TEMPLATE) 
+      {
+          this.ConfigEventHandlers();
+          this.ConfigImages();
+      }
 
-    public View(string TEMPLATE) : this(new Builder(TEMPLATE + ".glade"),TEMPLATE) {
-      
-      this.ConfigEventHandlers();
-      this.ConfigImages();
-    }
+      private View(Builder builder, string template) : base(builder.GetRawOwnedObject(template)) 
+      {
+          builder.Autoconnect(this);
+          try
+          {
+              if (ExistResource(LOGO_PATH))
+              {
+                  this.SetIconFromFile(GetAbsolutePath(LOGO_PATH));
+              }
+              else
+              {
+                  Console.WriteLine("Logo file not found.");
+              }
+          }
+          catch (Exception error)
+          {
+              Console.WriteLine($"Failed to set window icon: {error.Message}");
+          }
+          DeleteEvent += Window_DeleteEvent;
+      }
 
-    private View(Builder builder, string Template) : base (builder.GetRawOwnedObject(Template)) {
+      public void SetStyle(string cssPath) 
+      {
+          cssProvider.LoadFromPath(cssPath);
+          StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 1000);
+      }
 
-      builder.Autoconnect(this);
-      DeleteEvent += Window_DeleteEvent;     
-    }
+      private void Window_DeleteEvent(object sender, DeleteEventArgs a)
+      {
+          Application.Quit();
+      }
 
-    public void SetStyle(string cssPath) { // Method for switching the color pallet.
+      public abstract void ConfigEventHandlers(); 
+      public abstract void ConfigImages(); 
 
-      cssProvider.LoadFromPath(cssPath);
-      StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 1000);
-    }
+      public bool ExistResource(string[] pPath) 
+      {
+          string absPath = GetAbsolutePath(pPath);
+          return IO.File.Exists(absPath);
+      }
 
-    
-
-    private void Window_DeleteEvent(object sender, DeleteEventArgs a)
-    {
-      Application.Quit();
-    }
-
-    public abstract void ConfigEventHandlers(); // Use this method to configure the events for your buttons.
-
-    public abstract void ConfigImages(); // use this method to configure your images.
+      public string GetAbsolutePath(string[] pPath) 
+      {
+          return IO.Path.Combine(pPath.Prepend(_basePath).ToArray());
+      }
   }
+
 }

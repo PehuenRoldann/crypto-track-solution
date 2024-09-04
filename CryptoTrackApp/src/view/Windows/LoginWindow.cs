@@ -28,7 +28,7 @@ namespace CryptoTrackApp.src.view.Windows
         private bool isPasswordValid = true;
 
         private IUserServices? _userServices = null;
-	
+
         private readonly string LOGO_PATH = "./src/assets/images/logo_226x226.png";
         private readonly string BUTTON_IMAGE_OPEN_PATH = "./src/assets/images/toggle_visibility_white_open.ico";
         private readonly string BUTTON_IMAGE_CLOSE_PATH = "./src/assets/images/toggle_visibility_white_close.ico";
@@ -37,8 +37,6 @@ namespace CryptoTrackApp.src.view.Windows
 	public LoginView(IUserServices pUserServices) : base("LoginWindow") 
 	{
       this._loginButton!.StyleContext.AddClass("button-color");
-/* 	    this.CSS_PATH_DARK = "./src/css/login_window.css";
-	    this.CSS_PATH_LIGHT = ""; */
 	    this.SetStyle("./src/css/login_window.css");
 	    _emailProblemLabel!.Text = " ";
       _passProblemLabel!.Text = " ";

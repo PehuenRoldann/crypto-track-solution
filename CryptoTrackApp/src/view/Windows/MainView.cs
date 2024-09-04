@@ -1,4 +1,5 @@
 using System;
+using IO = System.IO;
 using System.Collections.Generic;
 using Gtk;
 using Gdk;
@@ -36,10 +37,13 @@ namespace CryptoTrackApp.src.view.Windows
         private ISubscriptionServices subscriptionService;
         private ICurrencyServices currencyService;
 
-        private string LOGOUT_IMAGE_PATH = "./src/assets/icons/logout.png";
-        private string LOGO_PATH = "./src/assets/images/cta_logo_200x200.png";
-        private string NOT_FOUND_PATH = "./src/assets/images/not_found.png";
-        private string SERVER_BURNING_PATH = "./src/assets/images/server_burning.png";
+        private string[] LOGOUT_IMAGE_PATH = {"src", "assets", "icons", "logout.png"};
+        private string[] LOGO_PATH = {"src", "assets", "images", "cta_logo_200x200.png"};
+        // private string NOT_FOUND_PATH = "./src/assets/images/not_found.png";
+        private string[] NOT_FOUND_PATH = {"src", "assets", "images", "not_found.png"};
+        // private string SERVER_BURNING_PATH = "./src/assets/images/server_burning.png";
+        private string[] SERVER_BURNING_PATH = {"src", "assets", "images", "server_burning.png"};
+        private string[] CSS_PATH = {"src", "css", "main_view.css"};
 
 
         public MainView(
@@ -52,11 +56,8 @@ namespace CryptoTrackApp.src.view.Windows
             this.currencyService = pCurrencyService;
             
             this.InitPanel();
-            // DeleteEvent += OnDelete;
-            /* this.CSS_PATH_DARK = "./src/css/main_view.css"; */
-            this.SetStyle("./src/css/main_view.css");
-            //this._panel.ShowAll();
-            //this._panelMessage.Hide();
+            this.SetStyle(this.GetAbsolutePath(CSS_PATH));
+
         }
 
 // ----------- INITIAL CONFIGURATIONS ---------------------------------------
@@ -74,8 +75,8 @@ namespace CryptoTrackApp.src.view.Windows
 
         public override void ConfigImages()
         {
-            this._logoImg.File = this.LOGO_PATH;
-            this._logoutBtnImg.File = this.LOGOUT_IMAGE_PATH;
+            this._logoImg.File = this.GetAbsolutePath(LOGO_PATH);
+            this._logoutBtnImg.File = this.GetAbsolutePath(LOGOUT_IMAGE_PATH);
             Console.WriteLine("Cargando imagenes");
             Console.WriteLine("Configuring images...");
 
@@ -109,56 +110,46 @@ namespace CryptoTrackApp.src.view.Windows
                 ConfigSubsList();
             }
 
-            try {
-                
-                bool haveSubscriptions = await this.LoadSubscriptionsList();
+            int haveSubscriptions = await this.LoadSubscriptionsList();
 
-                if (haveSubscriptions)
-                {
-                    Console.WriteLine("Añadienddo sbus tree...");
-                    this._panelScroll.Add(this.subsTree);
-                    // this._panel.ReorderChild(this.subsTable, 1);
-                    // this._panelTable = this.subsTable!;
-                    this._spinner.Hide();
-                    this._panelMessage.Hide();
-                    // this._panelTable.ShowAll();
-                    Console.WriteLine("Monstrar subs tree");
-                    this._panelScroll.ShowAll();
-                    // this.subsTree!.ShowAll();
-
+                switch (haveSubscriptions) {
+                    case 0:
+                        // this._message = this.Initmessage();
+                        ShowMessagePanel(
+                            pMessage: "You are not following any crypto yet!\n"+
+                            "Press the follow button in the navbar to start following some currencies.",
+                            pImagePath: this.GetAbsolutePath(NOT_FOUND_PATH)
+                        );
+                    break;
+                    case 1:
+                        // Console.WriteLine("Error: " + error.GetType());
+                        ShowMessagePanel(
+                            pMessage: "This application uses a third party API to get the currencies info.\n"
+                            +"Please, wait a few seconds and try again.", 
+                            pImagePath: this.GetAbsolutePath(SERVER_BURNING_PATH)
+                        );
+                    break;
+                    case 2:
+                        Console.WriteLine("Añadienddo sbus tree...");
+                        this._panelScroll.Add(this.subsTree);
+                        // this._panel.ReorderChild(this.subsTable, 1);
+                        // this._panelTable = this.subsTable!;
+                        this._spinner.Hide();
+                        this._panelMessage.Hide();
+                        // this._panelTable.ShowAll();
+                        Console.WriteLine("Monstrar subs tree");
+                        this._panelScroll.ShowAll();
+                    break;
                 }
-                else
-                {
-                    // this._message = this.Initmessage();
-                    ShowMessagePanel(
-                        pMessage: "You are not following any crypto yet!\n"+
-                        "Press the follow button in the navbar to start following some currencies.",
-                        pImagePath: this.NOT_FOUND_PATH
-                    );
-                    /* this._panel.Add(this._message);
-                    this._panel.ReorderChild(this._message, 1);
-                    this._spinner.Hide();
-                    this._message.Show(); */
-                }
-
-            } catch (Exception error ) {
-                Console.WriteLine("Error: " + error.GetType());
-                ShowMessagePanel(
-                    pMessage: "This application uses a third party API to get the currencies info.\n"
-                    +"Please, wait a few seconds and try again.", 
-                    pImagePath: this.SERVER_BURNING_PATH
-                );
-            }
-
-            // List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync("4d266202-d63e-4caf-a87f-6ef56e0dd1b6");
 
         }
 
-        public void ConfigSubsList()
+        public void ConfigSubsList()                    /* this._panel.Add(this._message);
+                    this._panel.ReorderChild(this._message, 1);
+                    this._spinner.Hide();
+                    this._message.Show(); */
         {
             CryptoTreeViewComponent subsTree = new CryptoTreeViewComponent();
-            /* this._panel.Add(subsTree);
-            this._panel.ReorderChild(subsTree, 1); */
             subsTree.Expand = true;
             subsTree.Halign = Align.Center;
             subsTree.Valign = Align.Center;
@@ -167,29 +158,42 @@ namespace CryptoTrackApp.src.view.Windows
 
         }
 
-        private async Task<bool> LoadSubscriptionsList(){
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 0: No subscriptions.
+        /// 1: There are subscriptions, but there was a problem getting the info.
+        /// 2: The information has ben retrived successfully.
+        /// </returns>
+        private async Task<int> LoadSubscriptionsList(){
             
             List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync(this._userId);
             // List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync("4d266202-d63e-4caf-a87f-6ef56e0dd1b6");
             if (cryptosId.Count == 0)
             {
-                return false;
+                return 0;
             }
 
             IDictionary<string,string>[] currenciesData;
 
             currenciesData =  await currencyService.GetCurrencies(cryptosId.ToArray());
+
+            if (currenciesData.Length == 0) {
+                return 1;
+            }
+
             foreach (var item in currenciesData)
             {
                 Pixbuf icon;
-                try 
-                {
+
+                if (this.ExistResource(new string[] {"src", "assets", "icons", "currency", item["Symbol"].ToLower() + ".png"})) {
                     icon = Pixbuf.LoadFromResource($"CryptoTrackApp.src.assets.icons.currency.{item["Symbol"].ToLower()}.png");
                 }
-                catch (Exception error)
-                {
+                else {
                     icon = Pixbuf.LoadFromResource("CryptoTrackApp.src.assets.icons.currency.not_found.png");
                 }
+
                     this.subsTree.AddData(
                     icon,
                     item["Name"],
@@ -199,12 +203,11 @@ namespace CryptoTrackApp.src.view.Windows
                 );
             }
 
-                return true;
+                return 2;
             
         }
 
         private void ConfigSpinner() {
-                // this._spinner = new Spinner();
                 this._spinner.Expand = true;
                 this._spinner.Hexpand = true;
                 this._spinner.Visible = true;
@@ -212,8 +215,6 @@ namespace CryptoTrackApp.src.view.Windows
                 this._spinner.WidthRequest = 80;
                 this._spinner.Halign = Align.Center;
                 this._spinner.Valign = Align.Center;
-                //this._panel.Add(this._spinner);
-                // this._panel.ReorderChild(this._spinner, 1);
         }
 
 

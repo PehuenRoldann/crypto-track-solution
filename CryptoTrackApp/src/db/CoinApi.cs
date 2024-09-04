@@ -42,9 +42,13 @@ namespace CryptoTrackApp.src.db
         /// <returns>Currency</returns>
         /// <exception cref="Exception">
         /// Throws an exception when the Http status of the response is different from Ok (200).
-        /// <exception
+        /// </exception>
         public async Task<Currency[]> GetCurrencies(string[] pIds)
         {
+            if (pIds.Length == 0) {
+                throw new Exception ("Empty ids string.");
+            }
+
             string queryIds = pIds[0];
 
             foreach (var id in pIds.Skip(1)){
@@ -53,14 +57,23 @@ namespace CryptoTrackApp.src.db
 
             using (RestClient client = new RestClient(options)) {
 
-                RestRequest request = new RestRequest($"assets?ids={queryIds}");
-                RestResponse response = await client.GetAsync(request);
+                try {
 
-                if (response.StatusCode != System.Net.HttpStatusCode.OK) {
-                    throw new Exception($"Error: {response.StatusCode}. Description: {response.StatusDescription}");
-                }
+                    RestRequest request = new RestRequest($"assets?ids={queryIds}");
+                    RestResponse response = await client.GetAsync(request);
 
-                return this.Deserialize<Currency[]>(response.Content);
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK) {
+                        throw new Exception($"Error: {response.StatusCode}. Description: {response.StatusDescription}");
+                    }
+
+                    return this.Deserialize<Currency[]>(response.Content);
+
+                } catch (Exception error) {
+                    Logger.LogErrorAsync("Error at CoinApi class", error);
+                    throw error;
+                } 
+
+                
             }
         }
 

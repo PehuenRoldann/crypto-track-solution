@@ -73,7 +73,7 @@ namespace CryptoTrackApp.src.services
             catch (Exception error) {
 
                 Console.WriteLine($"CurrencyService-Error: {error.Message}");
-                throw new Exception(error.Message);
+                throw error;
             }
 
         }
@@ -111,7 +111,7 @@ namespace CryptoTrackApp.src.services
             }
             catch (Exception error) {
                 Console.WriteLine($"CurrencyService-Error: {error.Message}");
-                throw new Exception(error.Message);
+                return new Dictionary<string, string>[0];
             }
         }
 
