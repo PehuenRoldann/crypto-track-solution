@@ -28,5 +28,12 @@ namespace CryptoTrackApp.src.services
         public Task<IDictionary<string, string>[]> GetCurrencies (string[] pIds);
         public Task<List<(DateTime, double)>> GetHistory(string pCurrencyId);
 
+        /// <summary>
+        /// Generates a boxplot .png with the value of the currency in a lapse of 6 mounths.
+        /// </summary>
+        /// <param name="pCurrencyId"></param>
+        /// <returns>Path to the image</returns>
+        public Task<string> GetBoxPlot (string pCurrencyId);
+
     }
 }

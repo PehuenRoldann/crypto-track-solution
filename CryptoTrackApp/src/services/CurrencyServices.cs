@@ -2,17 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.db;
 using CryptoTrackApp.src.models;
-
-
+using ScottPlot.TickGenerators.TimeUnits;
+using SP = ScottPlot;
 
 namespace CryptoTrackApp.src.services
 {
+
     public class CurrencyServices : ICurrencyServices
     {
         private ICryptoApi cryptoApi;
+        private List <(DateTime, double)> _historyValues;
 
         public CurrencyServices()
         {
@@ -61,7 +65,7 @@ namespace CryptoTrackApp.src.services
         /// </summary>
         /// <param name="pCurrencyId">Id of the currency we want to return</param>
         /// <returns>
-        /// IDictionary<string, string> with the currency information.
+        /// IDictionary<string, string> with the currency inforreturn "";mation.
         /// </returns>
         public async Task<IDictionary<string, string>> GetCurrency(string pCurrencyId)
         {
@@ -133,6 +137,39 @@ namespace CryptoTrackApp.src.services
             }
 
             
+        }
+
+
+        /// <summary>
+        /// Generates a image with the plotbox.
+        /// </summary>
+        /// <param name="pCurrencyId"></param>
+        /// <returns>Path to the plotbox generated image</returns>
+        public async Task<string> GetBoxPlot (string pCurrencyId) 
+        {
+            this._historyValues = await GetHistory(pCurrencyId);
+            DateTime actualDate = DateTime.UtcNow;
+
+            Dictionary<DateTime, List<double>> valuesPerMonth = new Dictionary<DateTime, List<double>>();
+
+            
+            for (var mes = 6; mes > 0; mes--) {
+                valuesPerMonth.Add(actualDate.AddMonths(-mes).AddDays(1-actualDate.Day), new List<double>());
+            }
+
+            foreach (var value in this._historyValues) {
+                var keyToCheck = new DateTime(year: value.Item1.Year, month: value.Item1.Month, 1).TimeOfDay;
+
+                foreach (DateTime keyDate in valuesPerMonth.Keys) {
+
+                    if (keyDate.Month == value.Item1.Month && keyDate.Year == value.Item1.Year) {
+                        valuesPerMonth[keyDate].Add(value.Item2);
+                    }
+                }
+            }
+        
+            return "";
+                        
         }
     }
 }

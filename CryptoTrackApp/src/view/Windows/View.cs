@@ -24,23 +24,6 @@ namespace CryptoTrackApp.src.view.Windows
       private View(Builder builder, string template) : base(builder.GetRawOwnedObject(template)) 
       {
           builder.Autoconnect(this);
-          /* try
-          {
-              if (ExistResource(LOGO_PATH))
-              {
-                  this.SetIconFromFile(GetAbsolutePath(LOGO_PATH));
-              }
-              else
-              {
-                  Console.WriteLine("Logo file not found.");
-              }
-          }
-          catch (Exception error)
-          {
-              Console.WriteLine($"Failed to set window icon: {error.Message}");
-          } */
-          // var assembly = Assembly.GetExecutingAssembly();
-          // var iconStream = assembly.GetManifestResourceStream("CryptoTrackApp.src.assets.icons.app_icon.png");
           this.Icon = Pixbuf.LoadFromResource("CryptoTrackApp.src.assets.icons.cta_logo_64x64.png");
           DeleteEvent += Window_DeleteEvent;
       }

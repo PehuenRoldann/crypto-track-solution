@@ -75,5 +75,15 @@ namespace CryptoTrackTest
             Assert.Equal(expectedValue, historyValues[179].Item2);
 
         } 
+
+        [Fact]
+        public async void GetBoxPlot() {
+            string wantedId = "bitcoin";
+            string expectedValue = "";
+            ICurrencyServices service = new CurrencyServices();
+            var result = await service.GetBoxPlot(wantedId);
+            
+            Assert.Equal(expectedValue, result);
+        }
     }
 }

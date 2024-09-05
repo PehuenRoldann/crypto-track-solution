@@ -25,19 +25,11 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.22" />
     <PackageReference Include="RestSharp" Version="110.2.0" />
+    <PackageReference Include="ScottPlot" Version="5.0.38" />
   </ItemGroup>
 
   <ItemGroup>
-    <!-- <EmbeddedResource Include="./src/assets/icons/check_valid.png" />
-    <EmbeddedResource Include="./src/assets/icons/check_invalid.png" />
-    <EmbeddedResource Include="./src/assets/gifs/checkmark_dark.gif" />
-    <EmbeddedResource Include="./src/assets/gifs/checkmark_light.gif" />
-    <EmbeddedResource Include="./src/assets/icons/wait-48.png" />
-    <EmbeddedResource Include="./src/assets/icons/wait-96.png" />
-    <EmbeddedResource Include="./src/assets/icons/img_not_found.png" />
-    <EmbeddedResource Include="./src/assets/icons/currency/*.png" /> -->
     <EmbeddedResource Include="./src/assets/icons/**" />
-    <!-- Agrega más iconos según sea necesario -->
   </ItemGroup> 
   <ItemGroup>
     <Content Include="src/assets/**">
