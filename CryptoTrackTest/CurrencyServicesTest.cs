@@ -12,7 +12,7 @@ namespace CryptoTrackTest
         [Fact]
         public async void GetCurrency_true()
         {
-            string wantedId = "ethereum";
+            string wantedId = "bitcoin";
 
             ICurrencyServices service = new CurrencyServices();
 
