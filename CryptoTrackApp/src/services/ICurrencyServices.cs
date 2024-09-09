@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using SP = ScottPlot;
+
 
 
 
@@ -27,13 +29,15 @@ namespace CryptoTrackApp.src.services
         public Task<IDictionary<string, string>[]> GetCurrencies(int offset=0, int limit=100);
         public Task<IDictionary<string, string>[]> GetCurrencies (string[] pIds);
         public Task<List<(DateTime, double)>> GetHistory(string pCurrencyId);
+        public Task<Dictionary<DateTime, List<double>>> GetHistoryValues (string pCurrencyId);
 
         /// <summary>
         /// Generates a boxplot .png with the value of the currency in a lapse of 6 mounths.
         /// </summary>
         /// <param name="pCurrencyId"></param>
         /// <returns>Path to the image</returns>
-        public Task<string> GetBoxPlot (string pCurrencyId);
+        // public Task<string> GetBoxPlot (string pCurrencyId, int width = 700, int heigh = 300);
+        // public Task<SP.Plot> GetBoxPlot (string pCurrencyId);
 
     }
 }

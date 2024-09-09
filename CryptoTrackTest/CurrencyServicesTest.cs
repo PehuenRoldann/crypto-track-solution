@@ -78,12 +78,12 @@ namespace CryptoTrackTest
 
         [Fact]
         public async void GetBoxPlot() {
-            string wantedId = "bitcoin";
+            string wantedId = "fetch";
             string expectedValue = "";
             ICurrencyServices service = new CurrencyServices();
             var result = await service.GetBoxPlot(wantedId);
             
-            Assert.Equal(expectedValue, result);
+            Assert.NotEqual(expectedValue, result);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using IO = System.IO;
+using Cairo;
 using System.Collections.Generic;
 using Gtk;
 using Gdk;
@@ -11,6 +12,8 @@ using System.Threading.Tasks;
 using Pango;
 using CryptoTrackApp.src.db;
 using Npgsql.Replication.PgOutput.Messages;
+using SP = ScottPlot;
+using System.Linq;
 
 
 namespace CryptoTrackApp.src.view.Windows
@@ -24,7 +27,10 @@ namespace CryptoTrackApp.src.view.Windows
         [UI] private Box _panel;
         [UI] private Box _panelMessage;
         // [UI] private ScrolledWindow _scrolledWindow;
+        [UI] private Box _middlePanel;
         [UI] private Box _panelScroll;
+        [UI] private Box _panelBoxPlot;
+        // [UI] private Image _drawingArea;
 
         [UI] private AspectFrame _panelTable;
 
@@ -36,9 +42,12 @@ namespace CryptoTrackApp.src.view.Windows
         private CryptoTreeViewComponent subsTree;
         private ISubscriptionServices subscriptionService;
         private ICurrencyServices currencyService;
+        private IPloterService plotService;
+
+        private IDictionary<string,string>[] currenciesData;
 
         private string[] LOGOUT_IMAGE_PATH = {"src", "assets", "icons", "logout.png"};
-        private string[] LOGO_PATH = {"src", "assets", "images", "cta_logo_200x200.png"};
+        private string[] LOGO_PATH = {"src", "assets", "images", "cta_logo_100x100.png"};
         // private string NOT_FOUND_PATH = "./src/assets/images/not_found.png";
         private string[] NOT_FOUND_PATH = {"src", "assets", "images", "not_found.png"};
         // private string SERVER_BURNING_PATH = "./src/assets/images/server_burning.png";
@@ -49,11 +58,13 @@ namespace CryptoTrackApp.src.view.Windows
         public MainView(
             string pUserId,
             ISubscriptionServices pSubService,
-            ICurrencyServices pCurrencyService) : base("MainView")
+            ICurrencyServices pCurrencyService,
+            IPloterService pPlotService) : base("MainView")
         {
             this._userId = pUserId;
             this.subscriptionService = pSubService;
             this.currencyService = pCurrencyService;
+            this.plotService = pPlotService;
             
             this.InitPanel();
             this.SetStyle(this.GetAbsolutePath(CSS_PATH));
@@ -91,12 +102,16 @@ namespace CryptoTrackApp.src.view.Windows
 
         private async void InitPanel()
         {
-            this._panel.Halign = Align.Start;
+            this._panel.Halign = Align.Center;
+            this._middlePanel.Halign = Align.Center;
             ConfigSpinner();
             this._spinner.Active = true;
-            this._panelMessage.Hide();
+            /* this._panelMessage.Hide();
+            this._panelBoxPlot.Hide(); */
+            this._middlePanel.Hide();
             this._spinner.Show();
             LoadTablePanel();
+            LoadBoxPlot();
  
         }
 
@@ -114,7 +129,6 @@ namespace CryptoTrackApp.src.view.Windows
 
                 switch (haveSubscriptions) {
                     case 0:
-                        // this._message = this.Initmessage();
                         ShowMessagePanel(
                             pMessage: "You are not following any crypto yet!\n"+
                             "Press the follow button in the navbar to start following some currencies.",
@@ -122,7 +136,6 @@ namespace CryptoTrackApp.src.view.Windows
                         );
                     break;
                     case 1:
-                        // Console.WriteLine("Error: " + error.GetType());
                         ShowMessagePanel(
                             pMessage: "This application uses a third party API to get the currencies info.\n"
                             +"Please, wait a few seconds and try again.", 
@@ -132,24 +145,26 @@ namespace CryptoTrackApp.src.view.Windows
                     case 2:
                         Console.WriteLine("Añadienddo sbus tree...");
                         this._panelScroll.Add(this.subsTree);
-                        // this._panel.ReorderChild(this.subsTable, 1);
-                        // this._panelTable = this.subsTable!;
                         this._spinner.Hide();
                         this._panelMessage.Hide();
-                        // this._panelTable.ShowAll();
                         Console.WriteLine("Monstrar subs tree");
                         this._panelScroll.ShowAll();
+                        this._middlePanel.ShowAll();
                     break;
                 }
 
         }
 
-        public void ConfigSubsList()                    /* this._panel.Add(this._message);
-                    this._panel.ReorderChild(this._message, 1);
-                    this._spinner.Hide();
-                    this._message.Show(); */
+        public void ConfigSubsList()
         {
-            CryptoTreeViewComponent subsTree = new CryptoTreeViewComponent();
+            CryptoTreeViewComponent subsTree = new CryptoTreeViewComponent(heigh:350);
+            subsTree.RowActivatedEvent += (sender, e) =>
+            {
+                Console.WriteLine($"Fila activada: {e.Name}, Rango: {e.Rank}, Precio: {e.UsdPrice}, Tendencia: {e.Tendency}");
+                IDictionary<string, string> currency = this.currenciesData.First<IDictionary<string, string>>(elem => elem["Name"] == e.Name);
+                this.LoadBoxPlot(currency["Id"]);
+            };
+
             subsTree.Expand = true;
             subsTree.Halign = Align.Center;
             subsTree.Valign = Align.Center;
@@ -175,15 +190,14 @@ namespace CryptoTrackApp.src.view.Windows
                 return 0;
             }
 
-            IDictionary<string,string>[] currenciesData;
 
-            currenciesData =  await currencyService.GetCurrencies(cryptosId.ToArray());
+            this.currenciesData =  await currencyService.GetCurrencies(cryptosId.ToArray());
 
-            if (currenciesData.Length == 0) {
+            if (this.currenciesData.Length == 0) {
                 return 1;
             }
 
-            foreach (var item in currenciesData)
+            foreach (var item in this.currenciesData)
             {
                 Pixbuf icon;
 
@@ -216,6 +230,8 @@ namespace CryptoTrackApp.src.view.Windows
                 this._spinner.Halign = Align.Center;
                 this._spinner.Valign = Align.Center;
         }
+
+
 
 
         private void ShowMessagePanel(string pMessage, string pImagePath)
@@ -255,10 +271,6 @@ namespace CryptoTrackApp.src.view.Windows
 
             this._spinner.Hide();
             this._panelScroll.Hide();
-            // this._panelTable.Hide();
-           /*  if (this.subsTree != null) {
-                this.subsTree.Hide();
-            } */
             Console.WriteLine("Se detuvo el spinner!");
             this._panelMessage.ShowAll();
         }
@@ -268,6 +280,72 @@ namespace CryptoTrackApp.src.view.Windows
         {
             ViewManager vw = ViewManager.GetInstance();
             vw.ShowView("follow");
+        }
+
+        private async void LoadBoxPlot (string currency = "" ) {
+
+            foreach (Widget widget in _panelBoxPlot.Children) {
+                widget.Destroy();
+            }
+
+            Spinner spinner = new();
+            spinner.Expand = true;
+            spinner.Hexpand = true;
+            spinner.HeightRequest = 80;
+            spinner.WidthRequest = 80;
+            spinner.Halign = Align.Center;
+            spinner.Valign = Align.Center;
+            spinner.Active = true;
+            spinner.Visible = true;
+            spinner.Show();
+            _panelBoxPlot.Add(spinner);
+            _panelBoxPlot.ReorderChild(spinner, 1);
+            _panelBoxPlot.ShowAll();
+            
+            await Task.Delay(2000);
+
+            if (currency != "") {
+
+                try {
+                var historyValues = await this.currencyService.GetHistoryValues(pCurrencyId:currency);
+                string plotPath = await this.plotService.GetBoxPlot(valuesPerMonth: historyValues, width: 900);
+                Image boxplot = new();
+                boxplot.File = plotPath;
+                boxplot.StyleContext.AddClass("boxplot-image");
+                spinner.Active = false;
+                spinner.Destroy();
+                _panelBoxPlot.Add(boxplot);
+                _panelBoxPlot.ReorderChild(boxplot, 1);
+
+                } catch (Exception error) {
+                    Console.WriteLine(error.Message);
+                    Label errorLbl = new();
+                    errorLbl.Text = error.Message;
+                    spinner.Active = false;
+                    spinner.Destroy();
+                    _panelBoxPlot.Add(errorLbl);
+                    _panelBoxPlot.ReorderChild(errorLbl, 1);
+
+                }
+
+            } else {
+                    Label emptyLbl = new();
+                    emptyLbl.Text = "Select a currency of the following table to display data.";
+                    emptyLbl.Hexpand = true;
+                    spinner.Active = false;
+                    spinner.Destroy();
+                    _panelBoxPlot.Add(emptyLbl);
+                    _panelBoxPlot.ReorderChild(emptyLbl, 1);
+            }
+            _panelBoxPlot.ShowAll();
+
+        }
+
+
+
+        private void RowActivatedEventHandler (object sender, CryptoRowActivatedEventArgs args) {
+
+            Console.WriteLine("Clicked row with: ", args.Name);
         }
     }
 

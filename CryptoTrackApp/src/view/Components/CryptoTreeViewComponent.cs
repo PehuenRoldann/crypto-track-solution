@@ -1,14 +1,16 @@
 using Gdk;
 using Gtk;
+using System;
 
 namespace CryptoTrackApp.src.view.Components
 {
     public class CryptoTreeViewComponent : ScrolledWindow
     {
         private ListStore listStore;
-        // private TreeView treeView;
+         // Delegado para manejar el evento de fila activada con la información de la fila
+        public event EventHandler<CryptoRowActivatedEventArgs> RowActivatedEvent;
 
-        public CryptoTreeViewComponent()
+        public CryptoTreeViewComponent(int width = 100, int heigh = 500)
         {
             // Configurar las políticas de desplazamiento
             this.SetPolicy(PolicyType.Never, PolicyType.Automatic);
@@ -37,7 +39,7 @@ namespace CryptoTrackApp.src.view.Components
             foreach (TreeViewColumn item in new TreeViewColumn[]{nameColumn, rankColumn, usdColumn, tendencyColumn})
             {
                 item.Alignment = 0.50F;
-                item.MinWidth = 200;
+                item.MinWidth = 50;
             }
 
             foreach (CellRendererText item in new CellRendererText[]{nameRenderer, rankRenderer, usdPriceRenderer, tendencyRenderer})
@@ -52,12 +54,14 @@ namespace CryptoTrackApp.src.view.Components
             treeView.AppendColumn(usdColumn);
             treeView.AppendColumn(tendencyColumn);
 
+            // Conectar el evento RowActivated
+            treeView.RowActivated += OnRowActivated;
+
             treeView.Hexpand = true;
             treeView.Vexpand = true;
             // Asegurarse de que el TreeView se expanda completamente
             treeView.Hexpand = true;
             treeView.Vexpand = true;
-
             // Añadir el TreeView al ScrolledWindow
             this.Add(treeView);
             /* Viewport viewport = new Viewport();
@@ -70,7 +74,8 @@ namespace CryptoTrackApp.src.view.Components
             // Asegurarse de que el ScrolledWindow return treeView;se expanda completamente
             this.Hexpand = true;
             this.Vexpand = true;
-            this.SetSizeRequest(600, 400);
+            this.Valign = Align.Center;
+            this.SetSizeRequest(width, heigh);
         }
 
         public void AddData(Pixbuf icon, string name, int rank, double usdPrice, float tendency)
@@ -78,5 +83,43 @@ namespace CryptoTrackApp.src.view.Components
             // Agregar nuevos datos al ListStore
             listStore.AppendValues(icon, name, rank, usdPrice, tendency);
         }
+
+        private void OnRowActivated(object sender, RowActivatedArgs args)
+        {
+            // Recuperar la información de la fila activada
+            if (listStore.GetIter(out TreeIter iter, args.Path))
+            {
+                string name = (string)listStore.GetValue(iter, 1);
+                int rank = (int)listStore.GetValue(iter, 2);
+                double usdPrice = (double)listStore.GetValue(iter, 3);
+                float tendency = (float)listStore.GetValue(iter, 4);
+
+                Console.WriteLine($"Recuperada línea con name: {name}");
+                // Crear un objeto personalizado con los datos de la fila activada
+                var eventArgs = new CryptoRowActivatedEventArgs( name, rank, usdPrice, tendency);
+
+                // Propagar el evento al contenedor padre con la información de la fila activada
+                RowActivatedEvent?.Invoke(this, eventArgs);
+            }
+        }
+    }
+
+    // Clase para los argumentos del evento personalizado
+    public class CryptoRowActivatedEventArgs : EventArgs
+    {
+        public Pixbuf Icon { get; }
+        public string Name { get; }
+        public int Rank { get; }
+        public double UsdPrice { get; }
+        public float Tendency { get; }
+
+        public CryptoRowActivatedEventArgs(string name, int rank, double usdPrice, float tendency)
+        {
+            Name = name;
+            Rank = rank;
+            UsdPrice = usdPrice;
+            Tendency = tendency;
+        }
     }
 }
+

@@ -54,7 +54,8 @@ namespace CryptoTrackApp.src.view.Controllers
           break;
         
         case "main":
-          win = new MainView(this.UserId, new SubscriptionServices(), new CurrencyServices());
+          win = new MainView(this.UserId, new SubscriptionServices(),
+           new CurrencyServices(), new PloterService());
           break;
         
         case "follow":
