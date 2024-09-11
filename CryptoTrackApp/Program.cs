@@ -1,6 +1,6 @@
 using System;
 using Gtk;
-using CryptoTrackApp.src.view.Controllers;
+using ViewManager = CryptoTrackApp.src.services.ViewManager;
 namespace CryptoTrackApp
 {
     class Program

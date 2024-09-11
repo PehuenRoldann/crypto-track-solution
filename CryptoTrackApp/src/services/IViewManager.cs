@@ -5,7 +5,7 @@ using CryptoTrackApp.src.view.Windows;
 
 using MessageDialog = CryptoTrackApp.src.view.Windows.MessageDialog;
 
-namespace CryptoTrackApp.src.view.Controllers
+namespace CryptoTrackApp.src.services
 {
 
   public interface IViewManager {

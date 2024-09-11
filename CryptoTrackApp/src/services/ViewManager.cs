@@ -5,7 +5,7 @@ using CryptoTrackApp.src.services;
 using MessageDialog = CryptoTrackApp.src.view.Windows.MessageDialog;
 using Gdk;
 
-namespace CryptoTrackApp.src.view.Controllers
+namespace CryptoTrackApp.src.services
 {
 
   public class ViewManager : IViewManager
@@ -79,7 +79,7 @@ namespace CryptoTrackApp.src.view.Controllers
 
     private void InitView(View win, View? pParent)
     {
-      this.App.AddWindow(win);
+      this.App!.AddWindow(win);
       win.SetDefaultSize(1280, 720);
       /* win.Move(0,0); */
       if (pParent != null && pParent.IsMaximized) {win.Maximize();}
