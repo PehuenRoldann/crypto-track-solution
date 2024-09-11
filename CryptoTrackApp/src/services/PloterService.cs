@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Migrations;
 using ScottPlot;
 using ScottPlot.TickGenerators;
 using ScottPlot.TickGenerators.TimeUnits;
@@ -13,6 +14,67 @@ namespace CryptoTrackApp.src.services
     {
 
         public string _basePath = AppDomain.CurrentDomain.BaseDirectory;
+
+
+
+
+
+        public async Task<string> GetFinancialPlot(List<(DateTime, double)> history, int width = 700, int height = 300) {
+
+            /* DateTime[] dateKeysArr = valuesPerMonth.Keys.ToArray(); */
+            var targetDate = DateTime.UtcNow.AddMonths(-6);
+            history = history.Where(tupla => tupla.Item1 >= targetDate).ToList();
+
+            DateTime initialDate = history[0].Item1;
+            TimeSpan timeSpan = new(days: 7, 0, 0, 0);
+            
+
+            List<OHLC> prices = new();
+
+            for (
+                DateTime currentDate = initialDate;
+                currentDate < DateTime.Now.Date;
+                currentDate = currentDate.AddDays(timeSpan.Days)) {
+                
+                double[] values = history
+                .Where(tupla => tupla.Item1 >= currentDate 
+                    && tupla.Item1 < currentDate.AddDays(timeSpan.Days))
+                .Select(item => item.Item2)
+                .ToArray();
+
+                double open = values[0];
+                double high = values.Max();
+                double low = values.Min();
+                double close = values[values.Length - 1];
+
+                prices.Add(new OHLC(open, high, low, close, currentDate, timeSpan));
+
+            }
+
+            Plot plot = new();
+
+            plot.Add.Candlestick(prices);
+            plot.Axes.DateTimeTicksBottom();
+
+            // Definir el path donde guardar el plot
+            string plotDirectory = System.IO.Path.Combine(this._basePath, "plots");
+
+            // Verificar si el directorio existe y crearlo si no es así
+            if (!System.IO.Directory.Exists(plotDirectory))
+            {
+                System.IO.Directory.CreateDirectory(plotDirectory);
+            }
+
+            string pathToPlot = System.IO.Path.Combine(plotDirectory, "financialplot.png");
+
+            // plot.SavePng(pathToPlot, width, height);
+            plot.SavePng(pathToPlot, width, height);
+
+
+            //return plot;
+            return pathToPlot;
+
+        }
         
         /// <summary>
         /// Generates a image with the plotbox.

@@ -307,8 +307,9 @@ namespace CryptoTrackApp.src.view.Windows
             if (currency != "") {
 
                 try {
-                var historyValues = await this.currencyService.GetHistoryValues(pCurrencyId:currency);
-                string plotPath = await this.plotService.GetBoxPlot(valuesPerMonth: historyValues, width: 900);
+                // var historyValues = await this.currencyService.GetHistoryValues(pCurrencyId:currency);
+                var historyValues = await this.currencyService.GetHistory(pCurrencyId:currency);
+                string plotPath = await this.plotService.GetFinancialPlot(historyValues, width: 900);
                 Image boxplot = new();
                 boxplot.File = plotPath;
                 boxplot.StyleContext.AddClass("boxplot-image");

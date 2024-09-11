@@ -13,5 +13,7 @@ namespace CryptoTrackApp.src.services
         /// <returns>Path to the plotbox generated image</returns>
         public Task<string> GetBoxPlot (Dictionary<DateTime, List<double>> valuesPerMonth, int width = 700, int heigh = 300);
 
+        public Task<string> GetFinancialPlot(List<(DateTime, double)> history, int width = 700, int height = 300);
+
     }
 }

@@ -135,7 +135,7 @@ namespace CryptoTrackApp.src.db
             using (RestClient client = new RestClient (options))
             {
 
-                RestRequest request = new RestRequest($"assets/{pId}/history?interval=h12");
+                RestRequest request = new RestRequest($"assets/{pId}/history?interval=h6");
                 RestResponse response = await client.GetAsync(request);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)

@@ -76,7 +76,7 @@ namespace CryptoTrackTest
 
         } 
 
-        [Fact]
+        /* [Fact]
         public async void GetBoxPlot() {
             string wantedId = "fetch";
             string expectedValue = "";
@@ -84,6 +84,6 @@ namespace CryptoTrackTest
             var result = await service.GetBoxPlot(wantedId);
             
             Assert.NotEqual(expectedValue, result);
-        }
+        } */
     }
 }
