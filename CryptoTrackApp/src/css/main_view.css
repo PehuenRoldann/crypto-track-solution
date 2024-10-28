@@ -23,16 +23,20 @@
 
 
 .nav-btn{
-	background: #F5F5F5;
-	color: #229799;
-	font-size: 24px;
-	padding: 10px 30px;
+	/* background: #F5F5F5; */
+	/* color: #229799; */
+	/* font-size: 24px; */
+	/* padding: 10px 30px; */
 }
 
 .nav-btn:hover{
-	background: #48CFCB;
-	color: #F5F5F5;
+	/* background: #48CFCB;
+	color: #F5F5F5; */
 	box-shadow: 2px 8px 10px black;
+}
+
+.buttons-container{
+	margin-top: 20px;
 }
 
 .logout-btn {
@@ -42,6 +46,6 @@
 
 .logout-btn:hover {
     
-    background: #48CFCB;
+    /* background: #48CFCB; */
 	box-shadow: 2px 8px 10px black;
 }

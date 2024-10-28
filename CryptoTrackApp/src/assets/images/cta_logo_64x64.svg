@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="180"
+   height="180"
+   viewBox="0 0 180 180"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     style="display:inline">
+    <path
+       style="fill:#f5f5f5;fill-opacity:0.999503;stroke:#229799;stroke-width:8;stroke-dasharray:none;stroke-opacity:1"
+       id="path6"
+       d="M 173.46841,89.174355 A 83.356049,77.926758 0 0 1 90.140864,167.10111 83.356049,77.926758 0 0 1 6.756329,89.227653 83.356049,77.926758 0 0 1 90.026841,11.247638 83.356049,77.926758 0 0 1 173.46833,89.067758" />
+  </g>
+  <g
+     id="layer3">
+    <path
+       style="fill:#f5f5f5;fill-opacity:0.999503;stroke:#229799;stroke-width:8;stroke-dasharray:none;stroke-opacity:1"
+       d="M 136.09891,25.783667 132.13821,1.6077642"
+       id="path7" />
+    <path
+       style="fill:#f5f5f5;fill-opacity:0.999503;stroke:#229799;stroke-width:8;stroke-dasharray:none;stroke-opacity:1"
+       d="m 155.7146,45.051648 22.40498,-9.908495"
+       id="path7-2" />
+    <path
+       style="fill:#f5f5f5;fill-opacity:0.999503;stroke:#229799;stroke-width:7.14815;stroke-dasharray:none;stroke-opacity:1"
+       d="m 173.15576,91.732398 0.0952,-5.334463"
+       id="path7-2-7" />
+  </g>
+  <g
+     id="layer4">
+    <path
+       style="fill:#229799;fill-opacity:1;stroke:#f5f5f5;stroke-width:9.08195;stroke-dasharray:none;stroke-opacity:1"
+       d="m 138.20709,25.517401 c 0,0 6.34485,2.589659 18.39672,16.076223"
+       id="path8" />
+  </g>
+  <g
+     id="layer5">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.3895px;font-family:Dhurjati;-inkscape-font-specification:'Dhurjati, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-dasharray:none;stroke-opacity:0.460601"
+       x="58.874805"
+       y="53.683643"
+       id="text18"
+       transform="scale(1.5511282,0.64469203)"><tspan
+         id="tspan18"
+         x="58.874809"
+         y="53.683643"
+         style="font-size:6.19475px;fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-opacity:0.460601">010000  01 01100111</tspan><tspan
+         x="58.874805"
+         y="69.170517"
+         id="tspan20"
+         style="font-size:6.19475px;fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-opacity:0.460601"> 0111  0101    01100001 </tspan><tspan
+         x="58.874805"
+         y="84.657394"
+         id="tspan21"
+         style="font-size:6.19475px;fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-opacity:0.460601">011      01     110 011101</tspan><tspan
+         x="58.874805"
+         y="100.14426"
+         id="tspan22"
+         style="font-size:6.19475px;fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-opacity:0.460601">0                    0 0       1 100    101 </tspan><tspan
+         x="58.874805"
+         y="115.63114"
+         id="tspan23"
+         style="font-size:6.19475px;fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-opacity:0.460601">0010      0000     010     000</tspan><tspan
+         x="58.874805"
+         y="131.11801"
+         id="tspan24"
+         style="font-size:6.19475px;fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-opacity:0.460601">10         0110   111</tspan><tspan
+         x="58.874809"
+         y="146.60489"
+         id="tspan25"
+         style="font-size:6.19475px;fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-opacity:0.460601">1                                    01        10001</tspan><tspan
+         x="58.874809"
+         y="162.09177"
+         id="tspan26"
+         style="font-size:6.19475px;fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-opacity:0.460601">1 0110                      0001 00</tspan><tspan
+         x="58.874809"
+         y="177.57864"
+         id="tspan27"
+         style="font-size:6.19475px;fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-opacity:0.460601">10 00                            00 01000</tspan><tspan
+         x="58.874805"
+         y="193.06552"
+         id="tspan28"
+         style="font-size:6.19475px;fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-opacity:0.460601">011 01         100001 </tspan><tspan
+         x="58.874805"
+         y="208.55238"
+         id="tspan29"
+         style="font-size:6.19475px;fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-opacity:0.460601">01110010         01100001</tspan><tspan
+         x="58.874805"
+         y="224.03926"
+         id="tspan30"
+         style="font-size:6.19475px;fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-opacity:0.460601"> 01101010     011</tspan><tspan
+         x="58.874805"
+         y="239.52614"
+         style="font-size:6.19475px;fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-opacity:0.460601"
+         id="tspan31">01111</tspan><tspan
+         x="58.874805"
+         y="255.01302"
+         id="tspan19"
+         style="fill:#f5f5f5;fill-opacity:1;stroke:#d5d5d5;stroke-width:0.813062;stroke-opacity:0.460601" /></text>
+    <path
+       style="fill:#fffafa;fill-opacity:0;stroke:#45c660;stroke-width:6.321;stroke-dasharray:none;stroke-opacity:1"
+       d="m 11.868565,114.85603 12.332732,-27.56908 4.059523,10.023195 4.97567,-7.308013 8.011871,21.936138 13.997651,-41.067894 4.872897,11.424629 6.088553,-6.874129 5.474852,11.772342 6.169302,-10.171351 11.815931,13.512416 14.699443,-51.32995 8.44645,15.603228 5.9755,-22.636095 13.30761,27.643158 30.73933,-52.8069741"
+       id="path9" />
+    <path
+       style="fill:#229799;fill-opacity:1;stroke:#229799;stroke-width:6.83062;stroke-dasharray:none;stroke-opacity:1"
+       d="m 15.311615,122.95026 c 0,0 -1.726989,-4.06291 -6.4493164,-19.20383"
+       id="path8-6" />
+  </g>
+  <g
+     id="layer6">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:Arimo;-inkscape-font-specification:'Arimo, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#229799;fill-opacity:1;stroke:#229799;stroke-width:0.500433;stroke-dasharray:none;stroke-opacity:1"
+       x="95.823975"
+       y="106.48307"
+       id="text9"
+       transform="scale(0.93332565,1.0714374)"><tspan
+         x="95.823975"
+         y="106.48307"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:Cousine;-inkscape-font-specification:'Cousine, Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#229799;fill-opacity:1;stroke-width:0.500433"
+         id="tspan12">Crypto</tspan><tspan
+         x="95.823975"
+         y="133.38387"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:Cousine;-inkscape-font-specification:'Cousine, Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:center;text-anchor:middle;fill:#229799;fill-opacity:1;stroke-width:0.500433"
+         id="tspan13">Track App</tspan></text>
+  </g>
+</svg>

@@ -30,6 +30,9 @@ namespace CryptoTrackApp.src.view.Windows
         [UI] private Box _middlePanel;
         [UI] private Box _panelScroll;
         [UI] private Box _panelBoxPlot;
+        [UI] private Image _panelBtnImg;
+        [UI] private Image _followBtnImg;
+        [UI] private Image _aboutBtnImg;
         // [UI] private Image _drawingArea;
 
         [UI] private AspectFrame _panelTable;
@@ -46,10 +49,13 @@ namespace CryptoTrackApp.src.view.Windows
 
         private IDictionary<string,string>[] currenciesData;
 
-        private string[] LOGOUT_IMAGE_PATH = {"src", "assets", "icons", "logout.png"};
-        private string[] LOGO_PATH = {"src", "assets", "images", "cta_logo_100x100.png"};
+        private string[] LOGOUT_IMAGE_PATH = {"src", "assets", "images", "logout.png"};
+        private string[] LOGO_PATH = {"src", "assets", "images", "cta_logo_64x64.png"};
         // private string NOT_FOUND_PATH = "./src/assets/images/not_found.png";
         private string[] NOT_FOUND_PATH = {"src", "assets", "images", "not_found.png"};
+        private string[] PANEL_IMG_PATH = {"src", "assets", "images", "panel.png"};
+        private string[] COMPAS_IMG_PATH = {"src", "assets", "images", "compass.png"};
+        private string[] ABOUT_IMG_PATH = {"src", "assets", "images", "about.png"};
         // private string SERVER_BURNING_PATH = "./src/assets/images/server_burning.png";
         private string[] SERVER_BURNING_PATH = {"src", "assets", "images", "server_burning.png"};
         private string[] CSS_PATH = {"src", "css", "main_view.css"};
@@ -88,9 +94,9 @@ namespace CryptoTrackApp.src.view.Windows
         {
             this._logoImg.File = this.GetAbsolutePath(LOGO_PATH);
             this._logoutBtnImg.File = this.GetAbsolutePath(LOGOUT_IMAGE_PATH);
-            Console.WriteLine("Cargando imagenes");
-            Console.WriteLine("Configuring images...");
-
+            this._panelBtnImg.File = this.GetAbsolutePath(PANEL_IMG_PATH);
+            this._followBtnImg.File = this.GetAbsolutePath(COMPAS_IMG_PATH);
+            this._aboutBtnImg.File = this.GetAbsolutePath(ABOUT_IMG_PATH);
         }
 
         private void PanelButtonReleased (object sender, ButtonReleaseEventArgs args) {
@@ -318,7 +324,7 @@ namespace CryptoTrackApp.src.view.Windows
                 _panelBoxPlot.Add(boxplot);
                 _panelBoxPlot.ReorderChild(boxplot, 1);
 
-                } catch (Exception error) {
+                } catch (Exception error) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
                     Console.WriteLine(error.Message);
                     Label errorLbl = new();
                     errorLbl.Text = error.Message;
