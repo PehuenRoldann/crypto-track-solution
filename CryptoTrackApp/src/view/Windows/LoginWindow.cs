@@ -34,7 +34,7 @@ namespace CryptoTrackApp.src.view.Windows
         private readonly string BUTTON_IMAGE_CLOSE_PATH = "./src/assets/images/toggle_visibility_white_close.ico";
 
 
-	public LoginView(IUserServices pUserServices) : base("LoginWindow") 
+	public LoginView(IUserServices pUserServices) : base(viewId: ViewId.Login, TEMPLATE: "LoginWindow") 
 	{
       this._loginButton!.StyleContext.AddClass("button-color");
 	    this.SetStyle("./src/css/login_window.css");
@@ -138,7 +138,7 @@ namespace CryptoTrackApp.src.view.Windows
                 Console.WriteLine("Login...");
                 var vw = ViewManager.GetInstance();
                 vw.UserId = res;
-                vw.ShowView("main", this);
+                vw.ShowView(ViewId.Main, this);
             }
 
           }
@@ -178,7 +178,7 @@ namespace CryptoTrackApp.src.view.Windows
         private void _SignUpEvent(object sender, ButtonReleaseEventArgs a)
         {
           ViewManager vw = ViewManager.GetInstance();
-          vw.ShowView("signup", this);
+          vw.ShowView(ViewId.SignUp, this);
         }
 
     }

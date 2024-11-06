@@ -28,7 +28,7 @@ namespace CryptoTrackApp.src.view.Windows
         private List<CryptoCard> _cardsArray = new List<CryptoCard>();
         
         public FollowView (ISubscriptionServices pSubService, ICurrencyServices pCurService) 
-        : base("FollowView")
+        : base(viewId: ViewId.Follow, TEMPLATE: "FollowView")
         {
             this._curService = pCurService;
             this._subService = pSubService;

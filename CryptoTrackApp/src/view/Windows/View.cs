@@ -5,6 +5,7 @@ using Gdk;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using CryptoTrackApp.src.services;
 
 namespace CryptoTrackApp.src.view.Windows
 {
@@ -14,9 +15,11 @@ namespace CryptoTrackApp.src.view.Windows
       public string _basePath = AppDomain.CurrentDomain.BaseDirectory;
       public CssProvider cssProvider = new CssProvider();
       private readonly string[] LOGO_PATH = { "src", "assets", "images", "cta_logo_64x64.png" };
+      private ViewId _viewId;
 
-      public View(string TEMPLATE) : this(new Builder(TEMPLATE + ".glade"), TEMPLATE) 
+      public View(ViewId viewId, string TEMPLATE) : this(new Builder(TEMPLATE + ".glade"), TEMPLATE) 
       {
+          this._viewId = viewId;
           this.ConfigEventHandlers();
           this.ConfigImages();
       }
@@ -36,7 +39,9 @@ namespace CryptoTrackApp.src.view.Windows
 
       private void Window_DeleteEvent(object sender, DeleteEventArgs a)
       {
-          Application.Quit();
+          IViewManager vm  = ViewManager.GetInstance();
+
+          vm.CloseView(this._viewId);
       }
 
       public abstract void ConfigEventHandlers(); 

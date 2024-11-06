@@ -65,7 +65,7 @@ namespace CryptoTrackApp.src.view.Windows
             string pUserId,
             ISubscriptionServices pSubService,
             ICurrencyServices pCurrencyService,
-            IPloterService pPlotService) : base("MainView")
+            IPloterService pPlotService) : base(viewId: ViewId.Main, TEMPLATE: "MainView")
         {
             this._userId = pUserId;
             this.subscriptionService = pSubService;
@@ -285,7 +285,7 @@ namespace CryptoTrackApp.src.view.Windows
         private void FollowButtonReleased (object sender, ButtonReleaseEventArgs args)
         {
             ViewManager vw = ViewManager.GetInstance();
-            vw.ShowView("follow");
+            vw.ShowView(ViewId.Follow);
         }
 
         private async void LoadBoxPlot (string currency = "" ) {

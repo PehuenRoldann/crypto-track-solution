@@ -4,10 +4,13 @@ using CryptoTrackApp.src.view.Windows;
 using CryptoTrackApp.src.services;
 using MessageDialog = CryptoTrackApp.src.view.Windows.MessageDialog;
 using Gdk;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+
 
 namespace CryptoTrackApp.src.services
 {
-
   public class ViewManager : IViewManager
   {
     public string UserId {get; set;}
@@ -17,8 +20,18 @@ namespace CryptoTrackApp.src.services
     private static ViewManager _instance;
 
     private static readonly object _lock = new Object();
+
+    private IDictionary<ViewId, View?> _viewsDty = new Dictionary<ViewId, View?>();
+
     
-    private ViewManager() {}
+    private ViewManager() {
+
+      foreach (ViewId vid in Enum.GetValues(typeof(ViewId))) {
+
+       this._viewsDty.Add(vid, null);
+      }
+
+    }
 
 
     public static ViewManager GetInstance()
@@ -40,25 +53,32 @@ namespace CryptoTrackApp.src.services
     public Application? App {get {return this._app; } set {this._app = value; }}
 
 
-    public void ShowView(string pViewType, View? pParent = null)
+    public void ShowView(ViewId pViewId, View? pParent = null)
     {
+
+      if(this._viewsDty[pViewId] != null) {
+
+        this._viewsDty[pViewId]!.Present();
+      }
+      else {
+
       View win;
-      switch (pViewType.ToLower())
+      switch (pViewId)
       {
-        case "login":
+        case ViewId.Login:
           win = new LoginView(new UserServices());
           break;
         
-        case "signup":
+        case ViewId.SignUp:
           win = new SignUpView(new UserServices());
           break;
         
-        case "main":
+        case ViewId.Main:
           win = new MainView(this.UserId, new SubscriptionServices(),
            new CurrencyServices(), new PloterService());
           break;
         
-        case "follow":
+        case ViewId.Follow:
           win = new FollowView(new SubscriptionServices(), new CurrencyServices());
           break;
         
@@ -67,7 +87,11 @@ namespace CryptoTrackApp.src.services
           break;
       }
 
+      this._viewsDty[pViewId] = win;
+
       this.InitView(win, pParent);
+      }
+
     }
     
 
@@ -97,6 +121,30 @@ namespace CryptoTrackApp.src.services
         string pButtonLabel, int pWidth = 400, int pHeight = 300)
     { 
       return new MessageDialog(pParent, pTitle, pMessage, pImage, pButtonLabel);
+    }
+
+
+
+    /// <summary>
+    /// Removes the view with the given id
+    /// </summary>
+    /// <param name="pViewId">View Id</param>
+    public void CloseView (ViewId pViewId) {
+
+      this._viewsDty[pViewId]!.Close();
+
+      bool allNull = true;
+
+      foreach (View? view in this._viewsDty.Values) {
+
+        allNull = view == null && allNull;
+      }
+
+      if (allNull) {
+
+        Application.Quit();
+      }
+
     }
   }
 }

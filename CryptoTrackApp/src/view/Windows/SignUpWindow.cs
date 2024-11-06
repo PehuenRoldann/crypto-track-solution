@@ -34,7 +34,7 @@ namespace CryptoTrackApp.src.view.Windows {
         private bool isPasswordValid = false;
         private bool isPasswordConfirmed = false;
     // ---- CONSTRUCTOR ------------------------------------------------------------
-        public SignUpView(IUserServices pUserServices) : base("SignUpWindow") {
+        public SignUpView(IUserServices pUserServices) : base(viewId: ViewId.SignUp, TEMPLATE: "SignUpWindow") {
         this.userServices = pUserServices;
         this.SetStyle("./src/css/SignUpWindow.css");
         this.CheckSignUpButton();
@@ -68,7 +68,7 @@ namespace CryptoTrackApp.src.view.Windows {
         /// <param name="a"></param>
         private void CancelButtonReleased(object sender, ButtonReleaseEventArgs a) {
             ViewManager vw = ViewManager.GetInstance();
-            vw.ShowView("login", this);
+            vw.ShowView(ViewId.Login, this);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace CryptoTrackApp.src.view.Windows {
             {
                 dialog.ButtonReleaseEvent += (obj, ev) => {
                     dialog.Destroy();
-                    ViewManager.GetInstance().ShowView("login", this);
+                    ViewManager.GetInstance().ShowView(ViewId.Login, this);
                 };
             }
             else

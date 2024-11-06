@@ -1,4 +1,5 @@
 using System;
+using CryptoTrackApp.src.services;
 using Gtk;
 using ViewManager = CryptoTrackApp.src.services.ViewManager;
 namespace CryptoTrackApp
@@ -16,7 +17,7 @@ namespace CryptoTrackApp
             ViewManager vw = ViewManager.GetInstance();
             vw.App = app;
             // vw.ShowFollowView();
-            vw.ShowView("login");
+            vw.ShowView(ViewId.Login);
             Application.Run();
         }
     }

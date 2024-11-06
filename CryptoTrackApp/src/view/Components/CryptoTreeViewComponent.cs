@@ -64,13 +64,7 @@ namespace CryptoTrackApp.src.view.Components
             treeView.Vexpand = true;
             // Añadir el TreeView al ScrolledWindow
             this.Add(treeView);
-            /* Viewport viewport = new Viewport();
-            viewport.Add(treeView);
-
-            viewport.SetSizeRequest(500, 200);
-            this.Add(viewport);
- */
-
+            
             // Asegurarse de que el ScrolledWindow return treeView;se expanda completamente
             this.Hexpand = true;
             this.Vexpand = true;
