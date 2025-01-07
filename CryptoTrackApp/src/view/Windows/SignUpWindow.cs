@@ -6,7 +6,7 @@ using UI = Gtk.Builder.ObjectAttribute;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.services;
-using CryptoTrackApp.src.view.Controllers;
+using CryptoTrackApp.src.view.Utils;
 /* using GLib; */
 
 namespace CryptoTrackApp.src.view.Windows {
@@ -49,6 +49,7 @@ namespace CryptoTrackApp.src.view.Windows {
             
         
         public override void ConfigEventHandlers () {
+
             this._cancelButton.ButtonReleaseEvent += CancelButtonReleased;
             this._emailEntry.Changed += EmailCheck;
             this._emailEntry.Changed += ConfirmMailCheck;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CryptoTrackApp.src.services;
 using CryptoTrackApp.src.view.Components;
-using CryptoTrackApp.src.view.Controllers;
+using CryptoTrackApp.src.view.Utils;
 using Gtk;
 using UI = Gtk.Builder.ObjectAttribute;
 

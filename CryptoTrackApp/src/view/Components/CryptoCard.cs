@@ -3,7 +3,7 @@ using Gtk;
 using UI = Gtk.Builder.ObjectAttribute;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.services;
-using CryptoTrackApp.src.view.Controllers;
+using CryptoTrackApp.src.view.Utils;
 
 namespace CryptoTrackApp.src.view.Components
 {

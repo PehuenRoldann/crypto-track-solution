@@ -5,7 +5,7 @@ using UI = Gtk.Builder.ObjectAttribute;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.services;
-using CryptoTrackApp.src.view.Controllers;
+using CryptoTrackApp.src.view.Utils;
 
 namespace CryptoTrackApp.src.view.Windows
 {

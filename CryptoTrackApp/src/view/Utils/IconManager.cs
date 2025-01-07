@@ -1,6 +1,6 @@
 using Gdk;
 
-namespace CryptoTrackApp.src.view.Controllers
+namespace CryptoTrackApp.src.view.Utils
 {
   public static class IconManager
   {

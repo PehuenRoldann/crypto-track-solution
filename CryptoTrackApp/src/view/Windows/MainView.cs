@@ -6,7 +6,7 @@ using Gtk;
 using Gdk;
 using UI = Gtk.Builder.ObjectAttribute;
 using CryptoTrackApp.src.view.Components;
-using CryptoTrackApp.src.view.Controllers;
+using CryptoTrackApp.src.view.Utils;
 using CryptoTrackApp.src.services;
 using System.Threading.Tasks;
 using Pango;
