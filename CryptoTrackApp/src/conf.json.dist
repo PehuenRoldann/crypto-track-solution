@@ -3,5 +3,5 @@
 
 {
     "coin_api_url": "https://api.coincap.io/v2",
-    "db_connection": "Host=my_host;Database=my_db;Username=my_user;Password=my_pw""
+    "db_connection": "Host=my_host;Database=my_db;Username=my_user;Password=my_pw"
 }
