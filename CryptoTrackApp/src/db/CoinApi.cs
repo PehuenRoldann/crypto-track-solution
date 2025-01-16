@@ -6,6 +6,7 @@ using RestSharp;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Collections.Generic;
+using CryptoTrackApp.src.utils;
 
 namespace CryptoTrackApp.src.db
 {
@@ -14,6 +15,7 @@ namespace CryptoTrackApp.src.db
         // private string baseUrl = "https://api.coincap.io/v2";
         private string baseUrl = "";
         private RestClientOptions options;
+        private Logger _logger = new Logger();
 
         public CoinApi() {
 
@@ -69,7 +71,7 @@ namespace CryptoTrackApp.src.db
                     return this.Deserialize<Currency[]>(response.Content);
 
                 } catch (Exception error) {
-                    Logger.LogErrorAsync("Error at CoinApi class", error);
+                    _logger.Log($"[ERROR - Operation: GetCurrencies at CoinApi - Message: {error.Message}]");
                     throw error;
                 } 
 

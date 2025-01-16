@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.services;
 using CryptoTrackApp.src.view.Utils;
+using CryptoTrackApp.src.utils;
 
 namespace CryptoTrackApp.src.view.Windows
 {
@@ -24,6 +25,8 @@ namespace CryptoTrackApp.src.view.Windows
         [UI] private Spinner _spinner;
         [UI] private Label _loginProblem;
 
+        private Logger _logger = new Logger();
+
         private bool isEmailValid = false;
         private bool isPasswordValid = true;
 
@@ -36,6 +39,7 @@ namespace CryptoTrackApp.src.view.Windows
 
 	public LoginView(IUserServices pUserServices) : base("LoginWindow") 
 	{
+      _logger.Log("INIT - Login view");
       this._loginButton!.StyleContext.AddClass("button-color");
 	    this.SetStyle("./src/css/login_window.css");
 	    _emailProblemLabel!.Text = " ";
@@ -135,7 +139,6 @@ namespace CryptoTrackApp.src.view.Windows
 
             if (res != null)
             {
-                Console.WriteLine("Login...");
                 var vw = ViewManager.GetInstance();
                 vw.UserId = res;
                 vw.ShowView("main", this);
@@ -151,28 +154,20 @@ namespace CryptoTrackApp.src.view.Windows
 
         private async Task<string?> _LoginUser(IUserServices pUserServices)
         {
-          try
-          {
-            string? response = await pUserServices.LoginUser(this._passwordInput.Text, this._emailInput.Text);
 
-            if (response == null)
+          _logger.Log("[EXECT - Operation LoginUser at LoginWindow - Delegate to IUserServices]");
+            (int, string) response = await pUserServices.LoginUser(this._passwordInput.Text, this._emailInput.Text);
+
+            if (response.Item1 == 2)
             {
-            this._loginProblem.Text = "* The proportioned email is not registered";
+              _logger.Log($"[SUCCESS - Operation LoginUser at LoginWindow]");
+              return response.Item2;
             }
-
-            return response;
-          }
-          catch (InvalidOperationException)
-          {
-            this._loginProblem.Text = "* The proportioned password is wrong!";
-          }
-          catch (Exception)
-          {
-            this._loginProblem.Text = "* There has been an unknown problem while login, please try again."
-                                      +"\nIf the problem persist, contact the support.";
-          }
-          
-          return null;
+            else {
+              this._loginProblem.Text = response.Item2;
+              _logger.Log($"[FAILURE - Operation LoginUser at LoginWindow - Message: {response.Item2}]");
+              return null;
+            }
         }
 
         private void _SignUpEvent(object sender, ButtonReleaseEventArgs a)

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.models;
 using CryptoTrackApp.src.db;
+using CryptoTrackApp.src.utils;
 
 namespace CryptoTrackApp.src.services
 {
     public class UserServices : IUserServices
     {
 	IRepository repository = new PostgreRepository();
+	Logger _loger = new Logger();
 
 	/// <summary>
 	/// Login an user if it's registered in the database.
@@ -16,24 +18,44 @@ namespace CryptoTrackApp.src.services
 	/// <param name="pPassword">User's password to login.</param>
 	/// <param name="pEmail">User's email password to login.</param>
 	/// <returns>
-	/// A string with the user's Id if the loggin is success.<br>
+	/// A string with the user's Id if the loggin is success. \n
 	/// Null if there is not user with the given email.
 	/// </returns>
 	/// <exception cref="InvalidOperationException"> If the passwords doesn't match. </exception>
 	/// <exception cref="Exception">If there has been an unexpected error while login.</exception>
-	public async Task<string?> LoginUser(string pPassword, string pEmail)
+	public async Task<(int, string)> LoginUser(string pPassword, string pEmail)
 	{
+	  _loger.Log("[EXEC - Operation LoginUser at UserServices]");
+	  string opResult = "";
+	  int opValue = -1;
+
 	  try
 	  {
 	    User? user = await repository.GetUserAsync(pEmail);
-		if (user!=null && user.Password != pPassword){throw new InvalidOperationException("Wrong password!");}
-		else {return user.Id.ToString();}
-		return null;
+
+		if (user == null) {
+			opValue = 0;
+			opResult = "There is no user registered with that email.";
+		}
+		else if (user.Password != pPassword) {
+			opValue = 1;
+			opResult = "The password is wrong.";
+		}
+		else {
+			opValue = 2;
+			opResult = user.Id.ToString();
+		}
+
+		_loger.Log($"[RESULT - Operation LoginUser at UserServices - Result: [opValue: {opValue}; opResult: {opResult}]]");
+
 	  }
 	  catch (Exception error)
 	  {
-		throw new Exception($"Error while login: {error.Message}");
+		_loger.Log($"[ERROR - Operation LoginUser at UserServices - Message: {error.Message}]");
+		opResult = "Unexpected error while login, try again or contact to support.";
 	  }
+
+	  return (opValue, opResult);
 
 	}
     

@@ -1,5 +1,9 @@
 # .sln autogenerado
 CryptoTrackApp/*.sln
+# Ignorar migraciones
+CryptoTrackApp/Migrations/
+# Configuración de dotnet tools
+.config/
 
 # Ignorar mis scripts
 app_run

@@ -17,12 +17,14 @@ namespace CryptoTrackApp.src.services
         /// <param name="pPassword">User's password to login.</param>
         /// <param name="pEmail">User's email password to login.</param>
         /// <returns>
-        /// A string with the user's Id if the loggin is success.<br>
-        /// Null if there is not user with the given email.
+        /// Returns a tuple (int, string). The string is the result message.
+        /// The value of the int represents the result:
+        /// -1 = unexpected error.
+        /// 0 = email not registered.
+        /// 1 = incorrect password
+        /// 2 = Successful login (the message is the user id).
         /// </returns>
-        /// <exception cref="InvalidOperationException"> If the passwords doesn't match. </exception>
-        /// <exception cref="Exception">If there has been an unexpected error while login.</exception>
-        Task<string?> LoginUser(String pPassword, String pEmail);
+        Task<(int, string)> LoginUser(String pPassword, String pEmail);
 	    Task AddUserAsync(string pEmail, string pPassword, string pUserName, DateTime pBirthDate);
 	    Task<bool> IsEmailAvailable(string pEmail);
     }
