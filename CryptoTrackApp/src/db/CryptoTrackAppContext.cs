@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using EFCore.NamingConventions;
 using CryptoTrackApp.src.models;
+using CryptoTrackApp.src.utils;
 
 
 namespace CryptoTrackApp.src.db
@@ -14,6 +15,7 @@ namespace CryptoTrackApp.src.db
         public DbSet<User> Users {get; set;}
         public DbSet<Subscription> Subscriptions {get; set;}
 		private string CONNECTION = "";
+		private Logger _logger = new Logger(); 
 
 		public CryptoTrackAppContext()
         {
@@ -22,6 +24,7 @@ namespace CryptoTrackApp.src.db
 			CONNECTION = configJsonData["db_connection"].ToString();
             Console.WriteLine("String de conexión"); // debug
             Console.WriteLine(CONNECTION); // debug
+			_logger.Log($"[CONNECT to postgres DB - Connection string: {CONNECTION}]");
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder

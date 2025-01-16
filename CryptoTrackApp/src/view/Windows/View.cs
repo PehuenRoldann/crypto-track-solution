@@ -28,9 +28,9 @@ namespace CryptoTrackApp.src.view.Windows
           DeleteEvent += Window_DeleteEvent;
       }
 
-      public void SetStyle(string cssPath) 
+      public void SetStyle(string[] cssPath) 
       {
-          cssProvider.LoadFromPath(cssPath);
+          cssProvider.LoadFromPath(this.GetAbsolutePath(cssPath));
           StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 1000);
       }
 

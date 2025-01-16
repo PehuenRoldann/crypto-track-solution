@@ -14,10 +14,11 @@ using CryptoTrackApp.src.db;
 using Npgsql.Replication.PgOutput.Messages;
 using SP = ScottPlot;
 using System.Linq;
-
+using CryptoTrackApp.src.utils;
 
 namespace CryptoTrackApp.src.view.Windows
 {
+    
     public class MainView : View
     {
         [UI] private Button _panelBtn;
@@ -49,6 +50,8 @@ namespace CryptoTrackApp.src.view.Windows
 
         private IDictionary<string,string>[] currenciesData;
 
+        private Logger _logger = new Logger();
+
         private string[] LOGOUT_IMAGE_PATH = {"src", "assets", "images", "logout.png"};
         private string[] LOGO_PATH = {"src", "assets", "images", "cta_logo_64x64.png"};
         // private string NOT_FOUND_PATH = "./src/assets/images/not_found.png";
@@ -58,22 +61,23 @@ namespace CryptoTrackApp.src.view.Windows
         private string[] ABOUT_IMG_PATH = {"src", "assets", "images", "about.png"};
         // private string SERVER_BURNING_PATH = "./src/assets/images/server_burning.png";
         private string[] SERVER_BURNING_PATH = {"src", "assets", "images", "server_burning.png"};
-        private string[] CSS_PATH = {"src", "css", "main_view.css"};
+        //private string[] CSS_PATH = {"src", "css", "main_view.css"};
 
 
         public MainView(
             string pUserId,
             ISubscriptionServices pSubService,
             ICurrencyServices pCurrencyService,
-            IPloterService pPlotService) : base("MainView")
+            IPloterService pPlotService) : base(Templates.MainView)
         {
+            _logger.Log("[INIT - MainView]");
             this._userId = pUserId;
             this.subscriptionService = pSubService;
             this.currencyService = pCurrencyService;
             this.plotService = pPlotService;
             
             this.InitPanel();
-            this.SetStyle(this.GetAbsolutePath(CSS_PATH));
+            this.SetStyle(CssFilesPaths.MainViewCss);
 
         }
 
@@ -85,7 +89,6 @@ namespace CryptoTrackApp.src.view.Windows
 
         public override void ConfigEventHandlers()
         {
-            Console.WriteLine("Configuring event handlers.......");
             this._followButton.ButtonReleaseEvent += FollowButtonReleased;
             this._panelBtn.ButtonReleaseEvent += PanelButtonReleased;
         }
@@ -108,6 +111,7 @@ namespace CryptoTrackApp.src.view.Windows
 
         private async void InitPanel()
         {
+            
             this._panel.Halign = Align.Center;
             this._middlePanel.Halign = Align.Center;
             ConfigSpinner();
@@ -166,7 +170,7 @@ namespace CryptoTrackApp.src.view.Windows
             CryptoTreeViewComponent subsTree = new CryptoTreeViewComponent(heigh:350);
             subsTree.RowActivatedEvent += (sender, e) =>
             {
-                Console.WriteLine($"Fila activada: {e.Name}, Rango: {e.Rank}, Precio: {e.UsdPrice}, Tendencia: {e.Tendency}");
+                _logger.Log($"[EVENT - RowAcitvatedEvent - Row values: [Name: {e.Name}, Rank: {e.Rank}, UsdPrice: {e.UsdPrice}, Tendency: {e.Tendency}]]");
                 IDictionary<string, string> currency = this.currenciesData.First<IDictionary<string, string>>(elem => elem["Name"] == e.Name);
                 this.LoadBoxPlot(currency["Id"]);
             };
@@ -174,7 +178,7 @@ namespace CryptoTrackApp.src.view.Windows
             subsTree.Expand = true;
             subsTree.Halign = Align.Center;
             subsTree.Valign = Align.Center;
-            subsTree.StyleContext.AddClass("subs-tree");
+            subsTree.StyleContext.AddClass(MainViewClases.SubsTree);
             this.subsTree = subsTree;
 
         }
@@ -277,18 +281,20 @@ namespace CryptoTrackApp.src.view.Windows
 
             this._spinner.Hide();
             this._panelScroll.Hide();
-            Console.WriteLine("Se detuvo el spinner!");
             this._panelMessage.ShowAll();
         }
 
 
         private void FollowButtonReleased (object sender, ButtonReleaseEventArgs args)
         {
+            _logger.Log("[EVENT - FollowButtonReleased at MainView] - Delegated to ViewManager");
             ViewManager vw = ViewManager.GetInstance();
             vw.ShowView("follow");
         }
 
         private async void LoadBoxPlot (string currency = "" ) {
+
+            _logger.Log($"[EXECT - Operation LoadBoxPlot at MainView - Parameters: [currency: {currency}]]");
 
             foreach (Widget widget in _panelBoxPlot.Children) {
                 widget.Destroy();
@@ -336,6 +342,7 @@ namespace CryptoTrackApp.src.view.Windows
                 }
 
             } else {
+                    _logger.Log($"[FAILURE - Operation LoadBoxPlot at MainView - Couldn't load plot - Parameters: [currency: {currency}]]");
                     Label emptyLbl = new();
                     emptyLbl.Text = "Select a currency of the following table to display data.";
                     emptyLbl.Hexpand = true;

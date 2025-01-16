@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.services;
 using CryptoTrackApp.src.view.Utils;
+using CryptoTrackApp.src.utils;
 /* using GLib; */
 
 namespace CryptoTrackApp.src.view.Windows {
@@ -36,7 +37,7 @@ namespace CryptoTrackApp.src.view.Windows {
     // ---- CONSTRUCTOR ------------------------------------------------------------
         public SignUpView(IUserServices pUserServices) : base("SignUpWindow") {
         this.userServices = pUserServices;
-        this.SetStyle("./src/css/SignUpWindow.css");
+        this.SetStyle(CssFilesPaths.SignUpWindowCss);
         this.CheckSignUpButton();
         this._spinner.Hide();
 

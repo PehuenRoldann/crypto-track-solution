@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CryptoTrackApp.src.services;
+using CryptoTrackApp.src.utils;
 using CryptoTrackApp.src.view.Components;
 using CryptoTrackApp.src.view.Utils;
 using Gtk;
@@ -36,7 +37,7 @@ namespace CryptoTrackApp.src.view.Windows
 
             /* this.CSS_PATH_DARK = "./src/css/follow_view.css";
 	        this.CSS_PATH_LIGHT = ""; */
-            this.SetStyle("./src/css/follow_view.css");
+            this.SetStyle(CssFilesPaths.FollowViewCss);
             
             this._loadMoreBtn!.Hide();
             this._loadMoreBtn.ButtonReleaseEvent += OnLoadMoreBtnRelease;
