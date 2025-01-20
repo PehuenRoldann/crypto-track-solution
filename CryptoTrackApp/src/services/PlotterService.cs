@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.utils;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Pango;
 using ScottPlot;
+using ScottPlot.Panels;
 using ScottPlot.TickGenerators;
 using ScottPlot.TickGenerators.TimeUnits;
 using SP = ScottPlot;
@@ -22,24 +24,26 @@ namespace CryptoTrackApp.src.services
 
 
 
-        public async Task<string> GetCandlesPlot(List<(DateTime, double)> history, int width = 700, int height = 300) {
+        public async Task<string> GetCandlesPlot(List<(DateTime, double)> history, int width = 700, int height = 300, string title = "Candle") {
+
+            _logger.Log($"[EXEC - Operation GetFinancialPlot at PloterService - Parameters: [width: {width}; height: {height} ]]");
+            var targetDate = DateTime.UtcNow.AddMonths(-6);
+            history = history.Where(tupla => tupla.Item1 >= targetDate).ToList();
+
+            DateTime initialDate = history[0].Item1;
+            TimeSpan timeSpan = new(days: 7, 0, 0, 0);
+            DateTime todayDateFull = DateTime.UtcNow;
+            DateTime dateToday = new DateTime(year: todayDateFull.Year, month: todayDateFull.Month, day: todayDateFull.Day + 1);
+            
+
+            List<OHLC> prices = new();
 
             try {
 
-                /* DateTime[] dateKeysArr = valuesPerMonth.Keys.ToArray(); */
-                _logger.Log($"[EXEC - Operation GetFinancialPlot at PloterService - Parameters: [ history: {history}; width: {width}; height: {height} ]]");
-                var targetDate = DateTime.UtcNow.AddMonths(-6);
-                history = history.Where(tupla => tupla.Item1 >= targetDate).ToList();
-
-                DateTime initialDate = history[0].Item1;
-                TimeSpan timeSpan = new(days: 7, 0, 0, 0);
-                
-
-                List<OHLC> prices = new();
 
                 for (
                     DateTime currentDate = initialDate;
-                    currentDate < DateTime.Now.Date;
+                    currentDate < dateToday;
                     currentDate = currentDate.AddDays(timeSpan.Days)) {
                     
                     double[] values = history
@@ -48,20 +52,28 @@ namespace CryptoTrackApp.src.services
                     .Select(item => item.Item2)
                     .ToArray();
 
-                    double open = values[0];
-                    double high = values.Max();
-                    double low = values.Min();
-                    double close = values[values.Length - 1];
+                    if (values.Length != 0) {
+                        double open = values[0];
+                        double high = values.Max();
+                        double low = values.Min();
+                        int closeArrIndex = values.Length - 1;
+                        double close = values[closeArrIndex];
 
-                    prices.Add(new OHLC(open, high, low, close, currentDate, timeSpan));
+                        prices.Add(new OHLC(open, high, low, close, currentDate, timeSpan));
 
+                    }
+
+                    
                 }
 
                 Plot plot = new();
 
+                 
                 plot.Add.Candlestick(prices);
                 plot.Axes.DateTimeTicksBottom();
-                plot.Font.Automatic();
+                plot.Font.Set(ScottPlot.Fonts.Serif);
+                plot.YLabel("Value in USD");
+                plot.Title(title, 16);
 
                 // Definir el path donde guardar el plot
                 string plotDirectory = System.IO.Path.Combine(this._basePath, "plots");

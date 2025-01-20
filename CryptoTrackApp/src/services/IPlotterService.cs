@@ -23,7 +23,7 @@ namespace CryptoTrackApp.src.services
         ///     - Path to the image 
         ///     - Empty string if there was an error.
         /// </returns>
-        public Task<string> GetCandlesPlot(List<(DateTime, double)> history, int width = 700, int height = 300);
+        public Task<string> GetCandlesPlot(List<(DateTime, double)> history, int width = 700, int height = 300, string title = "Candle Plot!");
 
     }
 }

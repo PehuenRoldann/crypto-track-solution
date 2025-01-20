@@ -343,7 +343,8 @@ namespace CryptoTrackApp.src.view.Windows
                 this.GetSize(out plotWidth, out plotHeigh);
                 plotWidth = (int)Math.Round(plotWidth - plotWidth * 0.20);
                 plotHeigh = (int)Math.Round(plotHeigh * 0.5);
-                plotPath = await this.plotService.GetCandlesPlot(historyValues, width: plotWidth, height: plotHeigh);
+                string currencyName =  currenciesData.First(x => x["Id"] == currency)["Name"];
+                plotPath = await this.plotService.GetCandlesPlot(historyValues, width: plotWidth, height: plotHeigh, $"{currencyName} value over time");
             }
 
 
