@@ -1,20 +1,15 @@
 using System;
-using IO = System.IO;
-using Cairo;
 using System.Collections.Generic;
 using Gtk;
 using Gdk;
 using UI = Gtk.Builder.ObjectAttribute;
 using CryptoTrackApp.src.view.Components;
-using CryptoTrackApp.src.view.Utils;
 using CryptoTrackApp.src.services;
 using System.Threading.Tasks;
 using Pango;
-using CryptoTrackApp.src.db;
-using Npgsql.Replication.PgOutput.Messages;
-using SP = ScottPlot;
 using System.Linq;
 using CryptoTrackApp.src.utils;
+using Npgsql.Replication;
 
 namespace CryptoTrackApp.src.view.Windows
 {
@@ -46,11 +41,15 @@ namespace CryptoTrackApp.src.view.Windows
         private CryptoTreeViewComponent subsTree;
         private ISubscriptionServices subscriptionService;
         private ICurrencyServices currencyService;
-        private IPloterService plotService;
+        private IPlotterService plotService;
 
         private IDictionary<string,string>[] currenciesData;
 
         private Logger _logger = new Logger();
+
+
+        private const int PLOT_WIDTH = 900;
+        private const int PLOT_HEIGHT = 400;
 
         private string[] LOGOUT_IMAGE_PATH = {"src", "assets", "images", "logout.png"};
         private string[] LOGO_PATH = {"src", "assets", "images", "cta_logo_64x64.png"};
@@ -68,7 +67,7 @@ namespace CryptoTrackApp.src.view.Windows
             string pUserId,
             ISubscriptionServices pSubService,
             ICurrencyServices pCurrencyService,
-            IPloterService pPlotService) : base(Templates.MainView)
+            IPlotterService pPlotService) : base(Templates.MainView)
         {
             _logger.Log("[INIT - MainView]");
             this._userId = pUserId;
@@ -316,12 +315,48 @@ namespace CryptoTrackApp.src.view.Windows
             
             await Task.Delay(2000);
 
-            if (currency != "") {
+            List<(DateTime, double)> historyValues = new List<(DateTime, double)>();
+            string plotPath = "";
+            Label emptyLbl = new();
 
-                try {
-                // var historyValues = await this.currencyService.GetHistoryValues(pCurrencyId:currency);
-                var historyValues = await this.currencyService.GetHistory(pCurrencyId:currency);
-                string plotPath = await this.plotService.GetFinancialPlot(historyValues, width: 900);
+            bool shouldShowPlot = false;
+
+            if (currency == "") {
+
+                _logger.Log($"[FAILURE - Operation LoadBoxPlot at MainView - Couldn't load plot - Parameters: [currency: {currency}]]");
+                emptyLbl.Text = "Select a currency of the following table to display data.";
+            }
+            else {
+                historyValues = await this.currencyService.GetHistory(pCurrencyId:currency);
+            }
+
+
+            if ( currency != "" && historyValues.Count == 0) { // Currency selected, couldn't get history.
+
+                _logger.Log("[FAILURE - Operation LoadBoxPlot at MainView - Couldn't get the history values to plot]");
+                emptyLbl.Text = "Error while trying to get currency values history..., try again or contact support.";
+            }
+            else if ( currency != "" && historyValues.Count > 0 ) {
+
+                int plotWidth;
+                int plotHeigh;
+                this.GetSize(out plotWidth, out plotHeigh);
+                plotWidth = (int)Math.Round(plotWidth - plotWidth * 0.20);
+                plotHeigh = (int)Math.Round(plotHeigh * 0.5);
+                plotPath = await this.plotService.GetCandlesPlot(historyValues, width: plotWidth, height: plotHeigh);
+            }
+
+
+            if ( historyValues.Count > 0 && plotPath == "" ) {
+                _logger.Log("[FAILURE - Operation LoadBoxPlot at MainView - Get the plot for the currency history]");
+                emptyLbl.Text = "Error while plotting values history for the currency..., try again or contact support.";
+            }
+            else if (historyValues.Count > 0 && plotPath != "")  {
+                shouldShowPlot = true;
+            }
+
+
+            if (shouldShowPlot) {
                 Image boxplot = new();
                 boxplot.File = plotPath;
                 boxplot.StyleContext.AddClass("boxplot-image");
@@ -329,28 +364,16 @@ namespace CryptoTrackApp.src.view.Windows
                 spinner.Destroy();
                 _panelBoxPlot.Add(boxplot);
                 _panelBoxPlot.ReorderChild(boxplot, 1);
-
-                } catch (Exception error) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-                    Console.WriteLine(error.Message);
-                    Label errorLbl = new();
-                    errorLbl.Text = error.Message;
-                    spinner.Active = false;
-                    spinner.Destroy();
-                    _panelBoxPlot.Add(errorLbl);
-                    _panelBoxPlot.ReorderChild(errorLbl, 1);
-
-                }
-
-            } else {
-                    _logger.Log($"[FAILURE - Operation LoadBoxPlot at MainView - Couldn't load plot - Parameters: [currency: {currency}]]");
-                    Label emptyLbl = new();
-                    emptyLbl.Text = "Select a currency of the following table to display data.";
-                    emptyLbl.Hexpand = true;
-                    spinner.Active = false;
-                    spinner.Destroy();
-                    _panelBoxPlot.Add(emptyLbl);
-                    _panelBoxPlot.ReorderChild(emptyLbl, 1);
             }
+            else {
+               // emptyLbl.Text = "Select a currency of the following table to display data."; // sacar después
+                emptyLbl.Hexpand = true;
+                spinner.Active = false;
+                spinner.Destroy();
+                _panelBoxPlot.Add(emptyLbl);
+                _panelBoxPlot.ReorderChild(emptyLbl, 1);
+            }
+
             _panelBoxPlot.ShowAll();
 
         }

@@ -137,7 +137,7 @@ namespace CryptoTrackApp.src.db
             using (RestClient client = new RestClient (options))
             {
 
-                RestRequest request = new RestRequest($"assets/{pId}/history?interval=h6");
+                RestRequest request = new RestRequest($"assets/{pId}/history?interval=d1");
                 RestResponse response = await client.GetAsync(request);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
@@ -153,7 +153,7 @@ namespace CryptoTrackApp.src.db
                     DateTime historyDate = new DateTime(1970, 1, 1, 0, 0 ,0 ,0, DateTimeKind.Utc);
                     historyDate = historyDate.AddMilliseconds(Double.Parse(item["time"])).ToLocalTime();
 
-                    double historyValue = Double.Parse(item["priceUsd"]);
+                    double historyValue = Double.Parse( item["priceUsd"] );
 
                     historyValues.Add((historyDate, historyValue));
                 }

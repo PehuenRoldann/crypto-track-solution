@@ -9,6 +9,7 @@ using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.db;
 using CryptoTrackApp.src.models;
+using CryptoTrackApp.src.utils;
 using ScottPlot;
 using ScottPlot.AxisPanels;
 
@@ -25,6 +26,7 @@ namespace CryptoTrackApp.src.services
     {
         private ICryptoApi cryptoApi;
         private List <(DateTime, double)> _historyValues;
+        private Logger _logger = new Logger();
 
         public CurrencyServices()
         {
@@ -131,18 +133,17 @@ namespace CryptoTrackApp.src.services
         {
             try
             {
+                _logger.Log($"[EXEC - Operation GetHistory at CurrencyServices - Parameters: [currencyId: {pCurrencyId}]]");
                 List<(DateTime, double)> historyValues = await this.cryptoApi.GetHistory(pCurrencyId);
-
-                // 182 days aprox. to 6 months:
-                // return historyValues.TakeLast(182).ToList();
-                return historyValues.ToList();
+                _logger.Log($"[ SUCCESS - Operation GetHistory at CurrencyServices - Results:[ historyValues: {historyValues.ToString()} ]");
+                // return historyValues.ToList();
+                return historyValues;
 
             }
             catch (Exception error)
             {
-
-                Console.WriteLine($"CurrencyService-Error: {error.Message}");
-                throw new Exception(error.Message);
+                _logger.Log($"[ERROR - Operation GetHistory at CurrencyServices - Message: {error.Message}]");
+                return new List<(DateTime,double)>();
             }   
         }
 
