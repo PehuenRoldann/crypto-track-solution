@@ -79,6 +79,7 @@ namespace CryptoTrackApp.src.services
                 plot.Font.Set(ScottPlot.Fonts.Serif);
                 plot.FigureBackground.Color = SP.Color.FromHex(PLOT_BG_COLOR_HEX);
                 plot.Axes.Color(SP.Color.FromHex("#d7d7d7"));
+                plot.Title(title, 16);
                 plot.YLabel("Value in USD");
 
                 // Definir el path donde guardar el plot

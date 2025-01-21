@@ -325,6 +325,8 @@ namespace CryptoTrackApp.src.view.Windows
 
                 _logger.Log($"[FAILURE - Operation LoadBoxPlot at MainView - Couldn't load plot - Parameters: [currency: {currency}]]");
                 emptyLbl.Text = "Select a currency of the following table to display data.";
+                currency = this.currenciesData[0]["Id"];
+                historyValues = await this.currencyService.GetHistory(pCurrencyId: currency);
             }
             else {
                 historyValues = await this.currencyService.GetHistory(pCurrencyId:currency);
