@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.db;
 using CryptoTrackApp.src.models;
+using CryptoTrackApp.src.utils;
 
 namespace CryptoTrackApp.src.services
 {
     public class SubscriptionServices : ISubscriptionServices
     {
         private IRepository repository = new PostgreRepository();
+        private Logger _logger = new Logger();
         public async void AddSubscriptionAsync(string userId, string currencyId)
         {
             Subscription sub = new Subscription();
@@ -25,8 +27,9 @@ namespace CryptoTrackApp.src.services
             throw new NotImplementedException();
         }
 
-        public async Task<List<IDictionary<string, string>>> GetSubscriptionsAsync(string userId)
+        public async Task<List<IDictionary<string, string>>?> GetSubscriptionsAsync(string userId)
         {
+            _logger.Log($"[EXEC - Operation GetSubscriptionsAsync at SubscriptionServices - Parameters: [userId: {userId}]]");
             try
             {
                 var subscriptionsData = new List<IDictionary<string, string>>();
@@ -37,11 +40,14 @@ namespace CryptoTrackApp.src.services
                     subscriptionsData.Add(this.SubToDictionary(sub));
                 }
 
+
+                _logger.Log($"[SUCCESS - Operation GetSubscriptionsAsync at SubscriptionServices - Parameters: [userId: {userId}]]");
                 return subscriptionsData;
             }
             catch (Exception error)
             {
-                throw new Exception(error.Message);
+                _logger.Log($"[ERROR - Operation GetSubscriptionsAsync at SubscriptionServices - Message: {error.Message}]");
+                return null;
             }
         }
 
@@ -75,11 +81,11 @@ namespace CryptoTrackApp.src.services
 
             foreach (var property in sub.GetType().GetProperties())
             {
-                if (property.GetValue(sub) == null)
+                if (property.GetValue(sub) == null && property.Name != "User")
                 {
                     subscriptionsData.Add(property.Name, "");
                 }
-                else
+                else if (property.Name != "User")
                 {
                     subscriptionsData.Add(property.Name, property.GetValue(sub).ToString());
                 }

@@ -1,6 +1,8 @@
 using Gdk;
 using Gtk;
+using Pango;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CryptoTrackApp.src.view.Components
 {
@@ -16,7 +18,7 @@ namespace CryptoTrackApp.src.view.Components
             this.SetPolicy(PolicyType.Never, PolicyType.Automatic);
 
             // Inicializar el ListStore
-            listStore = new ListStore(typeof(Pixbuf), typeof(string), typeof(int), typeof(double), typeof(float));
+            this.listStore = new ListStore(typeof(Pixbuf), typeof(string), typeof(int), typeof(double), typeof(float), typeof(float));
 
             // Inicializar el TreeView con el ListStore
             var treeView = new TreeView(listStore);
@@ -27,6 +29,10 @@ namespace CryptoTrackApp.src.view.Components
             var rankRenderer = new CellRendererText();
             var usdPriceRenderer = new CellRendererText();
             var tendencyRenderer = new CellRendererText();
+            var notificationRenderer = new CellRendererText();
+
+            notificationRenderer.Editable = true;
+            notificationRenderer.Edited += UmbralEditedEventHandler;
 
             TreeViewColumn iconColumn = new TreeViewColumn("Icon", iconRenderer);
             iconColumn.AddAttribute(iconRenderer, "pixbuf", 0);
@@ -34,17 +40,24 @@ namespace CryptoTrackApp.src.view.Components
             TreeViewColumn rankColumn = new TreeViewColumn("Rank", rankRenderer, "text", 2);
             TreeViewColumn usdColumn = new TreeViewColumn("$USD", usdPriceRenderer, "text", 3);
             TreeViewColumn tendencyColumn = new TreeViewColumn("Tendency", tendencyRenderer, "text", 4);
+            TreeViewColumn notificationColumn = new TreeViewColumn("Notification Umbral", notificationRenderer, "text", 5);
+            
 
             // Estilizar columnas y celdas
-            foreach (TreeViewColumn item in new TreeViewColumn[]{nameColumn, rankColumn, usdColumn, tendencyColumn})
+            foreach (TreeViewColumn item in new TreeViewColumn[]
+            {nameColumn, rankColumn, usdColumn, tendencyColumn, notificationColumn})
             {
                 item.Alignment = 0.50F;
                 item.MinWidth = 50;
             }
 
-            foreach (CellRendererText item in new CellRendererText[]{nameRenderer, rankRenderer, usdPriceRenderer, tendencyRenderer})
+            foreach (CellRendererText item in new CellRendererText[]
+            {nameRenderer, rankRenderer, usdPriceRenderer, tendencyRenderer, notificationRenderer})
             {
-                item.FontDesc = Pango.FontDescription.FromString("Arimo italic 12");
+                item.FontDesc = Pango.FontDescription.FromString("Arimo italic 14");
+                item.SetPadding(12, 5);
+                item.Alignment = Pango.Alignment.Center;
+
             }
 
             // Añadir las columnas al TreeView
@@ -53,6 +66,7 @@ namespace CryptoTrackApp.src.view.Components
             treeView.AppendColumn(rankColumn);
             treeView.AppendColumn(usdColumn);
             treeView.AppendColumn(tendencyColumn);
+            treeView.AppendColumn(notificationColumn);
 
             // Conectar el evento RowActivated
             treeView.RowActivated += OnRowActivated;
@@ -78,10 +92,25 @@ namespace CryptoTrackApp.src.view.Components
             this.SetSizeRequest(width, heigh);
         }
 
-        public void AddData(Pixbuf icon, string name, int rank, double usdPrice, float tendency)
+        public void AddData(Pixbuf icon, string name, int rank, double usdPrice, float tendency, float notificationUmbral)
         { 
             // Agregar nuevos datos al ListStore
-            listStore.AppendValues(icon, name, rank, usdPrice, tendency);
+            listStore.AppendValues(icon, name, rank, Math.Round(usdPrice, 2), Math.Round(tendency, 2), Math.Round(notificationUmbral, 2));
+        }
+
+        private void UmbralEditedEventHandler (object sender, EditedArgs e) {
+            // Actualizar el modelo con el nuevo valor
+            TreeIter iter;
+            float parsedValue = 0;
+            bool canParse = float.TryParse(e.NewText, out parsedValue);
+            if (listStore.GetIterFromString(out iter, e.Path) && canParse)
+            {
+                listStore.SetValue(iter, 5, parsedValue);
+                Console.WriteLine($"Celda editada: {e.NewText}");
+            }
+            else {
+                Console.WriteLine("VALOR INTRODUCIDO NO VÁLIDO");
+            }
         }
 
         private void OnRowActivated(object sender, RowActivatedArgs args)
@@ -102,6 +131,31 @@ namespace CryptoTrackApp.src.view.Components
                 RowActivatedEvent?.Invoke(this, eventArgs);
             }
         }
+
+
+
+        private void OnNotificationEdited(object o, EditedArgs args)
+        {
+            if (listStore.GetIterFromString(out TreeIter iter, args.Path))
+            {
+                // Actualizar el valor del umbral en el modelo
+                listStore.SetValue(iter, 5, args.NewText);
+                Console.WriteLine($"Umbral de notificación actualizado a: {args.NewText}");
+            }
+        }
+
+        // Configura el modelo para el ComboBox
+        private static ListStore CreateComboBoxModel()
+        {
+            var comboModel = new ListStore(typeof(string));
+            comboModel.AppendValues("0.50");
+            comboModel.AppendValues("1.00");
+            comboModel.AppendValues("1.50");
+            comboModel.AppendValues("2.00");
+            return comboModel;
+        }
+
+
     }
 
     // Clase para los argumentos del evento personalizado
@@ -120,6 +174,9 @@ namespace CryptoTrackApp.src.view.Components
             UsdPrice = usdPrice;
             Tendency = tendency;
         }
+
+
+
     }
 }
 

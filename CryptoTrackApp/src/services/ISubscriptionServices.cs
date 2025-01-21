@@ -5,7 +5,14 @@ namespace CryptoTrackApp.src.services
 {
     public interface ISubscriptionServices
     {
-        public Task<List<IDictionary<string, string>>> GetSubscriptionsAsync(string userId);
+        /// <summary>
+        /// This method gets a list of the user's subscriptions from the database.
+        ///Keys:
+        ///- UserId, SubscriptionId, CurrencyId, NotificationThreshold, FollowDate, UnfollowDate.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>List of subscriptions or null (if there was an error).</returns>
+        public Task<List<IDictionary<string, string>>?> GetSubscriptionsAsync(string userId);
         public Task<string> GetOneSubscriptionAsync(string userId, string currencyId);
         public void AddSubscriptionAsync(string userId, string currencyId);
         public void SetNotificationUmbral(string subscriptionId);

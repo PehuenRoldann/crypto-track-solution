@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Pango;
 using System.Linq;
 using CryptoTrackApp.src.utils;
-using Npgsql.Replication;
+using System.Linq;
 
 namespace CryptoTrackApp.src.view.Windows
 {
@@ -22,7 +22,6 @@ namespace CryptoTrackApp.src.view.Windows
         [UI] private Image _logoutBtnImg;
         [UI] private Box _panel;
         [UI] private Box _panelMessage;
-        // [UI] private ScrolledWindow _scrolledWindow;
         [UI] private Box _middlePanel;
         [UI] private Box _panelScroll;
         [UI] private Box _panelBoxPlot;
@@ -111,7 +110,7 @@ namespace CryptoTrackApp.src.view.Windows
         private async void InitPanel()
         {
             
-            this._panel.Halign = Align.Center;
+            this._panel.Halign = Align.Start;
             this._middlePanel.Halign = Align.Center;
             ConfigSpinner();
             this._spinner.Active = true;
@@ -152,11 +151,9 @@ namespace CryptoTrackApp.src.view.Windows
                         );
                     break;
                     case 2:
-                        Console.WriteLine("Añadienddo sbus tree...");
                         this._panelScroll.Add(this.subsTree);
                         this._spinner.Hide();
                         this._panelMessage.Hide();
-                        Console.WriteLine("Monstrar subs tree");
                         this._panelScroll.ShowAll();
                         this._middlePanel.ShowAll();
                     break;
@@ -192,8 +189,15 @@ namespace CryptoTrackApp.src.view.Windows
         /// </returns>
         private async Task<int> LoadSubscriptionsList(){
             
-            List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync(this._userId);
-            // List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync("4d266202-d63e-4caf-a87f-6ef56e0dd1b6");
+            // List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync(this._userId);
+            
+            List<IDictionary<string, string>>? subscriptionsList = await subscriptionService.GetSubscriptionsAsync(this._userId);
+            List<string> cryptosId = new List<string>();
+
+            if (subscriptionsList != null) {
+                cryptosId = subscriptionsList.Select(s => s["CurrencyId"]).ToList();
+            }
+
             if (cryptosId.Count == 0)
             {
                 return 0;
@@ -222,7 +226,8 @@ namespace CryptoTrackApp.src.view.Windows
                     item["Name"],
                     int.Parse(item["Rank"]),
                     double.Parse(item["PriceUsd"]),
-                    float.Parse(item["ChangePercent24Hr"])
+                    float.Parse(item["ChangePercent24Hr"]),
+                    float.Parse(subscriptionsList.First(s => s["CurrencyId"] == item["Id"])["NotificationUmbral"])
                 );
             }
 
@@ -325,7 +330,7 @@ namespace CryptoTrackApp.src.view.Windows
 
                 _logger.Log($"[FAILURE - Operation LoadBoxPlot at MainView - Couldn't load plot - Parameters: [currency: {currency}]]");
                 emptyLbl.Text = "Select a currency of the following table to display data.";
-                currency = this.currenciesData[0]["Id"];
+                currency = "bitcoin";
                 historyValues = await this.currencyService.GetHistory(pCurrencyId: currency);
             }
             else {
