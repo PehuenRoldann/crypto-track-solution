@@ -32,6 +32,9 @@
     <EmbeddedResource Include="./src/assets/icons/**" />
   </ItemGroup> 
   <ItemGroup>
+    <EmbeddedResource Include="./src/assets/images/**" />
+  </ItemGroup> 
+  <ItemGroup>
     <Content Include="src/assets/**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

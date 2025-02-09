@@ -27,6 +27,29 @@ namespace CryptoTrackApp.src.services
             throw new NotImplementedException();
         }
 
+        public async Task<bool> UnfollowAsync (string userId, string currencyId) {
+            _logger.Log($"[EXEC - Operation Unfollow at SubscriptionServices - Parameters: [currencyId {currencyId}]]");
+
+            try {
+
+                var guidUser = Guid.Parse(userId);
+                var userSubs = await repository.GetSubscriptionAsync(guidUser);
+                var sub = userSubs.FirstOrDefault(s => s.CurrencyId == currencyId);
+                if (sub == null) {
+                    throw new Exception("Subscription not found");
+                }
+                sub.UnfollowDate = DateTime.UtcNow;
+                await this.repository.UpdateSubscriptionAsync(sub);
+                _logger.Log($"[SUCCESS - Operation Unfollow at SubscriptionServices");
+                return true;
+            }
+            catch(Exception ex) {
+                _logger.Log($"[ERROR - Operation Unfollow at SubscriptionServices - Message: ${ex.Message}]");
+                return false;
+            }
+
+        }
+
         public async Task<List<IDictionary<string, string>>?> GetSubscriptionsAsync(string userId)
         {
             _logger.Log($"[EXEC - Operation GetSubscriptionsAsync at SubscriptionServices - Parameters: [userId: {userId}]]");
@@ -34,6 +57,8 @@ namespace CryptoTrackApp.src.services
             {
                 var subscriptionsData = new List<IDictionary<string, string>>();
                 List<Subscription> data = await repository.GetSubscriptionAsync(Guid.Parse(userId));
+
+                data = data.Where(s => s.UnfollowDate == null).ToList();
 
                 foreach (var sub in data)
                 {
@@ -93,5 +118,6 @@ namespace CryptoTrackApp.src.services
 
             return subscriptionsData;
         }
+
     }
 }

@@ -171,6 +171,8 @@ namespace CryptoTrackApp.src.view.Windows
                 this.LoadBoxPlot(currency["Id"]);
             };
 
+            subsTree.UnfollowEvent += UnfollowPressedEventHandler;
+
             subsTree.Expand = true;
             subsTree.Halign = Align.Center;
             subsTree.Valign = Align.Center;
@@ -178,6 +180,31 @@ namespace CryptoTrackApp.src.view.Windows
             this.subsTree = subsTree;
 
         }
+
+
+        public void UnfollowPressedEventHandler (object sender, UnfollowEventArgs e) {
+
+            
+            var imgPath = AssetsArrPaths.CurrenciesImages;
+            var currencySymbol = this.currenciesData.First(c => c["Id"] == e.CurrencyId)["Symbol"];
+            var unfollowDialog = new ConfirmationDialog(
+                this,
+                "Unfollow",
+                $"Are you sure about unfollow {e.Name}?",
+                pImgPathArr: imgPath.Append($"{currencySymbol.ToLower()}.svg").ToArray()
+            );
+
+
+            unfollowDialog.ConfirmationBtn.Released += (s, a) => {
+                unfollowDialog.Destroy();
+                IViewManager vm = ViewManager.GetInstance();
+                this.subscriptionService.UnfollowAsync(_userId, e.CurrencyId);
+            };
+
+            unfollowDialog.ShowAll();
+
+        }
+
 
         /// <summary>
         /// 
@@ -221,13 +248,15 @@ namespace CryptoTrackApp.src.view.Windows
                     icon = Pixbuf.LoadFromResource("CryptoTrackApp.src.assets.icons.currency.not_found.png");
                 }
 
-                    this.subsTree.AddData(
+                this.subsTree.AddData
+                (
                     icon,
                     item["Name"],
                     int.Parse(item["Rank"]),
                     double.Parse(item["PriceUsd"]),
                     float.Parse(item["ChangePercent24Hr"]),
-                    float.Parse(subscriptionsList.First(s => s["CurrencyId"] == item["Id"])["NotificationUmbral"])
+                    float.Parse(subscriptionsList.First(s => s["CurrencyId"] == item["Id"])["NotificationUmbral"]),
+                    item["Id"]
                 );
             }
 

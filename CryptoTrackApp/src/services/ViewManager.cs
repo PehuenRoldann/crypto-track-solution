@@ -84,7 +84,6 @@ namespace CryptoTrackApp.src.services
       /* win.Move(0,0); */
       if (pParent != null && pParent.IsMaximized) {win.Maximize();}
       win.Show();
-      Console.WriteLine("Hola");
       if (pParent != null) {
         // Quitar el estilo aplicado previamente
         this.ClearAllCssProviders(pParent.cssProvider);
