@@ -195,10 +195,20 @@ namespace CryptoTrackApp.src.view.Windows
             );
 
 
-            unfollowDialog.ConfirmationBtn.Released += (s, a) => {
+            unfollowDialog.ConfirmationBtn.Released += async (s, a) => {
+
                 unfollowDialog.Destroy();
-                IViewManager vm = ViewManager.GetInstance();
-                this.subscriptionService.UnfollowAsync(_userId, e.CurrencyId);
+                var infoDialog = new InformationDialog(this, $"Unfollowing {e.Name}");
+                infoDialog.Show();
+                await Task.Delay(2000);
+                bool result = await this.subscriptionService.UnfollowAsync(_userId, e.CurrencyId);
+                if (result) {
+                    infoDialog.ShowContent($"You have stoped following {e.Name}", MainViewArrPaths.CheckMark);
+                }
+                else {
+                    infoDialog.ShowContent($"An unexpected error has occurred", MainViewArrPaths.CrosskMark);
+                }
+                
             };
 
             unfollowDialog.ShowAll();

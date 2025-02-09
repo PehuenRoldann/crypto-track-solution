@@ -39,4 +39,11 @@ namespace CryptoTrackApp.src.utils
         public static readonly string[] CurrenciesIcons = { "src", "assets", "icons", "currency"};
     }
     
+
+
+    public static class MainViewArrPaths {
+
+        public static readonly string[] CheckMark = { "src", "assets", "images", "check-svgrepo-com.svg"};
+        public static readonly string[] CrosskMark = { "src", "assets", "images", "cross-svgrepo-com.svg"};
+    }
 }
