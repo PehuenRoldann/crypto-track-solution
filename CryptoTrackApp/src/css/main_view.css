@@ -49,3 +49,35 @@
     /* background: #48CFCB; */
 	box-shadow: 2px 8px 10px black;
 }
+
+
+.confirmation-dialog {
+	background: #2A2E32;
+}
+
+.confirmation-dialog .confirmation-btn {
+	background: #229799;
+}
+
+.confirmation-dialog .cancel-btn {
+	background: #B82132;
+}
+
+.confirmation-dialog-btn {
+	padding: 7px 10px;
+	font-size: 14px;
+	border: 0px;
+	border-radius: 5px;
+	margin: 5px 10px;
+
+	font-weight: bold;
+}
+
+.confirmation-dialog .onfirmation-dialog-btn{
+    outline: none; /* Elimina el borde de foco */
+}
+
+.confirmation-dialog .confirmation-dialog-btn:hover {
+    background: white; /* Fondo blanco en hover */
+    color: black; /* Texto negro en hover */
+}

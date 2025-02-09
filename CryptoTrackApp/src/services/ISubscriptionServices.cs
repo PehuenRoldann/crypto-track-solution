@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CryptoTrackApp.src.models;
 
 namespace CryptoTrackApp.src.services
 {
@@ -18,5 +19,6 @@ namespace CryptoTrackApp.src.services
         public void SetNotificationUmbral(string subscriptionId);
         public Task<bool> ToggleNotificationAsync(string subscriptionId);
         public Task<List<string>> GetFollowedCryptosIdsAsync(string userId);
+        public Task<bool> UnfollowAsync(string userId, string currencyId);
     }
 }

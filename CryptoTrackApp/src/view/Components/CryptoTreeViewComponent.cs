@@ -1,3 +1,4 @@
+using CryptoTrackApp.src.utils;
 using Gdk;
 using Gtk;
 using Pango;
@@ -11,6 +12,7 @@ namespace CryptoTrackApp.src.view.Components
         private ListStore listStore;
          // Delegado para manejar el evento de fila activada con la información de la fila
         public event EventHandler<CryptoRowActivatedEventArgs> RowActivatedEvent;
+        public event EventHandler<UnfollowEventArgs> UnfollowEvent;
 
         public CryptoTreeViewComponent(int width = 100, int heigh = 500)
         {
@@ -18,7 +20,10 @@ namespace CryptoTrackApp.src.view.Components
             this.SetPolicy(PolicyType.Never, PolicyType.Automatic);
 
             // Inicializar el ListStore
-            this.listStore = new ListStore(typeof(Pixbuf), typeof(string), typeof(int), typeof(double), typeof(float), typeof(float));
+            this.listStore = new ListStore(
+                typeof(Pixbuf), typeof(string), typeof(int), typeof(string), 
+                typeof(string), typeof(string), typeof(ToggleButton), 
+                typeof(Pixbuf), typeof(string));
 
             // Inicializar el TreeView con el ListStore
             var treeView = new TreeView(listStore);
@@ -30,9 +35,16 @@ namespace CryptoTrackApp.src.view.Components
             var usdPriceRenderer = new CellRendererText();
             var tendencyRenderer = new CellRendererText();
             var notificationRenderer = new CellRendererText();
+            var notificationToggleRenderer = new CellRendererToggle();
+            var unfollowBtnRenderer = new CellRendererPixbuf();
+            // var idRenderer = new CellRendererText();
+            
 
             notificationRenderer.Editable = true;
             notificationRenderer.Edited += UmbralEditedEventHandler;
+
+            
+
 
             TreeViewColumn iconColumn = new TreeViewColumn("Icon", iconRenderer);
             iconColumn.AddAttribute(iconRenderer, "pixbuf", 0);
@@ -40,7 +52,11 @@ namespace CryptoTrackApp.src.view.Components
             TreeViewColumn rankColumn = new TreeViewColumn("Rank", rankRenderer, "text", 2);
             TreeViewColumn usdColumn = new TreeViewColumn("$USD", usdPriceRenderer, "text", 3);
             TreeViewColumn tendencyColumn = new TreeViewColumn("Tendency", tendencyRenderer, "text", 4);
-            TreeViewColumn notificationColumn = new TreeViewColumn("Notification Umbral", notificationRenderer, "text", 5);
+            TreeViewColumn notificationColumn = new TreeViewColumn("Notification\nUmbral", notificationRenderer, "text", 5);
+            TreeViewColumn notificationToggleColumn = new TreeViewColumn("Notificaiton\nEnable", notificationToggleRenderer, "toggle", 6);
+            TreeViewColumn unfollowBtnColumn = new TreeViewColumn("Unfollow", unfollowBtnRenderer, "pixbuf", 7);
+            // TreeViewColumn idColumn = new TreeViewColumn("Id", idRenderer, "text", 8);
+            
             
 
             // Estilizar columnas y celdas
@@ -67,9 +83,12 @@ namespace CryptoTrackApp.src.view.Components
             treeView.AppendColumn(usdColumn);
             treeView.AppendColumn(tendencyColumn);
             treeView.AppendColumn(notificationColumn);
+            treeView.AppendColumn(notificationToggleColumn);
+            treeView.AppendColumn(unfollowBtnColumn);
 
             // Conectar el evento RowActivated
             treeView.RowActivated += OnRowActivated;
+            treeView.ButtonReleaseEvent += OnButtonReleaseEvent;
 
             treeView.Hexpand = true;
             treeView.Vexpand = true;
@@ -78,12 +97,6 @@ namespace CryptoTrackApp.src.view.Components
             treeView.Vexpand = true;
             // Añadir el TreeView al ScrolledWindow
             this.Add(treeView);
-            /* Viewport viewport = new Viewport();
-            viewport.Add(treeView);
-
-            viewport.SetSizeRequest(500, 200);
-            this.Add(viewport);
- */
 
             // Asegurarse de que el ScrolledWindow return treeView;se expanda completamente
             this.Hexpand = true;
@@ -92,10 +105,54 @@ namespace CryptoTrackApp.src.view.Components
             this.SetSizeRequest(width, heigh);
         }
 
-        public void AddData(Pixbuf icon, string name, int rank, double usdPrice, float tendency, float notificationUmbral)
+
+
+        private void OnButtonReleaseEvent(object sender, ButtonReleaseEventArgs args)
+        {
+            if (args.Event.Button == 1) // Verifica que sea un clic izquierdo
+            {
+                var treeView = sender as TreeView;
+                if (treeView.GetPathAtPos((int)args.Event.X, (int)args.Event.Y, out TreePath path, out TreeViewColumn column, out int cell_x, out int cell_y))
+                {
+                    // Verifica si el clic fue en la columna del Pixbuf
+                    if (column.Title == "Unfollow")
+                    {
+                        // Obtén la información de la fila
+                        if (listStore.GetIter(out TreeIter iter, path))
+                        {
+                            Pixbuf icon = (Pixbuf)listStore.GetValue(iter, 0);
+                            string name = (string)listStore.GetValue(iter, 1);
+                            string currencyId = (string)listStore.GetValue(iter, 8);
+
+                            Console.WriteLine("UNFOLLOW PRESIONADO: " + name + "   "  +currencyId); // DEBUG
+
+                            // Lanza el evento personalizado
+                            UnfollowEvent?.Invoke(this, new UnfollowEventArgs(currencyId, name, icon));
+                        }
+
+                        // Evita que otros eventos (como RowActivated) se disparen
+                        args.RetVal = true;
+                    }
+                }
+            }
+        }
+
+        public void AddData(Pixbuf icon, string name, int rank, double usdPrice, float tendency, float notificationUmbral, string currencyId)
         { 
             // Agregar nuevos datos al ListStore
-            listStore.AppendValues(icon, name, rank, Math.Round(usdPrice, 2), Math.Round(tendency, 2), Math.Round(notificationUmbral, 2));
+            Pixbuf unfollowIcon = Pixbuf.LoadFromResource(IconsPaths.UnfllowIconPath);
+            
+            listStore.AppendValues(
+                icon,
+                name,
+                rank,
+                Math.Round(usdPrice, 2).ToString(),
+                Math.Round(tendency, 2).ToString(),
+                Math.Round(notificationUmbral, 2).ToString(),
+                new ToggleButton(),
+                unfollowIcon,
+                currencyId
+             );
         }
 
         private void UmbralEditedEventHandler (object sender, EditedArgs e) {
@@ -105,11 +162,12 @@ namespace CryptoTrackApp.src.view.Components
             bool canParse = float.TryParse(e.NewText, out parsedValue);
             if (listStore.GetIterFromString(out iter, e.Path) && canParse)
             {
-                listStore.SetValue(iter, 5, parsedValue);
-                Console.WriteLine($"Celda editada: {e.NewText}");
+                string twoDigitsNumber = Math.Round(parsedValue, 2).ToString();
+                listStore.SetValue(iter, 5, twoDigitsNumber);
+                Console.WriteLine($"Celda editada: {twoDigitsNumber}");
             }
             else {
-                Console.WriteLine("VALOR INTRODUCIDO NO VÁLIDO");
+                Console.WriteLine("VALOR INTRODUCIDO NO VÁLIDO"); // DEBUG
             }
         }
 
@@ -120,10 +178,9 @@ namespace CryptoTrackApp.src.view.Components
             {
                 string name = (string)listStore.GetValue(iter, 1);
                 int rank = (int)listStore.GetValue(iter, 2);
-                double usdPrice = (double)listStore.GetValue(iter, 3);
-                float tendency = (float)listStore.GetValue(iter, 4);
+                double usdPrice = double.Parse((string)listStore.GetValue(iter, 3));
+                float tendency = float.Parse((string)listStore.GetValue(iter, 4));
 
-                Console.WriteLine($"Recuperada línea con name: {name}");
                 // Crear un objeto personalizado con los datos de la fila activada
                 var eventArgs = new CryptoRowActivatedEventArgs( name, rank, usdPrice, tendency);
 
@@ -143,18 +200,6 @@ namespace CryptoTrackApp.src.view.Components
                 Console.WriteLine($"Umbral de notificación actualizado a: {args.NewText}");
             }
         }
-
-        // Configura el modelo para el ComboBox
-        private static ListStore CreateComboBoxModel()
-        {
-            var comboModel = new ListStore(typeof(string));
-            comboModel.AppendValues("0.50");
-            comboModel.AppendValues("1.00");
-            comboModel.AppendValues("1.50");
-            comboModel.AppendValues("2.00");
-            return comboModel;
-        }
-
 
     }
 
@@ -176,7 +221,20 @@ namespace CryptoTrackApp.src.view.Components
         }
 
 
+    }
 
+
+    public class UnfollowEventArgs : EventArgs
+    {
+        public string CurrencyId { get; }
+        public Pixbuf Icon {get; }
+        public string Name { get; }
+        public UnfollowEventArgs (string currencyId, string name, Pixbuf icon) 
+        {
+            CurrencyId = currencyId;
+            Name = name;
+            Icon = icon;
+        }
     }
 }
 

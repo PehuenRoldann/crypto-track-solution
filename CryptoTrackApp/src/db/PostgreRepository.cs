@@ -156,16 +156,31 @@ namespace CryptoTrackApp.src.db
             }
         }
 
-        public Task UpdateSubscriptionAsync(Subscription sub)
-        {
-            _logger.Log($"[EXECUTE - Operation UpdateSubscriptionAsync at PostgreRepository - Parameters [sub: {sub}]");
-            throw new NotImplementedException();
-        }
-
         public Task UpdateUserAsync(User user)
         {
             _logger.Log($"[EXECUTE - Operation UpdateUserAsync at PostgreRepository - Parameters [userId: {user}]");
             throw new NotImplementedException();
+        }
+
+        public async Task UpdateSubscriptionAsync(Subscription updatedSubscription)
+        {
+           _logger.Log($"[EXECUTE - Operation UnfollowAsync at PostgreRepository - Parameters [subscription: {updatedSubscription}]");
+            using (var context = new CryptoTrackAppContext())
+            {
+                try
+                {
+                    var subscription = context.Subscriptions.Where(s => s.SubscriptionId == updatedSubscription.SubscriptionId).FirstOrDefault();
+                    context.Entry(subscription).CurrentValues.SetValues(updatedSubscription);
+                    await context.SaveChangesAsync();
+                    _logger.Log($"[SUCCESS - Operation UnfollowAsync at PostgreRepository - Parameters [subscription: {subscription}]");
+                }
+
+                catch(Exception error)
+                {
+                    _logger.Log($"[ERROR - Operation GetUserAsync at PostgreRepository - Message: {error.Message}]");
+                    throw new Exception(error.Message);
+                }
+            }
         }
     }
 
