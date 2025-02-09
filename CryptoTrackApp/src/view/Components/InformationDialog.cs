@@ -27,13 +27,13 @@ namespace CryptoTrackApp.src.view.Components
         /// <param name="pWidth"> Dialog width (in px) </param>
         /// <param name="pHeight"> Dialog heigh (in px) </param>
         public InformationDialog(Gtk.Window pParent, string pTitle, int pWidth = 400,
-            int pHeight = 280) : base(pTitle, pParent, DialogFlags.Modal)
+            int pHeight = 280, int fontSizePx = 16) : base(pTitle, pParent, DialogFlags.Modal)
         {
 
             // Configuración del mensaje
             _message = new Label("");
             _message.Justify = Justification.Center;
-            _message.PangoContext.FontDescription = FontDescription.FromString("Arial 16");
+            _message.PangoContext.FontDescription = FontDescription.FromString($"Arial {fontSizePx}");
             _message.Expand = true;
 
             _image = new Image();

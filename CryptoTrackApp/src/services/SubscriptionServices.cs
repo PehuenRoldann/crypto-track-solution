@@ -76,9 +76,23 @@ namespace CryptoTrackApp.src.services
             }
         }
 
-        public void SetNotificationUmbral(string subscriptionId)
+        public async Task<bool> SetNotificationUmbral(string userId, string currencyId, float notificationUmbral)
         {
-            throw new NotImplementedException();
+             _logger.Log("[EXEC - Operation SetNotificationUmbral at SubscriptionServices - Parameters:" + 
+                $"[userId: {userId}; currencyId: {currencyId}; notificationUmbral: {notificationUmbral}]]");
+            try {
+                List<Subscription> subs = await repository.GetSubscriptionAsync(Guid.Parse(userId));
+                var sub = subs.Where(s => s.UserId == Guid.Parse(userId) && s.CurrencyId == currencyId && s.UnfollowDate == null).First();
+                sub.NotificationUmbral = notificationUmbral;
+                await repository.UpdateSubscriptionAsync(sub);
+                _logger.Log($"[SUCCESS - Operation SetNotificationUmbral at SubscriptionServices]");
+                return true;
+            }
+            catch (Exception ex) {
+                _logger.Log($"[ERROR - Operation SetNotificationUmbral at SubscriptionServices - Message: {ex.Message}]");
+                return false;
+            }
+            
         }
 
         public Task<bool> ToggleNotificationAsync(string subscriptionId)

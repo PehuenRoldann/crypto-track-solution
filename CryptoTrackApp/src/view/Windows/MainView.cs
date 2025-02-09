@@ -37,7 +37,7 @@ namespace CryptoTrackApp.src.view.Windows
         private Label _message;
         private Box _noSubscriptionsBox;
         private string _userId;
-        private CryptoTreeViewComponent subsTree;
+        private CryptoTreeViewComponent? subsTree;
         private ISubscriptionServices subscriptionService;
         private ICurrencyServices currencyService;
         private IPlotterService plotService;
@@ -172,6 +172,7 @@ namespace CryptoTrackApp.src.view.Windows
             };
 
             subsTree.UnfollowEvent += UnfollowPressedEventHandler;
+            subsTree.NotificationEditedEvent += NotificationEditedEventHandler;
 
             subsTree.Expand = true;
             subsTree.Halign = Align.Center;
@@ -181,6 +182,25 @@ namespace CryptoTrackApp.src.view.Windows
 
         }
 
+        private async void NotificationEditedEventHandler(object? sender, NotificationEditedEventArgs e)
+        {
+            var currencyData = this.currenciesData.Where(c => c["Name"] == e.CurrencyName && int.Parse(c["Rank"]) == e.Rank).FirstOrDefault();
+            var infoDialog = new InformationDialog(this, "Updating notification Threshold");
+            infoDialog.Show();
+            await Task.Delay(2000);
+            var result = await this.subscriptionService.SetNotificationUmbral(_userId, currencyData!["Id"], e.UmbralValue);
+            ResetSubsTree();
+
+            if (result) {
+                infoDialog.ShowContent("Threshold updated successfully", ImagesArrPaths.CheckMark);
+            }
+            else {
+                infoDialog.ShowContent(
+                    "Error while updating threshold...\n" +
+                    "Try again or contact support.",
+                    ImagesArrPaths.CheckMark);
+            }
+        }
 
         public void UnfollowPressedEventHandler (object sender, UnfollowEventArgs e) {
 
@@ -203,10 +223,10 @@ namespace CryptoTrackApp.src.view.Windows
                 await Task.Delay(2000);
                 bool result = await this.subscriptionService.UnfollowAsync(_userId, e.CurrencyId);
                 if (result) {
-                    infoDialog.ShowContent($"You have stoped following {e.Name}", MainViewArrPaths.CheckMark);
+                    infoDialog.ShowContent($"You have stoped following {e.Name}", ImagesArrPaths.CheckMark);
                 }
                 else {
-                    infoDialog.ShowContent($"An unexpected error has occurred", MainViewArrPaths.CrosskMark);
+                    infoDialog.ShowContent($"An unexpected error has occurred", ImagesArrPaths.CrosskMark);
                 }
                 
             };
@@ -265,8 +285,7 @@ namespace CryptoTrackApp.src.view.Windows
                     int.Parse(item["Rank"]),
                     double.Parse(item["PriceUsd"]),
                     float.Parse(item["ChangePercent24Hr"]),
-                    float.Parse(subscriptionsList.First(s => s["CurrencyId"] == item["Id"])["NotificationUmbral"]),
-                    item["Id"]
+                    float.Parse(subscriptionsList.First(s => s["CurrencyId"] == item["Id"])["NotificationUmbral"])
                 );
             }
 
@@ -430,6 +449,14 @@ namespace CryptoTrackApp.src.view.Windows
         private void RowActivatedEventHandler (object sender, CryptoRowActivatedEventArgs args) {
 
             Console.WriteLine("Clicked row with: ", args.Name);
+        }
+
+        private void ResetSubsTree(){
+
+            this.subsTree!.Destroy();
+            this.subsTree = null;
+            this.LoadTablePanel();
+            
         }
     }
 

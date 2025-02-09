@@ -4,6 +4,7 @@ using Gtk;
 using Pango;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata.Ecma335;
 
 namespace CryptoTrackApp.src.view.Components
 {
@@ -13,6 +14,7 @@ namespace CryptoTrackApp.src.view.Components
          // Delegado para manejar el evento de fila activada con la información de la fila
         public event EventHandler<CryptoRowActivatedEventArgs> RowActivatedEvent;
         public event EventHandler<UnfollowEventArgs> UnfollowEvent;
+        public event EventHandler<NotificationEditedEventArgs> NotificationEditedEvent;
 
         public CryptoTreeViewComponent(int width = 100, int heigh = 500)
         {
@@ -22,8 +24,8 @@ namespace CryptoTrackApp.src.view.Components
             // Inicializar el ListStore
             this.listStore = new ListStore(
                 typeof(Pixbuf), typeof(string), typeof(int), typeof(string), 
-                typeof(string), typeof(string), typeof(ToggleButton), 
-                typeof(Pixbuf), typeof(string));
+                typeof(string), typeof(string), 
+                typeof(Pixbuf));
 
             // Inicializar el TreeView con el ListStore
             var treeView = new TreeView(listStore);
@@ -35,9 +37,7 @@ namespace CryptoTrackApp.src.view.Components
             var usdPriceRenderer = new CellRendererText();
             var tendencyRenderer = new CellRendererText();
             var notificationRenderer = new CellRendererText();
-            var notificationToggleRenderer = new CellRendererToggle();
             var unfollowBtnRenderer = new CellRendererPixbuf();
-            // var idRenderer = new CellRendererText();
             
 
             notificationRenderer.Editable = true;
@@ -53,8 +53,7 @@ namespace CryptoTrackApp.src.view.Components
             TreeViewColumn usdColumn = new TreeViewColumn("$USD", usdPriceRenderer, "text", 3);
             TreeViewColumn tendencyColumn = new TreeViewColumn("Tendency", tendencyRenderer, "text", 4);
             TreeViewColumn notificationColumn = new TreeViewColumn("Notification\nUmbral", notificationRenderer, "text", 5);
-            TreeViewColumn notificationToggleColumn = new TreeViewColumn("Notificaiton\nEnable", notificationToggleRenderer, "toggle", 6);
-            TreeViewColumn unfollowBtnColumn = new TreeViewColumn("Unfollow", unfollowBtnRenderer, "pixbuf", 7);
+            TreeViewColumn unfollowBtnColumn = new TreeViewColumn("Unfollow", unfollowBtnRenderer, "pixbuf", 6);
             // TreeViewColumn idColumn = new TreeViewColumn("Id", idRenderer, "text", 8);
             
             
@@ -83,7 +82,6 @@ namespace CryptoTrackApp.src.view.Components
             treeView.AppendColumn(usdColumn);
             treeView.AppendColumn(tendencyColumn);
             treeView.AppendColumn(notificationColumn);
-            treeView.AppendColumn(notificationToggleColumn);
             treeView.AppendColumn(unfollowBtnColumn);
 
             // Conectar el evento RowActivated
@@ -124,8 +122,6 @@ namespace CryptoTrackApp.src.view.Components
                             string name = (string)listStore.GetValue(iter, 1);
                             string currencyId = (string)listStore.GetValue(iter, 8);
 
-                            Console.WriteLine("UNFOLLOW PRESIONADO: " + name + "   "  +currencyId); // DEBUG
-
                             // Lanza el evento personalizado
                             UnfollowEvent?.Invoke(this, new UnfollowEventArgs(currencyId, name, icon));
                         }
@@ -137,7 +133,7 @@ namespace CryptoTrackApp.src.view.Components
             }
         }
 
-        public void AddData(Pixbuf icon, string name, int rank, double usdPrice, float tendency, float notificationUmbral, string currencyId)
+        public void AddData(Pixbuf icon, string name, int rank, double usdPrice, float tendency, float notificationUmbral)
         { 
             // Agregar nuevos datos al ListStore
             Pixbuf unfollowIcon = Pixbuf.LoadFromResource(IconsPaths.UnfllowIconPath);
@@ -149,9 +145,7 @@ namespace CryptoTrackApp.src.view.Components
                 Math.Round(usdPrice, 2).ToString(),
                 Math.Round(tendency, 2).ToString(),
                 Math.Round(notificationUmbral, 2).ToString(),
-                new ToggleButton(),
-                unfollowIcon,
-                currencyId
+                unfollowIcon
              );
         }
 
@@ -160,14 +154,27 @@ namespace CryptoTrackApp.src.view.Components
             TreeIter iter;
             float parsedValue = 0;
             bool canParse = float.TryParse(e.NewText, out parsedValue);
-            if (listStore.GetIterFromString(out iter, e.Path) && canParse)
+            if (listStore.GetIterFromString(out iter, e.Path) && canParse && parsedValue >= 0)
             {
+                string name = (string)listStore.GetValue(iter, 1);
+                int rank = (int)listStore.GetValue(iter, 2);
                 string twoDigitsNumber = Math.Round(parsedValue, 2).ToString();
                 listStore.SetValue(iter, 5, twoDigitsNumber);
-                Console.WriteLine($"Celda editada: {twoDigitsNumber}");
+                NotificationEditedEvent?.Invoke(this, new NotificationEditedEventArgs(name, rank, parsedValue));
             }
             else {
-                Console.WriteLine("VALOR INTRODUCIDO NO VÁLIDO"); // DEBUG
+                var parent = GtkUtils.GetParentWindow(this);
+                if (parent != null) {
+                    var dialog = new InformationDialog (parent, "Invalid value", pHeight: 400, fontSizePx: 12);
+                    dialog.Show();
+                    dialog.ShowContent(
+                        "CLARIFICATIONS\n"
+                        + "* You shouls put a value between 0 and 2.\n" 
+                        + "* The value indicates the percentage of difference to report.\n"
+                        + "* 0 means not notifications for that subscription.",
+                        ImagesArrPaths.Warning
+                    );
+                }       
             }
         }
 
@@ -186,18 +193,6 @@ namespace CryptoTrackApp.src.view.Components
 
                 // Propagar el evento al contenedor padre con la información de la fila activada
                 RowActivatedEvent?.Invoke(this, eventArgs);
-            }
-        }
-
-
-
-        private void OnNotificationEdited(object o, EditedArgs args)
-        {
-            if (listStore.GetIterFromString(out TreeIter iter, args.Path))
-            {
-                // Actualizar el valor del umbral en el modelo
-                listStore.SetValue(iter, 5, args.NewText);
-                Console.WriteLine($"Umbral de notificación actualizado a: {args.NewText}");
             }
         }
 
@@ -235,6 +230,20 @@ namespace CryptoTrackApp.src.view.Components
             Name = name;
             Icon = icon;
         }
+    }
+
+    public class NotificationEditedEventArgs : EventArgs
+    {
+        public string CurrencyName { get; }
+        public int Rank { get; }
+        public float UmbralValue { get; }
+
+        public NotificationEditedEventArgs (string currencyName, int rank, float umbralValue){
+            CurrencyName = currencyName;
+            Rank = rank;
+            UmbralValue = umbralValue;
+        }
+
     }
 }
 

@@ -16,7 +16,7 @@ namespace CryptoTrackApp.src.services
         public Task<List<IDictionary<string, string>>?> GetSubscriptionsAsync(string userId);
         public Task<string> GetOneSubscriptionAsync(string userId, string currencyId);
         public void AddSubscriptionAsync(string userId, string currencyId);
-        public void SetNotificationUmbral(string subscriptionId);
+        public Task<bool> SetNotificationUmbral(string userId, string currencyId, float notificationUmbral);
         public Task<bool> ToggleNotificationAsync(string subscriptionId);
         public Task<List<string>> GetFollowedCryptosIdsAsync(string userId);
         public Task<bool> UnfollowAsync(string userId, string currencyId);
