@@ -161,7 +161,7 @@ namespace CryptoTrackApp.src.view.Windows {
 
             }
 
-            Dialog dialog = ViewManager.GetInstance().GetMessageDialog(this, "Title", message, image, buttonText);
+            Dialog dialog = new MessageDialog(this, "Title", message, image, buttonText);
             
             if (buttonText == "Login")
             {
