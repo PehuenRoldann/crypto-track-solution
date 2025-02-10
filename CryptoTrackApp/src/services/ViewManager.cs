@@ -4,6 +4,9 @@ using CryptoTrackApp.src.view.Windows;
 using CryptoTrackApp.src.services;
 using MessageDialog = CryptoTrackApp.src.view.Windows.MessageDialog;
 using Gdk;
+using System.Collections.Generic;
+using CryptoTrackApp.src.utils;
+using System.Linq;
 
 namespace CryptoTrackApp.src.services
 {
@@ -17,7 +20,7 @@ namespace CryptoTrackApp.src.services
     private static ViewManager _instance;
 
     private static readonly object _lock = new Object();
-    
+
     private ViewManager() {}
 
 
@@ -42,33 +45,37 @@ namespace CryptoTrackApp.src.services
 
     public void ShowView(string pViewType, View? pParent = null)
     {
-      View win;
-      switch (pViewType.ToLower())
-      {
-        case "login":
-          win = new LoginView(new UserServices());
-          break;
-        
-        case "signup":
-          win = new SignUpView(new UserServices());
-          break;
-        
-        case "main":
-          win = new MainView(this.UserId, new SubscriptionServices(),
-           new CurrencyServices(), new PlotterService());
-          break;
-        
-        case "follow":
-          win = new FollowView(new SubscriptionServices(), new CurrencyServices());
-          break;
-        
-        default:
-          win = new LoginView(new UserServices());
-          break;
-      }
+        string viewTypeKey = pViewType.ToLower();
 
-      this.InitView(win, pParent);
+        View win;
+        switch (viewTypeKey)
+        {
+            case ViewsIds.Login:
+                win = new LoginView(new UserServices());
+                break;
+
+            case ViewsIds.SignUp:
+                win = new SignUpView(new UserServices());
+                break;
+
+            case ViewsIds.Main:
+                win = new MainView(this.UserId, new SubscriptionServices(),
+                    new CurrencyServices(), new PlotterService());
+                break;
+
+            case ViewsIds.Follow:
+                win = new FollowView(new SubscriptionServices(), new CurrencyServices());
+                break;
+
+            default:
+                win = new LoginView(new UserServices());
+                break;
+        }
+        
+        InitView(win, pParent);
     }
+
+
     
 
     public void ClearAllCssProviders(CssProvider provider)
@@ -79,9 +86,8 @@ namespace CryptoTrackApp.src.services
 
     private void InitView(View win, View? pParent)
     {
-      this.App!.AddWindow(win);
+      App!.AddWindow(win);
       win.SetDefaultSize(1280, 720);
-      /* win.Move(0,0); */
       if (pParent != null && pParent.IsMaximized) {win.Maximize();}
       win.Show();
       if (pParent != null) {
@@ -91,6 +97,8 @@ namespace CryptoTrackApp.src.services
         pParent.Destroy();
         }
     }
+
+
 
     public MessageDialog GetMessageDialog(View pParent, string pTitle, string pMessage,Image pImage,
         string pButtonLabel, int pWidth = 400, int pHeight = 300)

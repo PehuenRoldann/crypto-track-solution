@@ -25,7 +25,7 @@ namespace CryptoTrackApp.src.view.Components
             this.listStore = new ListStore(
                 typeof(Pixbuf), typeof(string), typeof(int), typeof(string), 
                 typeof(string), typeof(string), 
-                typeof(Pixbuf));
+                typeof(Pixbuf), typeof(string));
 
             // Inicializar el TreeView con el ListStore
             var treeView = new TreeView(listStore);
@@ -38,6 +38,7 @@ namespace CryptoTrackApp.src.view.Components
             var tendencyRenderer = new CellRendererText();
             var notificationRenderer = new CellRendererText();
             var unfollowBtnRenderer = new CellRendererPixbuf();
+            // var idRenderer = new CellRendererText();
             
 
             notificationRenderer.Editable = true;
@@ -110,7 +111,7 @@ namespace CryptoTrackApp.src.view.Components
             if (args.Event.Button == 1) // Verifica que sea un clic izquierdo
             {
                 var treeView = sender as TreeView;
-                if (treeView.GetPathAtPos((int)args.Event.X, (int)args.Event.Y, out TreePath path, out TreeViewColumn column, out int cell_x, out int cell_y))
+                if (treeView!.GetPathAtPos((int)args.Event.X, (int)args.Event.Y, out TreePath path, out TreeViewColumn column, out int cell_x, out int cell_y))
                 {
                     // Verifica si el clic fue en la columna del Pixbuf
                     if (column.Title == "Unfollow")
@@ -120,7 +121,7 @@ namespace CryptoTrackApp.src.view.Components
                         {
                             Pixbuf icon = (Pixbuf)listStore.GetValue(iter, 0);
                             string name = (string)listStore.GetValue(iter, 1);
-                            string currencyId = (string)listStore.GetValue(iter, 8);
+                            string currencyId = (string)listStore.GetValue(iter, 7);
 
                             // Lanza el evento personalizado
                             UnfollowEvent?.Invoke(this, new UnfollowEventArgs(currencyId, name, icon));
@@ -133,7 +134,7 @@ namespace CryptoTrackApp.src.view.Components
             }
         }
 
-        public void AddData(Pixbuf icon, string name, int rank, double usdPrice, float tendency, float notificationUmbral)
+        public void AddData(Pixbuf icon, string name, int rank, double usdPrice, float tendency, float notificationUmbral, string currencyId)
         { 
             // Agregar nuevos datos al ListStore
             Pixbuf unfollowIcon = Pixbuf.LoadFromResource(IconsPaths.UnfllowIconPath);
@@ -145,7 +146,8 @@ namespace CryptoTrackApp.src.view.Components
                 Math.Round(usdPrice, 2).ToString(),
                 Math.Round(tendency, 2).ToString(),
                 Math.Round(notificationUmbral, 2).ToString(),
-                unfollowIcon
+                unfollowIcon,
+                currencyId
              );
         }
 
@@ -158,9 +160,10 @@ namespace CryptoTrackApp.src.view.Components
             {
                 string name = (string)listStore.GetValue(iter, 1);
                 int rank = (int)listStore.GetValue(iter, 2);
+                string currencyId = (string)listStore.GetValue(iter, 7);
                 string twoDigitsNumber = Math.Round(parsedValue, 2).ToString();
                 listStore.SetValue(iter, 5, twoDigitsNumber);
-                NotificationEditedEvent?.Invoke(this, new NotificationEditedEventArgs(name, rank, parsedValue));
+                NotificationEditedEvent?.Invoke(this, new NotificationEditedEventArgs(currencyId, name, rank, parsedValue));
             }
             else {
                 var parent = GtkUtils.GetParentWindow(this);
@@ -201,7 +204,7 @@ namespace CryptoTrackApp.src.view.Components
     // Clase para los argumentos del evento personalizado
     public class CryptoRowActivatedEventArgs : EventArgs
     {
-        public Pixbuf Icon { get; }
+        // public Pixbuf Icon { get; }
         public string Name { get; }
         public int Rank { get; }
         public double UsdPrice { get; }
@@ -235,10 +238,12 @@ namespace CryptoTrackApp.src.view.Components
     public class NotificationEditedEventArgs : EventArgs
     {
         public string CurrencyName { get; }
+        public string CurrencyId { get; }
         public int Rank { get; }
         public float UmbralValue { get; }
 
-        public NotificationEditedEventArgs (string currencyName, int rank, float umbralValue){
+        public NotificationEditedEventArgs (string currencyId, string currencyName, int rank, float umbralValue){
+            CurrencyId = currencyId;
             CurrencyName = currencyName;
             Rank = rank;
             UmbralValue = umbralValue;

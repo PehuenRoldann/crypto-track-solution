@@ -46,6 +46,8 @@ namespace CryptoTrackApp.src.view.Windows
 
         private Logger _logger = new Logger();
 
+        private bool isFollowViewOpen = false;
+
 
         private const int PLOT_WIDTH = 900;
         private const int PLOT_HEIGHT = 400;
@@ -104,7 +106,9 @@ namespace CryptoTrackApp.src.view.Windows
             this._panelScroll.Hide();
             this._panelMessage.Hide();
             this._spinner.Show();
-            LoadTablePanel();
+            ResetSubsTree();
+            LoadBoxPlot();
+
         }
 
         private async void InitPanel()
@@ -184,7 +188,7 @@ namespace CryptoTrackApp.src.view.Windows
 
         private async void NotificationEditedEventHandler(object? sender, NotificationEditedEventArgs e)
         {
-            var currencyData = this.currenciesData.Where(c => c["Name"] == e.CurrencyName && int.Parse(c["Rank"]) == e.Rank).FirstOrDefault();
+            var currencyData = this.currenciesData.Where(c => c["Id"] == e.CurrencyId).FirstOrDefault();
             var infoDialog = new InformationDialog(this, "Updating notification Threshold");
             infoDialog.Show();
             await Task.Delay(2000);
@@ -222,6 +226,7 @@ namespace CryptoTrackApp.src.view.Windows
                 infoDialog.Show();
                 await Task.Delay(2000);
                 bool result = await this.subscriptionService.UnfollowAsync(_userId, e.CurrencyId);
+                ResetSubsTree();
                 if (result) {
                     infoDialog.ShowContent($"You have stoped following {e.Name}", ImagesArrPaths.CheckMark);
                 }
@@ -285,7 +290,8 @@ namespace CryptoTrackApp.src.view.Windows
                     int.Parse(item["Rank"]),
                     double.Parse(item["PriceUsd"]),
                     float.Parse(item["ChangePercent24Hr"]),
-                    float.Parse(subscriptionsList.First(s => s["CurrencyId"] == item["Id"])["NotificationUmbral"])
+                    float.Parse(subscriptionsList.First(s => s["CurrencyId"] == item["Id"])["NotificationUmbral"]),
+                    item["Id"]
                 );
             }
 
@@ -351,7 +357,8 @@ namespace CryptoTrackApp.src.view.Windows
         {
             _logger.Log("[EVENT - FollowButtonReleased at MainView] - Delegated to ViewManager");
             ViewManager vw = ViewManager.GetInstance();
-            vw.ShowView("follow");
+            vw.ShowView(ViewsIds.Follow);
+
         }
 
         private async void LoadBoxPlot (string currency = "" ) {

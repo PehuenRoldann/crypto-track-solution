@@ -5,6 +5,7 @@ using Gdk;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using CryptoTrackApp.src.utils;
 
 namespace CryptoTrackApp.src.view.Windows
 {
@@ -13,7 +14,7 @@ namespace CryptoTrackApp.src.view.Windows
 {
       public string _basePath = AppDomain.CurrentDomain.BaseDirectory;
       public CssProvider cssProvider = new CssProvider();
-      private readonly string[] LOGO_PATH = { "src", "assets", "images", "cta_logo_64x64.png" };
+      private readonly string[] LOGO_PATH = ImagesArrPaths.AppLogo;
 
       public View(string TEMPLATE) : this(new Builder(TEMPLATE + ".glade"), TEMPLATE) 
       {
@@ -24,7 +25,7 @@ namespace CryptoTrackApp.src.view.Windows
       private View(Builder builder, string template) : base(builder.GetRawOwnedObject(template)) 
       {
           builder.Autoconnect(this);
-          this.Icon = Pixbuf.LoadFromResource("CryptoTrackApp.src.assets.icons.cta_logo_64x64.png");
+          this.Icon = Pixbuf.LoadFromResource(PixBufs.AppLogo);
           DeleteEvent += Window_DeleteEvent;
       }
 

@@ -10,6 +10,13 @@ namespace CryptoTrackApp.src.utils
         public const string MainView = "MainView";
     }
 
+    public readonly struct ViewsIds {
+        public const string Login = "login";
+        public const string Main = "main";
+        public const string Follow = "follow";
+        public const string SignUp= "signup";
+    }
+
     public static class CssFilesPaths {
         public static readonly string[] LoginWindowCss = { "src", "css", "login_window.css" };
         public static readonly string[] MainViewCss = { "src", "css", "main_view.css" };
@@ -46,5 +53,12 @@ namespace CryptoTrackApp.src.utils
         public static readonly string[] CheckMark = { "src", "assets", "images", "check-svgrepo-com.svg"};
         public static readonly string[] CrosskMark = { "src", "assets", "images", "cross-svgrepo-com.svg"};
         public static readonly string[] Warning = { "src", "assets", "images", "warning-svgrepo-com.svg"};
+        public static readonly string[] AppLogo = { "src", "assets", "images", "cta_logo_64x64.png" };
+    }
+
+
+    public readonly struct PixBufs {
+
+        public const string AppLogo = "CryptoTrackApp.src.assets.icons.cta_logo_64x64.png";
     }
 }
