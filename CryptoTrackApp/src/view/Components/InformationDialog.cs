@@ -2,7 +2,6 @@ using System;
 using Gtk;
 using Gdk;
 using Pango;
-using CryptoTrackApp.src.view.Utils;
 using CryptoTrackApp.src.utils;
 using IO = System.IO;
 using System.Text.RegularExpressions;

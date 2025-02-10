@@ -1,8 +1,17 @@
+using System;
 using System.IO;
 using System.Security;
 
 namespace CryptoTrackApp.src.utils
 {
+
+    public static class Config {
+        public static readonly string[] JsonConfArrPath = { "src", "conf.json" }; 
+    }
+
+    public readonly struct EnvNames {
+        public const string DbConnection = "db_connection";
+    }
 
     public readonly struct Templates {
 
@@ -61,4 +70,6 @@ namespace CryptoTrackApp.src.utils
 
         public const string AppLogo = "CryptoTrackApp.src.assets.icons.cta_logo_64x64.png";
     }
+
+    
 }

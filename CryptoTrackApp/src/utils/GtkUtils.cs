@@ -15,7 +15,7 @@ namespace CryptoTrackApp.src.utils
                 return parent as Window;
             }
             else {
-                return GetParentWindow(parent);
+                return GetParentWindow(parent!);
             }
         }
     }

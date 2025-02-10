@@ -6,7 +6,6 @@ using UI = Gtk.Builder.ObjectAttribute;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.services;
-using CryptoTrackApp.src.view.Utils;
 using CryptoTrackApp.src.utils;
 /* using GLib; */
 

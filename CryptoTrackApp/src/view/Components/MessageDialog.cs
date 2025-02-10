@@ -2,7 +2,7 @@ using System;
 using Gtk;
 using Gdk;
 using Pango;
-using CryptoTrackApp.src.view.Utils;
+using CryptoTrackApp.src.utils;
 
 namespace CryptoTrackApp.src.view.Windows
 {

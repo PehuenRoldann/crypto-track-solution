@@ -2,11 +2,11 @@ using System;
 using Gtk;
 using Gdk;
 using Pango;
-using CryptoTrackApp.src.view.Utils;
 using CryptoTrackApp.src.utils;
 using IO = System.IO;
 using System.Text.RegularExpressions;
 using System.Linq;
+
 
 namespace CryptoTrackApp.src.view.Components
 {
@@ -34,8 +34,9 @@ namespace CryptoTrackApp.src.view.Components
             bool imageExists = false;
             if (pImgPathArr != null && pImgPathArr.Length > 0) {
                 
-                basePath = AppDomain.CurrentDomain.BaseDirectory;
-                imgPath = IO.Path.Combine(pImgPathArr.Prepend(basePath).ToArray());
+                /* basePath = AppDomain.CurrentDomain.BaseDirectory;
+                imgPath = IO.Path.Combine(pImgPathArr.Prepend(basePath).ToArray()); */
+                imgPath = PathFinder.GetPath(pImgPathArr);
             }
 
             if (basePath != imgPath) {

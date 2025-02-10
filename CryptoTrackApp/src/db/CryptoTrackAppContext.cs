@@ -1,11 +1,8 @@
 using System;
-using System.IO;
-using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
-using EFCore.NamingConventions;
 using CryptoTrackApp.src.models;
 using CryptoTrackApp.src.utils;
+
 
 
 namespace CryptoTrackApp.src.db
@@ -19,11 +16,8 @@ namespace CryptoTrackApp.src.db
 
 		public CryptoTrackAppContext()
         {
-            string configRaw = File.ReadAllText("./src/conf.json");
-			var configJsonData = JsonConvert.DeserializeObject<dynamic>(configRaw);
-			CONNECTION = configJsonData["db_connection"].ToString();
-            Console.WriteLine("String de conexión"); // debug
-            Console.WriteLine(CONNECTION); // debug
+			var configService = new ConfigService(Config.JsonConfArrPath);
+			CONNECTION = configService.GetString(EnvNames.DbConnection)!;
 			_logger.Log($"[CONNECT to postgres DB - Connection string: {CONNECTION}]");
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
