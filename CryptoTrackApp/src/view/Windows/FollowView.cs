@@ -169,13 +169,10 @@ namespace CryptoTrackApp.src.view.Windows
 
         private void OnSearchEntryChange (object? sender, EventArgs? args)
         {
-            // CryptoCard[] filteredArray;
             string searchText = this._searchEntry.Text.ToLower();
             Console.WriteLine(searchText); // DEBUG
             if (searchText != ""){
                 CryptoCard[] filteredArray = this._cardsArray.Where(card => card.CryptoName.ToLower().Contains(searchText)).ToArray();
-                Console.WriteLine("Filtered Array: ");
-                // Console.WriteLine(this._cardsArray.Length);
                 this.ReloadFlowBox(filteredArray!);
             }
             else {

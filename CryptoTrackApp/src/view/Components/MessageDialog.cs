@@ -29,7 +29,6 @@ namespace CryptoTrackApp.src.view.Windows
             label.Expand = true;
             Button button = new Button();
             button.Label = pButtonLabel;
-            //button.Expand = true;
             img.MarginTop = 30;
             this.SetDefaultSize(pWidth, pHeight);
             this.ContentArea.Expand = true;

@@ -11,6 +11,7 @@ namespace CryptoTrackApp.src.utils
 
     public readonly struct EnvNames {
         public const string DbConnection = "db_connection";
+        public const string CoinCapApi = "coin_api_url";
     }
 
     public readonly struct Templates {
