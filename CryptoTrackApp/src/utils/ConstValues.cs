@@ -5,6 +5,33 @@ using System.Security;
 namespace CryptoTrackApp.src.utils
 {
 
+    public struct SubscriptionKeys
+    {
+        public const string UserId = "UserId";
+        public const string SubscriptionId = "SubscriptionId";
+        public const string CurrencyId = "CurrencyId";
+        public const string NotificationThreshold = "NotificationUmbral";
+        public const string FollowDate = "FollowDate";
+        public const string UnfollowDate = "UnfollowDate";
+    }
+
+    public struct CryptoCurrencyKeys
+    {
+        public const string Id = "Id";
+        public const string Rank = "Rank";
+        public const string Symbol = "Symbol";
+        public const string Name = "Name";
+        public const string Supply = "Supply";
+        public const string MaxSupply = "MaxSupply";
+        public const string MarketCapUsd = "MarketCapUsd";  // Asegúrate de usar la nomenclatura correcta para tus claves
+        public const string VolumeUsd24Hr = "VolumeUsd24Hr";
+        public const string PriceUsd = "PriceUsd";
+        public const string ChangePercent24Hr = "ChangePercent24Hr";
+        public const string VWap24Hr = "VWap24Hr";
+        public const string Explorer = "Explorer";
+    }
+
+
     public static class Config {
         public static readonly string[] JsonConfArrPath = { "src", "conf.json" }; 
     }
@@ -12,6 +39,7 @@ namespace CryptoTrackApp.src.utils
     public readonly struct EnvNames {
         public const string DbConnection = "db_connection";
         public const string CoinCapApi = "coin_api_url";
+        public const string ApiKey = "coin_cap_api_key";
     }
 
     public readonly struct Templates {

@@ -31,16 +31,12 @@ namespace CryptoTrackApp.src.services
         /// <summary>
         /// Returs a collection with the information of crypto currencies.
         /// </summary>
-        /// <param name="pOffset">The number of currencies we have already queried before.</param>
-        /// <param name="pLimit">The number of currencies we want to receive.</param>
+        /// <param name="pIds">Array with the desired ids</param>
         /// <returns>
-        /// A collection if Dictionary<string, string> with the currency information as an Array.
+        /// Array of currencies as dictionaries.
         /// Each currency has the next fields: Id, Rank, Symbol, Name, Supply, MaxSupply, MarketCpaUsd,
         ///   VolumeUsd24Hr, PriceUsd, ChangePercent24Hr, VWap24Hr, Explorer.
         /// </returns>
-        /// <exception cref="Exception">
-        /// If the query fails for some reason.
-        /// </exception>
         public Task<IDictionary<string, string>[]> GetCurrencies (string[] pIds);
         public Task<List<(DateTime, double)>> GetHistory(string pCurrencyId);
         public Task<Dictionary<DateTime, List<double>>> GetHistoryValues (string pCurrencyId);

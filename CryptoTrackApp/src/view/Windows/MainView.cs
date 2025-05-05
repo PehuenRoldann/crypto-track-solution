@@ -62,6 +62,7 @@ namespace CryptoTrackApp.src.view.Windows
         // private string SERVER_BURNING_PATH = "./src/assets/images/server_burning.png";
         private string[] SERVER_BURNING_PATH = {"src", "assets", "images", "server_burning.png"};
         //private string[] CSS_PATH = {"src", "css", "main_view.css"};
+        private readonly CryptoWorker _cryptoWorker;
 
 
         public MainView(
@@ -79,9 +80,26 @@ namespace CryptoTrackApp.src.view.Windows
             this.InitPanel();
             this.SetStyle(CssFilesPaths.MainViewCss);
 
+            _cryptoWorker = new CryptoWorker(this.currencyService, this.subscriptionService, _userId);
+            _cryptoWorker.NewCryptoDataReceived += UpdateData;
+            _cryptoWorker.Start();
         }
 
-// ----------- INITIAL CONFIGURATIONS ---------------------------------------
+        private async void UpdateData(object? sender, CryptoDataEventArgs e)
+        {
+            try {
+                this._panelScroll.Hide();
+                this._panelMessage.Hide();
+                this._spinner.Show();
+                ResetSubsTree();
+            }
+            catch(Exception error) {
+                _logger.Log($"[ERROR - UpdateData at Main view - Message: {error.Message}]");
+            }
+                
+        }
+
+        // ----------- INITIAL CONFIGURATIONS ---------------------------------------
         private void OnDelete(object o, DeleteEventArgs args)
         {
             Application.Quit();
@@ -181,7 +199,9 @@ namespace CryptoTrackApp.src.view.Windows
             subsTree.Expand = true;
             subsTree.Halign = Align.Center;
             subsTree.Valign = Align.Center;
-            subsTree.StyleContext.AddClass(MainViewClases.SubsTree);
+            if (!subsTree.StyleContext.HasClass(MainViewClases.SubsTree)) {
+                subsTree.StyleContext.AddClass(MainViewClases.SubsTree);
+            }
             this.subsTree = subsTree;
 
         }
@@ -242,7 +262,7 @@ namespace CryptoTrackApp.src.view.Windows
 
 
         /// <summary>
-        /// 
+        /// Load the subscriptions List for the first time
         /// </summary>
         /// <returns>
         /// 0: No subscriptions.
@@ -264,7 +284,6 @@ namespace CryptoTrackApp.src.view.Windows
             {
                 return 0;
             }
-
 
             this.currenciesData =  await currencyService.GetCurrencies(cryptosId.ToArray());
 
@@ -439,7 +458,6 @@ namespace CryptoTrackApp.src.view.Windows
                 _panelBoxPlot.ReorderChild(boxplot, 1);
             }
             else {
-               // emptyLbl.Text = "Select a currency of the following table to display data."; // sacar después
                 emptyLbl.Hexpand = true;
                 spinner.Active = false;
                 spinner.Destroy();
