@@ -12,16 +12,17 @@ namespace CryptoTrackApp.src.db
 {
     public class CoinApi : ICryptoApi
     {
-        // private string baseUrl = "https://api.coincap.io/v2";
-        private string baseUrl = "";
-        private RestClientOptions options;
+        private string _baseUrl = "";
+        private RestClientOptions _options;
         private Logger _logger = new Logger();
+        private string _bearerToken;
 
         public CoinApi() {
 
             var configService = new ConfigService(Config.JsonConfArrPath);
-			baseUrl = configService.GetString(EnvNames.CoinCapApi)!;
-            this.options = new RestClientOptions(baseUrl);
+			_baseUrl = configService.GetString(EnvNames.CoinCapApi)!;
+            _options = new RestClientOptions(_baseUrl);
+            _bearerToken = configService.GetString(EnvNames.ApiKey)!;
         }
 
 // ------------------------ AUXILIAR METHODS --------------------------------------------------------
@@ -31,6 +32,16 @@ namespace CryptoTrackApp.src.db
             var currencyDataJson = jsonData["data"].ToString();
             return JsonConvert.DeserializeObject<T>(currencyDataJson);
         }
+
+        private RestRequest CreateRequest(string resource)
+        {
+            var request = new RestRequest(resource);
+            if (!string.IsNullOrEmpty(_bearerToken)) {
+                request.AddHeader("Authorization", $"Bearer {_bearerToken}");
+            }
+            return request;
+        }
+
 
 
 
@@ -49,11 +60,11 @@ namespace CryptoTrackApp.src.db
                 queryIds += $",{id}";
             }
 
-            using (RestClient client = new RestClient(options)) {
+            using (RestClient client = new RestClient(_options)) {
 
                 try {
-
-                    RestRequest request = new RestRequest($"assets?ids={queryIds}");
+                    
+                    RestRequest request = CreateRequest($"assets?ids={queryIds.Replace(",", "%2C")}");
                     RestResponse response = await client.GetAsync(request);
 
                     if (response.StatusCode != System.Net.HttpStatusCode.OK) {
@@ -73,9 +84,9 @@ namespace CryptoTrackApp.src.db
 
         public async Task<Currency[]> GetCurrencies(int pOffset = 0, int pLimit = 100)
         {
-            using (RestClient client = new RestClient(options)) {
+            using (RestClient client = new RestClient(_options)) {
 
-                RestRequest request = new RestRequest($"assets?offset={pOffset}&limit={pLimit}");
+                RestRequest request = CreateRequest($"assets?offset={pOffset}&limit={pLimit}");
                 RestResponse response = await client.GetAsync(request);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK) {
@@ -89,9 +100,9 @@ namespace CryptoTrackApp.src.db
         
         public async Task<Currency> GetCurrency(string pId)
         {
-            using (RestClient client = new RestClient (options)) {
+            using (RestClient client = new RestClient (_options)) {
 
-                RestRequest request = new RestRequest($"assets/{pId}");
+                RestRequest request = CreateRequest($"assets/{pId}");
                 RestResponse response = await client.GetAsync(request);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK) {
@@ -105,10 +116,10 @@ namespace CryptoTrackApp.src.db
 
         public async Task<List<(DateTime, double)>> GetHistory(string pId)
         {
-            using (RestClient client = new RestClient (options))
+            using (RestClient client = new RestClient (_options))
             {
 
-                RestRequest request = new RestRequest($"assets/{pId}/history?interval=d1");
+                RestRequest request = CreateRequest($"assets/{pId}/history?interval=d1");
                 RestResponse response = await client.GetAsync(request);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
