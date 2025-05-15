@@ -1,12 +1,9 @@
 using CryptoTrackApp.src.utils;
 using Gdk;
 using Gtk;
-using Pango;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection.Metadata.Ecma335;
 
-namespace CryptoTrackApp.src.view.Components
+namespace CryptoTrackApp.src.view.components
 {
     public class CryptoTreeViewComponent : ScrolledWindow
     {

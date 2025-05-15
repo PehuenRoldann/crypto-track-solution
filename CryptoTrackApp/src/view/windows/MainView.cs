@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using Gtk;
 using Gdk;
 using UI = Gtk.Builder.ObjectAttribute;
-using CryptoTrackApp.src.view.Components;
+using CryptoTrackApp.src.view.components;
 using CryptoTrackApp.src.services;
 using System.Threading.Tasks;
 using Pango;
 using System.Linq;
 using CryptoTrackApp.src.utils;
-using System.Linq;
+using CryptoTrackApp.src.view.helpers;
 
-namespace CryptoTrackApp.src.view.Windows
+namespace CryptoTrackApp.src.view.windows
 {
     
     public class MainView : View

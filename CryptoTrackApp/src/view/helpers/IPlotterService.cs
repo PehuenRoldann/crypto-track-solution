@@ -2,16 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CryptoTrackApp.src.services
+namespace CryptoTrackApp.src.view.helpers
 {
     public interface IPlotterService
     {
-        /* /// <summary>
-        /// Generates a image with the plotbox.
-        /// </summary>
-        /// <param name="pCurrencyId"></param>
-        /// <returns>Path to the plotbox generated image</returns>
-        public Task<string> GetBoxPlot (Dictionary<DateTime, List<double>> valuesPerMonth, int width = 700, int heigh = 300); */
 
         /// <summary>
         /// Generates a jpeg with a candles plot for the given history.

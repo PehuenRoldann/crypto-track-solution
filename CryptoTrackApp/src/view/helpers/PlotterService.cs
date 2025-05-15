@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.utils;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Pango;
+// using Microsoft.EntityFrameworkCore.Migrations;
+// using Pango;
 using ScottPlot;
-using ScottPlot.Panels;
-using ScottPlot.TickGenerators;
-using ScottPlot.TickGenerators.TimeUnits;
+// using ScottPlot.Panels;
+// using ScottPlot.TickGenerators;
+// using ScottPlot.TickGenerators.TimeUnits;
 using SP = ScottPlot;
 
-namespace CryptoTrackApp.src.services
+namespace CryptoTrackApp.src.view.helpers
 {
     public class PlotterService : IPlotterService
     {

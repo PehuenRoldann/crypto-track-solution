@@ -6,8 +6,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.services;
 using CryptoTrackApp.src.utils;
+using CryptoTrackApp.src.view.helpers;
 
-namespace CryptoTrackApp.src.view.Windows
+namespace CryptoTrackApp.src.view.windows
 {
     public class LoginView : View
     {

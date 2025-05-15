@@ -7,7 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using CryptoTrackApp.src.utils;
 
-namespace CryptoTrackApp.src.view.Windows
+namespace CryptoTrackApp.src.view.windows
 {
 
   public abstract class View : ApplicationWindow 

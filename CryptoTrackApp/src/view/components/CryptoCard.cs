@@ -3,9 +3,9 @@ using Gtk;
 using UI = Gtk.Builder.ObjectAttribute;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.services;
-using CryptoTrackApp.src.utils;
+using CryptoTrackApp.src.view.helpers;
 
-namespace CryptoTrackApp.src.view.Components
+namespace CryptoTrackApp.src.view.components
 {
     public class CryptoCard : Gtk.Box
     {

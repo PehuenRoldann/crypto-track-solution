@@ -1,14 +1,13 @@
 using System;
 using Gtk;
-using CryptoTrackApp.src.view.Windows;
+using CryptoTrackApp.src.view.windows;
 using CryptoTrackApp.src.services;
-using MessageDialog = CryptoTrackApp.src.view.Windows.MessageDialog;
+using MessageDialog = CryptoTrackApp.src.view.components.MessageDialog;
 using Gdk;
-using System.Collections.Generic;
 using CryptoTrackApp.src.utils;
-using System.Linq;
 
-namespace CryptoTrackApp.src.services
+
+namespace CryptoTrackApp.src.view.helpers
 {
 
   public class ViewManager : IViewManager

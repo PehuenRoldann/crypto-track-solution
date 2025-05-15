@@ -28,7 +28,7 @@ public class CryptoWorker
         _currencyServices = currencyServices;
         _subsServices = subscriptionServices;
         _userId = userId;
-        _timer = new Timer(10000);  // Intervalo de 60 segundos
+        _timer = new Timer(50000);  // Intervalo de 60 segundos
         _timer.Elapsed += OnTimerElapsed;
         _timer.AutoReset = true;  // Repetir cada intervalo
 

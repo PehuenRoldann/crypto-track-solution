@@ -1,15 +1,14 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CryptoTrackApp.src.services;
 using CryptoTrackApp.src.utils;
-using CryptoTrackApp.src.view.Components;
-using CryptoTrackApp.src.utils;
+using CryptoTrackApp.src.view.components;
+using CryptoTrackApp.src.view.helpers;
 using Gtk;
 using UI = Gtk.Builder.ObjectAttribute;
 
-namespace CryptoTrackApp.src.view.Windows
+namespace CryptoTrackApp.src.view.windows
 {
     public class FollowView : View
     {

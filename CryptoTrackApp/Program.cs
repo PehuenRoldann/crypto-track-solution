@@ -1,6 +1,6 @@
 using System;
 using Gtk;
-using ViewManager = CryptoTrackApp.src.services.ViewManager;
+using ViewManager = CryptoTrackApp.src.view.helpers.ViewManager;
 using CryptoTrackApp.src.utils;
 
 namespace CryptoTrackApp

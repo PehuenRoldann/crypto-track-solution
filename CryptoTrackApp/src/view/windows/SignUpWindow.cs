@@ -7,9 +7,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.services;
 using CryptoTrackApp.src.utils;
+using CryptoTrackApp.src.view.helpers;
+using COMP = CryptoTrackApp.src.view.components;
 /* using GLib; */
 
-namespace CryptoTrackApp.src.view.Windows {
+namespace CryptoTrackApp.src.view.windows {
     public class SignUpView : View
     {
         [UI] Image? _logo = null;
@@ -160,7 +162,7 @@ namespace CryptoTrackApp.src.view.Windows {
 
             }
 
-            Dialog dialog = new MessageDialog(this, "Title", message, image, buttonText);
+            Dialog dialog = new COMP.MessageDialog(this, "Title", message, image, buttonText);
             
             if (buttonText == "Login")
             {

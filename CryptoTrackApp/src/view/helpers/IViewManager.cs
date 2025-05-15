@@ -1,11 +1,11 @@
 
 using Gtk;
 using Gdk;
-using CryptoTrackApp.src.view.Windows;
+using CryptoTrackApp.src.view.windows;
 
-using MessageDialog = CryptoTrackApp.src.view.Windows.MessageDialog;
+using MessageDialog = CryptoTrackApp.src.view.components.MessageDialog;
 
-namespace CryptoTrackApp.src.services
+namespace CryptoTrackApp.src.view.helpers
 {
 
   public interface IViewManager {

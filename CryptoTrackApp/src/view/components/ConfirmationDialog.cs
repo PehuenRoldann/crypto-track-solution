@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 
 
-namespace CryptoTrackApp.src.view.Components
+namespace CryptoTrackApp.src.view.components
 {
     public class ConfirmationDialog : Gtk.Dialog
     {

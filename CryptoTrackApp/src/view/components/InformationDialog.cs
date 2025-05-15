@@ -7,7 +7,7 @@ using IO = System.IO;
 using System.Text.RegularExpressions;
 using System.Linq;
 
-namespace CryptoTrackApp.src.view.Components
+namespace CryptoTrackApp.src.view.components
 {
     public class InformationDialog : Gtk.Dialog
     {
