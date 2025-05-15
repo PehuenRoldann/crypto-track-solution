@@ -380,9 +380,9 @@ namespace CryptoTrackApp.src.view.windows
 
         }
 
-        private async void LoadBoxPlot (string currency = "" ) {
+        private async void LoadBoxPlot (string pCurrencyId = "" ) {
 
-            _logger.Log($"[EXECT - Operation LoadBoxPlot at MainView - Parameters: [currency: {currency}]]");
+            
 
             foreach (Widget widget in _panelBoxPlot.Children) {
                 widget.Destroy();
@@ -410,32 +410,41 @@ namespace CryptoTrackApp.src.view.windows
 
             bool shouldShowPlot = false;
 
-            if (currency == "") {
+            string currencyId = pCurrencyId != "" ? pCurrencyId : DefaultCurrencyData.bitcoinId;
 
-                _logger.Log($"[FAILURE - Operation LoadBoxPlot at MainView - Couldn't load plot - Parameters: [currency: {currency}]]");
+            _logger.Log($"[EXECT - Operation LoadBoxPlot at MainView - Parameters: [currency: {currencyId}]]");
+            if (currencyId == "") {
+
+                _logger.Log($"[FAILURE - Operation LoadBoxPlot at MainView - Couldn't load plot - Parameters: [currency: {currencyId}]]");
                 emptyLbl.Text = "Select a currency of the following table to display data.";
-                currency = "bitcoin";
-                historyValues = await this.currencyService.GetHistory(pCurrencyId: currency);
+                currencyId = DefaultCurrencyData.bitcoinId;
+                historyValues = await this.currencyService.GetHistory(pCurrencyId: currencyId);
             }
             else {
-                historyValues = await this.currencyService.GetHistory(pCurrencyId:currency);
+                historyValues = await this.currencyService.GetHistory(pCurrencyId:currencyId);
             }
 
 
-            if ( currency != "" && historyValues.Count == 0) { // Currency selected, couldn't get history.
+            if ( currencyId != "" && historyValues.Count == 0) { // Currency selected, couldn't get history.
 
                 _logger.Log("[FAILURE - Operation LoadBoxPlot at MainView - Couldn't get the history values to plot]");
                 emptyLbl.Text = "Error while trying to get currency values history..., try again or contact support.";
             }
-            else if ( currency != "" && historyValues.Count > 0 ) {
+            else if ( currencyId != "" && historyValues.Count > 0 ) {
 
                 int plotWidth;
                 int plotHeigh;
                 this.GetSize(out plotWidth, out plotHeigh);
                 plotWidth = (int)Math.Round(plotWidth - plotWidth * 0.20);
                 plotHeigh = (int)Math.Round(plotHeigh * 0.5);
-                string currencyName =  currenciesData.First(x => x["Id"] == currency)["Name"];
-                plotPath = await this.plotService.GetCandlesPlot(historyValues, width: plotWidth, height: plotHeigh, $"{currencyName} value over time");
+                IDictionary<string, string>? currency = currenciesData.FirstOrDefault(x => x["Id"] == currencyId);
+                string currencyName = currency == null ? DefaultCurrencyData.bitcoinName : currency["Name"];
+                plotPath = await this.plotService.GetCandlesPlot(
+                    historyValues,
+                    width: plotWidth,
+                    height: plotHeigh,
+                    $"{ currencyName } value over time"
+                );
             }
 
 

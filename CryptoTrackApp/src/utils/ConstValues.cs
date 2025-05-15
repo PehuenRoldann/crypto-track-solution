@@ -100,5 +100,10 @@ namespace CryptoTrackApp.src.utils
         public const string AppLogo = "CryptoTrackApp.src.assets.icons.cta_logo_64x64.png";
     }
 
+    public readonly struct DefaultCurrencyData {
+        public const string bitcoinId = "bitcoin";
+        public const string bitcoinName = "bitcoin";
+    }
+
     
 }
