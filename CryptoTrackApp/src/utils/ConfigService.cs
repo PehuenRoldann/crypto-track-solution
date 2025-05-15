@@ -1,16 +1,21 @@
-using CryptoTrackApp.src.utils;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System;
 
 namespace CryptoTrackApp.src.utils
 {
-    public class ConfigService
+    public class JsonConfigService : IConfigService
     {
         private readonly JObject _config;
         private Logger _logger = new Logger();
-        public ConfigService(string[] configFilePathArr)
+
+        private static JsonConfigService _instance;
+        private static readonly object _lock = new Object();
+
+        // ------ SINGLETON CONSTRUCTOR -----------------------
+        private JsonConfigService()
         {
-            var path = PathFinder.GetPath(configFilePathArr);
+            var path = PathFinder.GetPath(Config.JsonConfArrPath);
             if (!File.Exists(path))
             {
                 _logger.Log("[ERROR - While creating instance of ConfigService - config file not exist!!]");
@@ -20,6 +25,23 @@ namespace CryptoTrackApp.src.utils
             string json = File.ReadAllText(path);
             _config = JObject.Parse(json);
         }
+
+        public static JsonConfigService GetInstance()
+        {
+            if (_instance == null)
+            {
+                lock (_lock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new JsonConfigService();
+                    }
+                }
+            }
+
+            return _instance;
+        }
+
 
         public string? GetString(string key)
         {

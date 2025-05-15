@@ -11,18 +11,18 @@ namespace CryptoTrackApp.src.db
     {
         public DbSet<User> Users {get; set;}
         public DbSet<Subscription> Subscriptions {get; set;}
-		private string CONNECTION = "";
+		private string _connectionStr = "";
 		private Logger _logger = new Logger(); 
 
 		public CryptoTrackAppContext()
         {
-			var configService = new ConfigService(Config.JsonConfArrPath);
-			CONNECTION = configService.GetString(EnvNames.DbConnection)!;
-			_logger.Log($"[CONNECT to postgres DB - Connection string: {CONNECTION}]");
+			IConfigService configService = JsonConfigService.GetInstance();
+			_connectionStr = configService.GetString(ConfigurationsKeys.DbConnection)!;
+			_logger.Log($"[CONNECT to postgres DB - Connection string: {_connectionStr}]");
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder
-            .UseNpgsql(CONNECTION)
+            .UseNpgsql(_connectionStr)
             .UseSnakeCaseNamingConvention();
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

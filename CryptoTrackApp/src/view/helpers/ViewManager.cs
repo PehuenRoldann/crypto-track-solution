@@ -5,6 +5,7 @@ using CryptoTrackApp.src.services;
 using MessageDialog = CryptoTrackApp.src.view.components.MessageDialog;
 using Gdk;
 using CryptoTrackApp.src.utils;
+using CryptoTrackApp.src.models;
 
 
 namespace CryptoTrackApp.src.view.helpers
@@ -16,11 +17,22 @@ namespace CryptoTrackApp.src.view.helpers
 
     private Application? _app;
 
+    // Servicios compartidos
+    private readonly IUserServices _userServices;
+    private readonly ISubscriptionServices _subscriptionServices;
+    private readonly ICurrencyServices _currencyServices;
+    private readonly IPlotterService _plotterService;
+
     private static ViewManager _instance;
 
     private static readonly object _lock = new Object();
 
-    private ViewManager() {}
+    private ViewManager() {
+        _userServices = new UserServices();
+        _subscriptionServices = new SubscriptionServices();
+        _currencyServices = new CurrencyServices();
+        _plotterService = new PlotterService();
+    }
 
 
     public static ViewManager GetInstance()
@@ -50,24 +62,30 @@ namespace CryptoTrackApp.src.view.helpers
         switch (viewTypeKey)
         {
             case ViewsIds.Login:
-                win = new LoginView(new UserServices());
+                win = new LoginView(this._userServices);
                 break;
 
             case ViewsIds.SignUp:
-                win = new SignUpView(new UserServices());
+                win = new SignUpView(this._userServices);
                 break;
 
             case ViewsIds.Main:
-                win = new MainView(this.UserId, new SubscriptionServices(),
-                    new CurrencyServices(), new PlotterService());
+                win = new MainView(
+                    this.UserId,
+                    this._subscriptionServices,
+                    this._currencyServices,
+                    this._plotterService);
                 break;
 
             case ViewsIds.Follow:
-                win = new FollowView(new SubscriptionServices(), new CurrencyServices());
+                win = new FollowView(
+                    this._subscriptionServices,
+                    this._currencyServices
+                );
                 break;
 
             default:
-                win = new LoginView(new UserServices());
+                win = new LoginView(this._userServices);
                 break;
         }
         

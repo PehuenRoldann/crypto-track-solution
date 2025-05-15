@@ -19,10 +19,10 @@ namespace CryptoTrackApp.src.db
 
         public CoinApi() {
 
-            var configService = new ConfigService(Config.JsonConfArrPath);
-			_baseUrl = configService.GetString(EnvNames.CoinCapApi)!;
+            var configService = JsonConfigService.GetInstance();
+			_baseUrl = configService.GetString(ConfigurationsKeys.CoinCapApi)!;
             _options = new RestClientOptions(_baseUrl);
-            _bearerToken = configService.GetString(EnvNames.ApiKey)!;
+            _bearerToken = configService.GetString(ConfigurationsKeys.ApiKey)!;
         }
 
 // ------------------------ AUXILIAR METHODS --------------------------------------------------------

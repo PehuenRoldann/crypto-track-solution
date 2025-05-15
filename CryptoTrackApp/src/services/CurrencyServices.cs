@@ -1,23 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
 using CryptoTrackApp.src.db;
 using CryptoTrackApp.src.models;
 using CryptoTrackApp.src.utils;
-using ScottPlot;
-using ScottPlot.AxisPanels;
 
-// using GLib;
-using ScottPlot.Plottables;
-using ScottPlot.TickGenerators;
-using ScottPlot.TickGenerators.TimeUnits;
-using SP = ScottPlot;
 
 namespace CryptoTrackApp.src.services
 {

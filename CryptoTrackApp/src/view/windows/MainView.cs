@@ -37,30 +37,30 @@ namespace CryptoTrackApp.src.view.windows
         private Label _message;
         private Box _noSubscriptionsBox;
         private string _userId;
-        private CryptoTreeViewComponent? subsTree;
-        private ISubscriptionServices subscriptionService;
-        private ICurrencyServices currencyService;
-        private IPlotterService plotService;
+        private CryptoTreeViewComponent? _subsTree;
+        private ISubscriptionServices _subscriptionService;
+        private ICurrencyServices _currencyService;
+        private IPlotterService _plotService;
 
-        private IDictionary<string,string>[] currenciesData;
+        private IDictionary<string,string>[] _currenciesData;
 
         private Logger _logger = new Logger();
 
-        private bool isFollowViewOpen = false;
+        private bool _isFollowViewOpen = false;
 
 
         private const int PLOT_WIDTH = 900;
         private const int PLOT_HEIGHT = 400;
 
-        private string[] LOGOUT_IMAGE_PATH = {"src", "assets", "images", "logout.png"};
-        private string[] LOGO_PATH = {"src", "assets", "images", "cta_logo_64x64.png"};
+        private string[] _LOGOUT_IMAGE_PATH = {"src", "assets", "images", "logout.png"};
+        private string[] _LOGO_PATH = {"src", "assets", "images", "cta_logo_64x64.png"};
         // private string NOT_FOUND_PATH = "./src/assets/images/not_found.png";
-        private string[] NOT_FOUND_PATH = {"src", "assets", "images", "not_found.png"};
-        private string[] PANEL_IMG_PATH = {"src", "assets", "images", "panel.png"};
-        private string[] COMPAS_IMG_PATH = {"src", "assets", "images", "compass.png"};
-        private string[] ABOUT_IMG_PATH = {"src", "assets", "images", "about.png"};
+        private string[] _NOT_FOUND_PATH = {"src", "assets", "images", "not_found.png"};
+        private string[] _PANEL_IMG_PATH = {"src", "assets", "images", "panel.png"};
+        private string[] _COMPAS_IMG_PATH = {"src", "assets", "images", "compass.png"};
+        private string[] _ABOUT_IMG_PATH = {"src", "assets", "images", "about.png"};
         // private string SERVER_BURNING_PATH = "./src/assets/images/server_burning.png";
-        private string[] SERVER_BURNING_PATH = {"src", "assets", "images", "server_burning.png"};
+        private string[] _SERVER_BURNING_PATH = {"src", "assets", "images", "server_burning.png"};
         //private string[] CSS_PATH = {"src", "css", "main_view.css"};
         private readonly CryptoWorker _cryptoWorker;
 
@@ -73,14 +73,14 @@ namespace CryptoTrackApp.src.view.windows
         {
             _logger.Log("[INIT - MainView]");
             this._userId = pUserId;
-            this.subscriptionService = pSubService;
-            this.currencyService = pCurrencyService;
-            this.plotService = pPlotService;
+            this._subscriptionService = pSubService;
+            this._currencyService = pCurrencyService;
+            this._plotService = pPlotService;
             
             this.InitPanel();
             this.SetStyle(CssFilesPaths.MainViewCss);
 
-            _cryptoWorker = new CryptoWorker(this.currencyService, this.subscriptionService, _userId);
+            _cryptoWorker = new CryptoWorker(this._currencyService, this._subscriptionService, _userId);
             _cryptoWorker.NewCryptoDataReceived += UpdateData;
             _cryptoWorker.Start();
         }
@@ -113,11 +113,11 @@ namespace CryptoTrackApp.src.view.windows
 
         public override void ConfigImages()
         {
-            this._logoImg.File = this.GetAbsolutePath(LOGO_PATH);
-            this._logoutBtnImg.File = this.GetAbsolutePath(LOGOUT_IMAGE_PATH);
-            this._panelBtnImg.File = this.GetAbsolutePath(PANEL_IMG_PATH);
-            this._followBtnImg.File = this.GetAbsolutePath(COMPAS_IMG_PATH);
-            this._aboutBtnImg.File = this.GetAbsolutePath(ABOUT_IMG_PATH);
+            this._logoImg.File = this.GetAbsolutePath(_LOGO_PATH);
+            this._logoutBtnImg.File = this.GetAbsolutePath(_LOGOUT_IMAGE_PATH);
+            this._panelBtnImg.File = this.GetAbsolutePath(_PANEL_IMG_PATH);
+            this._followBtnImg.File = this.GetAbsolutePath(_COMPAS_IMG_PATH);
+            this._aboutBtnImg.File = this.GetAbsolutePath(_ABOUT_IMG_PATH);
         }
 
         private void PanelButtonReleased (object sender, ButtonReleaseEventArgs args) {
@@ -151,35 +151,35 @@ namespace CryptoTrackApp.src.view.windows
         /// </summary>
         public async void LoadTablePanel () {
 
-            if (this.subsTree == null) {
+            if (this._subsTree == null) {
                 ConfigSubsList();
             }
 
             int haveSubscriptions = await this.LoadSubscriptionsList();
 
-                switch (haveSubscriptions) {
-                    case 0:
-                        ShowMessagePanel(
-                            pMessage: "You are not following any crypto yet!\n"+
-                            "Press the follow button in the navbar to start following some currencies.",
-                            pImagePath: this.GetAbsolutePath(NOT_FOUND_PATH)
-                        );
-                    break;
-                    case 1:
-                        ShowMessagePanel(
-                            pMessage: "This application uses a third party API to get the currencies info.\n"
-                            +"Please, wait a few seconds and try again.", 
-                            pImagePath: this.GetAbsolutePath(SERVER_BURNING_PATH)
-                        );
-                    break;
-                    case 2:
-                        this._panelScroll.Add(this.subsTree);
-                        this._spinner.Hide();
-                        this._panelMessage.Hide();
-                        this._panelScroll.ShowAll();
-                        this._middlePanel.ShowAll();
-                    break;
-                }
+            switch (haveSubscriptions) {
+                case 0:
+                    ShowMessagePanel(
+                        pMessage: "You are not following any crypto yet!\n"+
+                        "Press the follow button in the navbar to start following some currencies.",
+                        pImagePath: this.GetAbsolutePath(_NOT_FOUND_PATH)
+                    );
+                break;
+                case 1:
+                    ShowMessagePanel(
+                        pMessage: "This application uses a third party API to get the currencies info.\n"
+                        +"Please, wait a few seconds and try again.", 
+                        pImagePath: this.GetAbsolutePath(_SERVER_BURNING_PATH)
+                    );
+                break;
+                case 2:
+                    this._panelScroll.Add(this._subsTree);
+                    this._spinner.Hide();
+                    this._panelMessage.Hide();
+                    this._panelScroll.ShowAll();
+                    this._middlePanel.ShowAll();
+                break;
+            }
 
         }
 
@@ -189,8 +189,9 @@ namespace CryptoTrackApp.src.view.windows
             subsTree.RowActivatedEvent += (sender, e) =>
             {
                 _logger.Log($"[EVENT - RowAcitvatedEvent - Row values: [Name: {e.Name}, Rank: {e.Rank}, UsdPrice: {e.UsdPrice}, Tendency: {e.Tendency}]]");
-                IDictionary<string, string> currency = this.currenciesData.First<IDictionary<string, string>>(elem => elem["Name"] == e.Name);
+                IDictionary<string, string> currency = this._currenciesData.First<IDictionary<string, string>>(elem => elem["Name"] == e.Name);
                 this.LoadBoxPlot(currency["Id"]);
+
             };
 
             subsTree.UnfollowEvent += UnfollowPressedEventHandler;
@@ -202,17 +203,17 @@ namespace CryptoTrackApp.src.view.windows
             if (!subsTree.StyleContext.HasClass(MainViewClases.SubsTree)) {
                 subsTree.StyleContext.AddClass(MainViewClases.SubsTree);
             }
-            this.subsTree = subsTree;
+            this._subsTree = subsTree;
 
         }
 
         private async void NotificationEditedEventHandler(object? sender, NotificationEditedEventArgs e)
         {
-            var currencyData = this.currenciesData.Where(c => c["Id"] == e.CurrencyId).FirstOrDefault();
+            var currencyData = this._currenciesData.Where(c => c["Id"] == e.CurrencyId).FirstOrDefault();
             var infoDialog = new InformationDialog(this, "Updating notification Threshold");
             infoDialog.Show();
             await Task.Delay(2000);
-            var result = await this.subscriptionService.SetNotificationUmbral(_userId, currencyData!["Id"], e.UmbralValue);
+            var result = await this._subscriptionService.SetNotificationUmbral(_userId, currencyData!["Id"], e.UmbralValue);
             ResetSubsTree();
 
             if (result) {
@@ -230,7 +231,7 @@ namespace CryptoTrackApp.src.view.windows
 
             
             var imgPath = AssetsArrPaths.CurrenciesImages;
-            var currencySymbol = this.currenciesData.First(c => c["Id"] == e.CurrencyId)["Symbol"];
+            var currencySymbol = this._currenciesData.First(c => c["Id"] == e.CurrencyId)["Symbol"];
             var unfollowDialog = new ConfirmationDialog(
                 this,
                 "Unfollow",
@@ -245,7 +246,7 @@ namespace CryptoTrackApp.src.view.windows
                 var infoDialog = new InformationDialog(this, $"Unfollowing {e.Name}");
                 infoDialog.Show();
                 await Task.Delay(2000);
-                bool result = await this.subscriptionService.UnfollowAsync(_userId, e.CurrencyId);
+                bool result = await this._subscriptionService.UnfollowAsync(_userId, e.CurrencyId);
                 ResetSubsTree();
                 if (result) {
                     infoDialog.ShowContent($"You have stoped following {e.Name}", ImagesArrPaths.CheckMark);
@@ -273,7 +274,7 @@ namespace CryptoTrackApp.src.view.windows
             
             // List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync(this._userId);
             
-            List<IDictionary<string, string>>? subscriptionsList = await subscriptionService.GetSubscriptionsAsync(this._userId);
+            List<IDictionary<string, string>>? subscriptionsList = await _subscriptionService.GetSubscriptionsAsync(this._userId);
             List<string> cryptosId = new List<string>();
 
             if (subscriptionsList != null) {
@@ -285,13 +286,13 @@ namespace CryptoTrackApp.src.view.windows
                 return 0;
             }
 
-            this.currenciesData =  await currencyService.GetCurrencies(cryptosId.ToArray());
+            this._currenciesData =  await _currencyService.GetCurrencies(cryptosId.ToArray());
 
-            if (this.currenciesData.Length == 0) {
+            if (this._currenciesData.Length == 0) {
                 return 1;
             }
 
-            foreach (var item in this.currenciesData)
+            foreach (var item in this._currenciesData)
             {
                 Pixbuf icon;
 
@@ -302,7 +303,7 @@ namespace CryptoTrackApp.src.view.windows
                     icon = Pixbuf.LoadFromResource("CryptoTrackApp.src.assets.icons.currency.not_found.png");
                 }
 
-                this.subsTree.AddData
+                this._subsTree.AddData
                 (
                     icon,
                     item["Name"],
@@ -382,7 +383,9 @@ namespace CryptoTrackApp.src.view.windows
 
         private async void LoadBoxPlot (string pCurrencyId = "" ) {
 
-            
+            if (this._currenciesData == null) {
+                return;
+            }
 
             foreach (Widget widget in _panelBoxPlot.Children) {
                 widget.Destroy();
@@ -418,10 +421,10 @@ namespace CryptoTrackApp.src.view.windows
                 _logger.Log($"[FAILURE - Operation LoadBoxPlot at MainView - Couldn't load plot - Parameters: [currency: {currencyId}]]");
                 emptyLbl.Text = "Select a currency of the following table to display data.";
                 currencyId = DefaultCurrencyData.bitcoinId;
-                historyValues = await this.currencyService.GetHistory(pCurrencyId: currencyId);
+                historyValues = await this._currencyService.GetHistory(pCurrencyId: currencyId);
             }
             else {
-                historyValues = await this.currencyService.GetHistory(pCurrencyId:currencyId);
+                historyValues = await this._currencyService.GetHistory(pCurrencyId:currencyId);
             }
 
 
@@ -437,9 +440,9 @@ namespace CryptoTrackApp.src.view.windows
                 this.GetSize(out plotWidth, out plotHeigh);
                 plotWidth = (int)Math.Round(plotWidth - plotWidth * 0.20);
                 plotHeigh = (int)Math.Round(plotHeigh * 0.5);
-                IDictionary<string, string>? currency = currenciesData.FirstOrDefault(x => x["Id"] == currencyId);
+                IDictionary<string, string>? currency = _currenciesData.FirstOrDefault(x => x["Id"] == currencyId);
                 string currencyName = currency == null ? DefaultCurrencyData.bitcoinName : currency["Name"];
-                plotPath = await this.plotService.GetCandlesPlot(
+                plotPath = await this._plotService.GetCandlesPlot(
                     historyValues,
                     width: plotWidth,
                     height: plotHeigh,
@@ -487,8 +490,8 @@ namespace CryptoTrackApp.src.view.windows
 
         private void ResetSubsTree(){
 
-            this.subsTree!.Destroy();
-            this.subsTree = null;
+            this._subsTree!.Destroy();
+            this._subsTree = null;
             this.LoadTablePanel();
             
         }

@@ -2,12 +2,9 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
-using Npgsql;
 using CryptoTrackApp.src.models;
 using Microsoft.EntityFrameworkCore;
 using CryptoTrackApp.src.utils;
-using Microsoft.VisualBasic;
-using Gdk;
 
 namespace CryptoTrackApp.src.db
 {

@@ -9,7 +9,6 @@ namespace CryptoTrackApp.src.db
     public interface IRepository
     {
 
-        /* object[] AddUser(User pUser); */
         public Task<User?> Login(string pEmail, string pPassword);
         public Task<bool> ExistEmail(string pEmail);
         public Task AddSubscriptionAsync(Subscription sub);

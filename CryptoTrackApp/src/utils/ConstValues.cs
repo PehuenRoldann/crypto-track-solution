@@ -36,10 +36,11 @@ namespace CryptoTrackApp.src.utils
         public static readonly string[] JsonConfArrPath = { "src", "conf.json" }; 
     }
 
-    public readonly struct EnvNames {
+    public readonly struct ConfigurationsKeys {
         public const string DbConnection = "db_connection";
         public const string CoinCapApi = "coin_api_url";
         public const string ApiKey = "coin_cap_api_key";
+        public const string MainViewTimeoutRefresh = "timeout_refresh_in_minutes";
     }
 
     public readonly struct Templates {
