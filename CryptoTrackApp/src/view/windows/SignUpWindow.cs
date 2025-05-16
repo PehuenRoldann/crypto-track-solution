@@ -9,6 +9,7 @@ using CryptoTrackApp.src.services;
 using CryptoTrackApp.src.utils;
 using CryptoTrackApp.src.view.helpers;
 using COMP = CryptoTrackApp.src.view.components;
+using Npgsql.Replication;
 /* using GLib; */
 
 namespace CryptoTrackApp.src.view.windows {
@@ -26,9 +27,10 @@ namespace CryptoTrackApp.src.view.windows {
         [UI] Spinner? _spinner = null;
         private IUserServices userServices;
 
-        private readonly string CSS_PATH = "./src/css/SignUpWindow.css";
-        private readonly string LOGO_PATH = "./src/assets/images/ctapp_logo.png";
-        private CssProvider cssProvider = new CssProvider();
+        private Logger _logger = new Logger();
+
+        private readonly string CSS_PATH = PathFinder.GetPath(CssFilesPaths.SignUpWindowCss);
+        private readonly string LOGO_PATH = PathFinder.GetPath(ImagesArrPaths.AppLogox266);
         
     // ---- VALIDATORS FIELDS ------------------------------------------------------
         private bool isEmailValid = false;
@@ -36,7 +38,7 @@ namespace CryptoTrackApp.src.view.windows {
         private bool isPasswordValid = false;
         private bool isPasswordConfirmed = false;
     // ---- CONSTRUCTOR ------------------------------------------------------------
-        public SignUpView(IUserServices pUserServices) : base("SignUpWindow") {
+        public SignUpView(IUserServices pUserServices) : base(Templates.SignUpWindow) {
         this.userServices = pUserServices;
         this.SetStyle(CssFilesPaths.SignUpWindowCss);
         this.CheckSignUpButton();
@@ -168,7 +170,7 @@ namespace CryptoTrackApp.src.view.windows {
             {
                 dialog.ButtonReleaseEvent += (obj, ev) => {
                     dialog.Destroy();
-                    ViewManager.GetInstance().ShowView("login", this);
+                    ViewManager.GetInstance().ShowView(ViewsIds.Login, this);
                 };
             }
             else
@@ -195,11 +197,6 @@ namespace CryptoTrackApp.src.view.windows {
             if (this.isEmailValid && this.isConfEmailValid && this.isPasswordValid 
             && this.isPasswordConfirmed && this._birthDateEntry.Text != "")
             {
-                Console.WriteLine("-------------------SignUpActivated--------------------------"); // Debug
-                Console.WriteLine("Email: " + this.isEmailValid); // Debug
-                Console.WriteLine("EmailConfirm: " + this.isConfEmailValid); // Debug
-                Console.WriteLine("Pass: " + this.isPasswordConfirmed); // Debug 
-                Console.WriteLine("PassConfirm: " + this.isPasswordConfirmed); // Debug 
                 this._signUpButton.Sensitive = true;
                 this._signUpButton.StyleContext.RemoveClass("sign-up-button-disable");
             }
@@ -220,7 +217,6 @@ namespace CryptoTrackApp.src.view.windows {
         {
 
             this.isEmailValid = false;
-            //string patron = @"^(?!$)[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.]+$";
             string patron = @"^(?!$)[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[com|ar|]+$";
             Entry entry = (Entry)sender;
             string email = entry.Text;
@@ -269,7 +265,7 @@ namespace CryptoTrackApp.src.view.windows {
             }
             catch (Exception error)
             {
-                Console.WriteLine("Error at CryptoTrackApp.src.view.SignUpView.EmailCheckAvailable: " + error.Message);
+                _logger.Log($"[ERROR - CheckEmailAvailable at SignUpView - message: {error.Message}]");
                 available = null;
             }
             finally {

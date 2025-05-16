@@ -1,6 +1,8 @@
 using System;
 using System.IO;
+using System.Net.NetworkInformation;
 using System.Security;
+using CryptoTrackApp.src.view.windows;
 
 namespace CryptoTrackApp.src.utils
 {
@@ -23,7 +25,7 @@ namespace CryptoTrackApp.src.utils
         public const string Name = "Name";
         public const string Supply = "Supply";
         public const string MaxSupply = "MaxSupply";
-        public const string MarketCapUsd = "MarketCapUsd";  // Asegúrate de usar la nomenclatura correcta para tus claves
+        public const string MarketCapUsd = "MarketCapUsd"; 
         public const string VolumeUsd24Hr = "VolumeUsd24Hr";
         public const string PriceUsd = "PriceUsd";
         public const string ChangePercent24Hr = "ChangePercent24Hr";
@@ -43,10 +45,12 @@ namespace CryptoTrackApp.src.utils
         public const string MainViewTimeoutRefresh = "timeout_refresh_in_minutes";
     }
 
-    public readonly struct Templates {
+    public readonly struct Templates
+    {
 
         public const string LoginWindow = "LoginWindow";
         public const string MainView = "MainView";
+        public const string SignUpWindow = "SignUpWindow";
     }
 
     public readonly struct ViewsIds {
@@ -84,15 +88,20 @@ namespace CryptoTrackApp.src.utils
         public static readonly string[] CurrenciesImages = { "src", "assets", "images", "currency" };
         public static readonly string[] CurrenciesIcons = { "src", "assets", "icons", "currency"};
     }
-    
 
 
-    public static class ImagesArrPaths {
 
-        public static readonly string[] CheckMark = { "src", "assets", "images", "check-svgrepo-com.svg"};
-        public static readonly string[] CrosskMark = { "src", "assets", "images", "cross-svgrepo-com.svg"};
-        public static readonly string[] Warning = { "src", "assets", "images", "warning-svgrepo-com.svg"};
+    public static class ImagesArrPaths
+    {
+
+        public static readonly string[] CheckMark = { "src", "assets", "images", "check-svgrepo-com.svg" };
+        public static readonly string[] CrosskMark = { "src", "assets", "images", "cross-svgrepo-com.svg" };
+        public static readonly string[] Warning = { "src", "assets", "images", "warning-svgrepo-com.svg" };
         public static readonly string[] AppLogo = { "src", "assets", "images", "cta_logo_64x64.png" };
+        public static readonly string[] AppLogox266 = { "src", "assets", "images", "logo_226x226.png" };
+        public static readonly string[] SeePassOpenEye = { "src", "assets", "images", "toggle_visibility_white_open.ico" };
+        public static readonly string[] SeePassCloseEye = { "src", "assets", "images", "toggle_visibility_white_close.ico" };
+        public static readonly string[] LoginBgImage = { "src", "assets", "images", "crypto_background.jpg" };
     }
 
 

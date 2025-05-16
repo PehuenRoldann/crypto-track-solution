@@ -1,26 +1,16 @@
-.main-window{  
-background: blue;
-background-image: url('../assets/images/crypto_background.jpg');
-background-size: cover;
+.main-window-login{  
+  background: #2A2E32;
+  background-size: cover;
 }
 
 
 .viewport {
   border: 0;
   border-radius: 0;
-  /* background-color: BLUE; */
-  /* margin: 0; */
-  /* opacity: 0.3; */
-  /* background-image: url('../assets/images/crypto_background.jpg');
-  background-size: cover;  */
   background-color: rgba(24, 24, 24, 0.975);
   
 }
 
-/* .viewport-child {
-  border: 0;
-  background-color: rgba(24, 24, 24, 0);
-} */
 
 .button-color{
     background: #008170;
@@ -51,8 +41,3 @@ color: black;
 .entryBox:focus{
 background-color: white;
 }
-
-/* .viewport {
-  background-color: #0F0F0F;
-  border: 0;
-} */

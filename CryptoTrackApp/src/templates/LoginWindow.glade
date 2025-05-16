@@ -320,7 +320,7 @@
       </object>
     </child>
     <style>
-      <class name="main-window"/>
+      <class name="main-window-login"/>
     </style>
   </object>
 </interface>

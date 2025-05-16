@@ -16,22 +16,12 @@
 .img-container{
 	background: #F5F5F5;
 	padding: 20px;
-	/*border-radius: 10px;*/
-    /*border: 2px solid rgba(0, 0, 0, 0.1);*/
+
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
 }
 
-
-.nav-btn{
-	/* background: #F5F5F5; */
-	/* color: #229799; */
-	/* font-size: 24px; */
-	/* padding: 10px 30px; */
-}
-
 .nav-btn:hover{
-	/* background: #48CFCB;
-	color: #F5F5F5; */
+
 	box-shadow: 2px 8px 10px black;
 }
 

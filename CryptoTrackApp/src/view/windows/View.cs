@@ -2,9 +2,7 @@ using System;
 using IO = System.IO;
 using Gtk;
 using Gdk;
-using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using CryptoTrackApp.src.utils;
 
 namespace CryptoTrackApp.src.view.windows
@@ -29,16 +27,16 @@ namespace CryptoTrackApp.src.view.windows
           DeleteEvent += Window_DeleteEvent;
       }
 
-      public void SetStyle(string[] cssPath) 
-      {
-          cssProvider.LoadFromPath(this.GetAbsolutePath(cssPath));
-          StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 1000);
-      }
-
+        public void SetStyle(string[] cssPath) 
+        {
+            cssProvider.LoadFromPath(this.GetAbsolutePath(cssPath));
+            StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 1000);
+        }
+      
       private void Window_DeleteEvent(object sender, DeleteEventArgs a)
-      {
-          Application.Quit();
-      }
+        {
+            Application.Quit();
+        }
 
       public abstract void ConfigEventHandlers(); 
       public abstract void ConfigImages(); 

@@ -1,8 +1,5 @@
 using System;
 using IO = System.IO;
-using CryptoTrackApp.src.utils;
-using GLib;
-using Newtonsoft.Json.Linq;
 using System.Linq;
 
 namespace CryptoTrackApp.src.utils {

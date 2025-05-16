@@ -32,9 +32,9 @@ namespace CryptoTrackApp.src.view.windows
 
         private IUserServices? _userServices = null;
 
-        private readonly string LOGO_PATH = "./src/assets/images/logo_226x226.png";
-        private readonly string BUTTON_IMAGE_OPEN_PATH = "./src/assets/images/toggle_visibility_white_open.ico";
-        private readonly string BUTTON_IMAGE_CLOSE_PATH = "./src/assets/images/toggle_visibility_white_close.ico";
+        private readonly string LOGO_PATH = PathFinder.GetPath(ImagesArrPaths.AppLogox266);
+        private readonly string BUTTON_IMAGE_OPEN_PATH = PathFinder.GetPath(ImagesArrPaths.SeePassOpenEye);
+        private readonly string BUTTON_IMAGE_CLOSE_PATH = PathFinder.GetPath(ImagesArrPaths.SeePassCloseEye);
 
 
 	public LoginView(IUserServices pUserServices) : base(Templates.LoginWindow) 
@@ -114,8 +114,6 @@ namespace CryptoTrackApp.src.view.windows
         }
     }
 
-    // private void OnClickedLoginButton (object sender, Button)
-
     private async void _LoginUserEvent(object sender, EventArgs a)
     {
 
@@ -141,7 +139,7 @@ namespace CryptoTrackApp.src.view.windows
         {
             var vw = ViewManager.GetInstance();
             vw.UserId = res;
-            vw.ShowView("main", this);
+            vw.ShowView(ViewsIds.Main, this);
         }
 
       }
@@ -174,7 +172,7 @@ namespace CryptoTrackApp.src.view.windows
     {
       _logger.Log("[EXECT - Operation SignUpEvent at LoginWindow - Opening SignUpView]");
       ViewManager vw = ViewManager.GetInstance();
-      vw.ShowView("signup", this);
+      vw.ShowView(ViewsIds.SignUp, this);
     }
 
   }
