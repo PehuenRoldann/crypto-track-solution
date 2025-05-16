@@ -74,8 +74,8 @@ namespace CryptoTrackApp.src.services
             }
             catch (Exception error) {
 
-                Console.WriteLine($"CurrencyService-Error: {error.Message}");
-                throw error;
+                _logger.Log($"[ERROR - GetCurrency at CurrencyServices - message: {error.Message}]");
+                throw new Exception(error.Message);
             }
 
         }
@@ -99,7 +99,7 @@ namespace CryptoTrackApp.src.services
                 return this.CurrencyToDictionary(currencyData);
             }
             catch (Exception error) {
-                Console.WriteLine($"CurrencyService-Error: {error.Message}");
+                _logger.Log($"[ERROR - GetCurrencies at CurrencyServices - message: {error.Message}]");
                 throw new Exception(error.Message);
             }
         }
@@ -112,7 +112,7 @@ namespace CryptoTrackApp.src.services
                 return this.CurrencyToDictionary(currencyData);
             }
             catch (Exception error) {
-                Console.WriteLine($"CurrencyService-Error: {error.Message}");
+                _logger.Log($"[ERROR - GetCurrencies at CurrencyServices - message: {error.Message}]");
                 return new Dictionary<string, string>[0];
             }
         }

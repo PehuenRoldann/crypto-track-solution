@@ -261,7 +261,6 @@ namespace CryptoTrackApp.src.view.windows
                 await Task.Delay(2000);
                 bool result = await this._subscriptionService.UnfollowAsync(_userId, e.CurrencyId);
                 await ResetSubsTree();
-                Console.WriteLine(_currenciesData);
                 if (result)
                 {
                     infoDialog.ShowContent($"You have stoped following {e.Name}", ImagesArrPaths.CheckMark);

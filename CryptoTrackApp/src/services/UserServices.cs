@@ -10,7 +10,7 @@ namespace CryptoTrackApp.src.services
     public class UserServices : IUserServices
     {
 	IRepository repository = new PostgreRepository();
-	Logger _loger = new Logger();
+	Logger _logger = new Logger();
 
 	/// <summary>
 	/// Login an user if it's registered in the database.
@@ -25,7 +25,7 @@ namespace CryptoTrackApp.src.services
 	/// <exception cref="Exception">If there has been an unexpected error while login.</exception>
 	public async Task<(int, string)> LoginUser(string pPassword, string pEmail)
 	{
-	  _loger.Log("[EXEC - Operation LoginUser at UserServices]");
+	  _logger.Log("[EXEC - Operation LoginUser at UserServices]");
 	  string opResult = "";
 	  int opValue = -1;
 
@@ -46,12 +46,12 @@ namespace CryptoTrackApp.src.services
 			opResult = user.Id.ToString();
 		}
 
-		_loger.Log($"[RESULT - Operation LoginUser at UserServices - Result: [opValue: {opValue}; opResult: {opResult}]]");
+		_logger.Log($"[RESULT - Operation LoginUser at UserServices - Result: [opValue: {opValue}; opResult: {opResult}]]");
 
 	  }
 	  catch (Exception error)
 	  {
-		_loger.Log($"[ERROR - Operation LoginUser at UserServices - Message: {error.Message}]");
+		_logger.Log($"[ERROR - Operation LoginUser at UserServices - Message: {error.Message}]");
 		opResult = "Unexpected error while login, try again or contact to support.";
 	  }
 
@@ -99,7 +99,7 @@ namespace CryptoTrackApp.src.services
 
 	  } 
 	  catch (Exception error) {
-	    Console.WriteLine("Error at CryptoTrackApp.src.services.UserServices: "+ error.Message);
+		_logger.Log($"[ERROR - IsEmailAvailable at UserServices - message: {error.Message}]");
 	    throw new Exception(error.Message);
 	  }
 	}

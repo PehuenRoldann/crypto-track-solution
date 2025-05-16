@@ -27,7 +27,6 @@ namespace CryptoTrackApp.src.utils
                 try
                 {
                     string logEntry = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}";
-                    Console.WriteLine(logEntry);
 
                     // Crear el archivo si no existe
                     if (!File.Exists(_logFilePath))
