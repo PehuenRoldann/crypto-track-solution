@@ -19,7 +19,14 @@ namespace CryptoTrackApp.src.view.windows
         [UI] private Spinner _spinner;
         [UI] private AspectFrame _spinner_container;
 
-        private List<string> _following {get; set;}
+        // Radio Buttions Items:
+        [UI] private RadioMenuItem _rankingItem;
+        [UI] private RadioMenuItem _highPriceItem;
+        [UI] private RadioMenuItem _lowPriceItem;
+        [UI] private RadioMenuItem _growingItem;
+        [UI] private RadioMenuItem _loweringItem;
+
+        private List<string> _following { get; set; }
         private ICurrencyServices _curService;
         private ISubscriptionServices _subService;
 
@@ -37,13 +44,12 @@ namespace CryptoTrackApp.src.view.windows
             this.SetStyle(CssFilesPaths.FollowViewCss);
             
             this._loadMoreBtn!.Hide();
-            this._loadMoreBtn.ButtonReleaseEvent += OnLoadMoreBtnRelease;
 
             this._mainContainer!.StyleContext.AddClass("main-container");
 
             this._flowBox!.StyleContext.AddClass("flow-box");
-
-            this._searchEntry!.Changed += OnSearchEntryChange!;
+            
+            
             
             this._spinner!.Active = false;
 
@@ -54,7 +60,36 @@ namespace CryptoTrackApp.src.view.windows
 
         public override void ConfigEventHandlers()
         {
-            // throw new NotImplementedException();
+
+            _loadMoreBtn.ButtonReleaseEvent += OnLoadMoreBtnRelease;
+            _searchEntry!.Changed += OnSearchEntryChange!;
+
+            // Radio buttons events
+            _rankingItem.Toggled += OnSortOptionToggled;
+            _highPriceItem.Toggled += OnSortOptionToggled;
+            _lowPriceItem.Toggled += OnSortOptionToggled;
+            _growingItem.Toggled += OnSortOptionToggled;
+            _loweringItem.Toggled += OnSortOptionToggled;
+
+        }
+
+        private void OnSortOptionToggled(object? sender, EventArgs e)
+        {
+            if (sender is RadioMenuItem item && item.Active)
+            {
+                string selected = item.Label; // o item.Name si usás identificadores únicos
+
+                List<CryptoCard> sortedCards = selected switch
+                {
+                    "High Price" => _cardsArray.OrderByDescending(c => c.PriceUsd).ToList(),
+                    "Low Price" => _cardsArray.OrderBy(c => c.PriceUsd).ToList(),
+                    "Growing Tendency" => _cardsArray.OrderByDescending(c => c.ChangePercent24Hr).ToList(),
+                    "Lowering Tendency" => _cardsArray.OrderBy(c => c.ChangePercent24Hr).ToList(),
+                    "Ranking" or _ => _cardsArray.OrderBy(c => c.Rank).ToList(),
+                };
+
+                ReloadFlowBox(sortedCards.ToArray());
+            }
         }
 
         public override void ConfigImages()
@@ -86,7 +121,7 @@ namespace CryptoTrackApp.src.view.windows
                         decimal.Parse(crypto[CryptoCurrencyKeys.PriceUsd]),
                         float.Parse(crypto[CryptoCurrencyKeys.ChangePercent24Hr]),
                         int.Parse(crypto[CryptoCurrencyKeys.Rank]),
-                        this._following.Contains(crypto["Id"])
+                        this._following.Contains(crypto[CryptoCurrencyKeys.Id])
                     );
 
                     cryptoCard.StyleContext.AddClass("crypto-card");
@@ -104,7 +139,6 @@ namespace CryptoTrackApp.src.view.windows
             catch (Exception error)
             {
                 this._logger.Log($"[ERROR - LoadFlowBox at FollowView - message:{error.Message}]");
-
             }
             finally
             {
@@ -120,7 +154,6 @@ namespace CryptoTrackApp.src.view.windows
 
             this._offset = this._limit;
             this._limit+= 50;
-            // this.LoadFlowBox();
 
             this._loadMoreBtn.Hide();
             this._spinner_container.Visible = true;
@@ -142,7 +175,7 @@ namespace CryptoTrackApp.src.view.windows
                         decimal.Parse(crypto[CryptoCurrencyKeys.PriceUsd]),
                         float.Parse(crypto[CryptoCurrencyKeys.ChangePercent24Hr]),
                         int.Parse(crypto[CryptoCurrencyKeys.Rank]),
-                        this._following.Contains(crypto["Id"])
+                        this._following.Contains(crypto[CryptoCurrencyKeys.Id])
                     );
                     cryptoCard.StyleContext.AddClass("crypto-card");
                     this._cardsArray.Add(cryptoCard);
@@ -151,7 +184,7 @@ namespace CryptoTrackApp.src.view.windows
 
 
             } catch( Exception error) {
-                Console.WriteLine(error.Message);
+                this._logger.Log($"[ERROR - OnLoadMoreBtnRelease at FollowView - message: {error.Message}]");
             } finally {
                 this._spinner.Active = false;
                 this._spinner_container.Visible = false;
@@ -185,7 +218,7 @@ namespace CryptoTrackApp.src.view.windows
         private void OnSearchEntryChange (object? sender, EventArgs? args)
         {
             string searchText = this._searchEntry.Text.ToLower();
-            Console.WriteLine(searchText); // DEBUG
+            
             if (searchText != ""){
                 CryptoCard[] filteredArray = this._cardsArray.Where(card => card.CryptoName.ToLower().Contains(searchText)).ToArray();
                 this.ReloadFlowBox(filteredArray!);

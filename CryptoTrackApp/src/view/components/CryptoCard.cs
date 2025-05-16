@@ -93,33 +93,27 @@ namespace CryptoTrackApp.src.view.components
 
         private async void FollowButtonReleased(object sender, ButtonReleaseEventArgs args)
         {
-            try
+            
+            if (this._followButton.Label == "Follow")
             {
-                if (this._followButton.Label == "Follow")
+                await Task.Run(() =>
                 {
-                    await Task.Run(() =>
-                    {
-                        this._subService.AddSubscriptionAsync(ViewManager.GetInstance().UserId,
-                        this.CryptoId);
-                    });
-                    this._followButton.Label = "Unfollow";
-                    this._followButton.StyleContext.RemoveClass("follow-button");
-                    this._followButton.StyleContext.AddClass("unfollow-button");
-                }
-                else
-                {
-                    await Task.Run(() =>
-                    {
-                        this._subService.UnfollowAsync(ViewManager.GetInstance().UserId, this.CryptoId);
-                    });
-                    this._followButton.Label = "Follow";
-                    this._followButton.StyleContext.RemoveClass("unfollow-button");
-                    this._followButton.StyleContext.AddClass("follow-button");
-                }
+                    this._subService.AddSubscriptionAsync(ViewManager.GetInstance().UserId,
+                    this.CryptoId);
+                });
+                this._followButton.Label = "Unfollow";
+                this._followButton.StyleContext.RemoveClass("follow-button");
+                this._followButton.StyleContext.AddClass("unfollow-button");
             }
-            catch (Exception error)
+            else
             {
-                Console.WriteLine(error.Message);
+                await Task.Run(() =>
+                {
+                    this._subService.UnfollowAsync(ViewManager.GetInstance().UserId, this.CryptoId);
+                });
+                this._followButton.Label = "Follow";
+                this._followButton.StyleContext.RemoveClass("unfollow-button");
+                this._followButton.StyleContext.AddClass("follow-button");
             }
         }
     }
