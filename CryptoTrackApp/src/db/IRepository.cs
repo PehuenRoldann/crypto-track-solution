@@ -13,8 +13,8 @@ namespace CryptoTrackApp.src.db
         public Task<bool> ExistEmail(string pEmail);
         public Task AddSubscriptionAsync(Subscription sub);
         public Task AddUserAsync(User user);
-        public Task<Subscription> GetSubscriptionAsync(Guid userId, string currencyId);
-        public Task<List<Subscription>> GetSubscriptionAsync(Guid userId);
+        public Task<Subscription?> GetSubscriptionAsync(Guid userId, string currencyId);
+        public Task<List<Subscription>> GetSubscriptionsListAsync(Guid userId);
         public Task<User?> GetUserAsync(Guid userId);
         public Task<User?> GetUserAsync(string email);
         public Task UpdateSubscriptionAsync(Subscription sub);

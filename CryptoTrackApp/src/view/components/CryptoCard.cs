@@ -7,7 +7,7 @@ using CryptoTrackApp.src.view.helpers;
 
 namespace CryptoTrackApp.src.view.components
 {
-    public class CryptoCard : Gtk.Box
+    public class CryptoCard : Box
     {
         [UI] private Button _followButton;
         public string CryptoName { get; set; }
@@ -28,11 +28,11 @@ namespace CryptoTrackApp.src.view.components
             this.Expand = false;
             this.Hexpand= false;
             this.Vexpand = false;
-            this.Valign = Gtk.Align.Center;
-            this.Halign = Gtk.Align.Center;
+            this.Valign = Align.Center;
+            this.Halign = Align.Center;
             this.Orientation = Orientation.Vertical;
 
-            var name_label = new Gtk.Label(pCryptoName);
+            var name_label = new Label(pCryptoName);
 
             if (this.AlreadyFollow)
             {
@@ -76,7 +76,6 @@ namespace CryptoTrackApp.src.view.components
 
         private async void FollowButtonReleased(object sender, ButtonReleaseEventArgs args)
         {
-            Console.WriteLine($"Follow button from {this.CryptoId} pressed.");
             try
             {
                 if (this._followButton.Label == "Follow")
@@ -92,7 +91,10 @@ namespace CryptoTrackApp.src.view.components
                 }
                 else
                 {
-                    Console.WriteLine("Tried to unfollow but the feature isn't implemented");
+                    await Task.Run(() =>
+                    {
+                        this._subService.UnfollowAsync(ViewManager.GetInstance().UserId, this.CryptoId);
+                    });
                     this._followButton.Label = "Follow";
                     this._followButton.StyleContext.RemoveClass("unfollow-button");
                     this._followButton.StyleContext.AddClass("follow-button");

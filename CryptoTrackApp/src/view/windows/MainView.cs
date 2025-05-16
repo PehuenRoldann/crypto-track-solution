@@ -213,7 +213,7 @@ namespace CryptoTrackApp.src.view.windows
             var infoDialog = new InformationDialog(this, "Updating notification Threshold");
             infoDialog.Show();
             await Task.Delay(2000);
-            var result = await this._subscriptionService.SetNotificationUmbral(_userId, currencyData!["Id"], e.UmbralValue);
+            var result = await this._subscriptionService.SetNotificationTreshold(_userId, currencyData!["Id"], e.UmbralValue);
             ResetSubsTree();
 
             if (result) {
@@ -274,7 +274,7 @@ namespace CryptoTrackApp.src.view.windows
             
             // List<string> cryptosId = await subscriptionService.GetFollowedCryptosIdsAsync(this._userId);
             
-            List<IDictionary<string, string>>? subscriptionsList = await _subscriptionService.GetSubscriptionsAsync(this._userId);
+            List<IDictionary<string, string>>? subscriptionsList = await _subscriptionService.GetActiveSubscriptionsListAsync(this._userId);
             List<string> cryptosId = new List<string>();
 
             if (subscriptionsList != null) {

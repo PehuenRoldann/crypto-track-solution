@@ -89,7 +89,7 @@ namespace CryptoTrackApp.src.db
             }
         }
 
-        public async Task<Subscription> GetSubscriptionAsync(Guid userId, string currencyId)
+        public async Task<Subscription?> GetSubscriptionAsync(Guid userId, string currencyId)
         {
 
             _logger.Log($"[EXECUTE - Operation GetSubscriptionAsync at PostgreRepository - Parameters [userId: {userId}; currencyId: {currencyId}]");
@@ -104,15 +104,15 @@ namespace CryptoTrackApp.src.db
                 }
                 catch (Exception error) 
                 {
-                    _logger.Log($"[ERROR - Operation ExistEmail at PostgreRepository - Message: {error.Message}]");
-                    throw new Exception(error.Message);
+                    _logger.Log($"[ERROR - Operation GetSubscriptionAsync at PostgreRepository - Message: {error.Message}]");
+                    return null;
                 }
             }
         }
 
-        public async Task<List<Subscription>> GetSubscriptionAsync(Guid userId)
+        public async Task<List<Subscription>> GetSubscriptionsListAsync(Guid userId)
         {
-            _logger.Log($"[EXECUTE - Operation GetSubscriptionAsync at PostgreRepository - Parameters [userId: {userId}]");
+            _logger.Log($"[EXECUTE - Operation GetSubscriptionsListAsync at PostgreRepository - Parameters [userId: {userId}]");
 
             using (var context = new CryptoTrackAppContext())
             {
@@ -124,7 +124,7 @@ namespace CryptoTrackApp.src.db
                 }
                 catch (Exception error)
                 {
-                    _logger.Log($"[ERROR - Operation GetSubscriptionAsync at PostgreRepository - Message: {error.Message}]");
+                    _logger.Log($"[ERROR - Operation GetSubscriptionsListAsync at PostgreRepository - Message: {error.Message}]");
                     throw new Exception(error.Message);
                 }
             }

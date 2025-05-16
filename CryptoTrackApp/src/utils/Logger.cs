@@ -44,30 +44,6 @@ namespace CryptoTrackApp.src.utils
                 }
             }
         }
-
-        /* public async Task LogErrorAsync(string message, Exception exception)
-        {
-            await Task.Run(() => 
-            {
-                lock(_lockObj)
-                {
-                    try
-                    {
-                        using ( var writer = new System.IO.StreamWriter(_logFilePath, true))
-                        {
-                            writer.WriteLine($"[ERROR] {DateTime.Now}: {message}");
-                            writer.WriteLine($"Exception: {exception.Message}");
-                            writer.WriteLine($"Stack Trace: {exception.StackTrace}");
-                            writer.WriteLine();
-                        }
-                    }
-                    catch (Exception error)
-                    {
-                        Console.WriteLine($"Error while writting in the log file: {error.Message}");
-                    }
-                }
-            });
-        } */
         
     }
 }

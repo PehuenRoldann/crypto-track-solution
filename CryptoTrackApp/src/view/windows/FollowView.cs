@@ -26,7 +26,7 @@ namespace CryptoTrackApp.src.view.windows
         private int _offset = 0;
         private int _limit = 50;
         private List<CryptoCard> _cardsArray = new List<CryptoCard>();
-        
+        private Logger _logger = new Logger();
         public FollowView (ISubscriptionServices pSubService, ICurrencyServices pCurService) 
         : base("FollowView")
         {
@@ -34,8 +34,6 @@ namespace CryptoTrackApp.src.view.windows
             this._subService = pSubService;
 
 
-            /* this.CSS_PATH_DARK = "./src/css/follow_view.css";
-	        this.CSS_PATH_LIGHT = ""; */
             this.SetStyle(CssFilesPaths.FollowViewCss);
             
             this._loadMoreBtn!.Hide();
@@ -44,12 +42,6 @@ namespace CryptoTrackApp.src.view.windows
             this._mainContainer!.StyleContext.AddClass("main-container");
 
             this._flowBox!.StyleContext.AddClass("flow-box");
-                        // Configurar el GtkFlowBox
-            // this._flowBox.Homogeneous = false; // Asegúrate de que no sea homogéneo
-
-            // Opcional: configurar el ajuste de los hijos si es necesario
-            /* this._flowBox.SetColumnSpacing(10); // Espacio entre columnas
-            this._flowBox.SetRowSpacing(10);    // Espacio entre filas */
 
             this._searchEntry!.Changed += OnSearchEntryChange!;
             
@@ -81,23 +73,32 @@ namespace CryptoTrackApp.src.view.windows
                 this._following = await this._subService.GetFollowedCryptosIdsAsync(ViewManager.GetInstance().UserId);
             }
 
-            try{
-                IDictionary<string, string> [] cryptos = await this._curService.GetCurrencies(offset: this._offset,limit: this._limit);
+            try
+            {
+                IDictionary<string, string>[] cryptos = await this._curService.GetCurrencies(offset: this._offset, limit: this._limit);
                 foreach (IDictionary<string, string> crypto in cryptos)
                 {
                     var cryptoCard = new CryptoCard(this._subService, crypto["Symbol"].ToLower(),
-                        crypto["Name"], crypto["Id"], this._following.Contains(crypto["Id"]));
+                    crypto["Name"], crypto["Id"], this._following.Contains(crypto["Id"]));
                     cryptoCard.StyleContext.AddClass("crypto-card");
-                    this._cardsArray.Add(cryptoCard);
-                    Console.WriteLine(this._cardsArray.Count()); // DEBUG */
-                    this._flowBox.Add(cryptoCard);
-                    this._flowBox.ShowAll();
+
+                    if (!cryptoCard.AlreadyFollow)
+                    {
+                        this._cardsArray.Add(cryptoCard);
+                        this._flowBox.Add(cryptoCard);
+                    }
+
                 }
+                this._flowBox.ShowAll();
 
+            }
+            catch (Exception error)
+            {
+                this._logger.Log($"[ERROR - LoadFlowBox at FollowView - message:{error.Message}]");
 
-            } catch( Exception error) {
-                Console.WriteLine(error.Message);
-            } finally {
+            }
+            finally
+            {
                 this._spinner.Active = false;
                 this._spinner_container.Visible = false;
 

@@ -80,7 +80,7 @@ namespace CryptoTrackApp.src.view.helpers
         /// <param name="pNewCurrenciesData">Currency data to compare</param>
         private async void NotifyTendencyChanges(IDictionary<string, string>[] pNewCurrenciesData) {
 
-            List<IDictionary<string, string>> subsData = await this._subsServices.GetSubscriptionsAsync(_userId) ?? new();
+            List<IDictionary<string, string>> subsData = await this._subsServices.GetActiveSubscriptionsListAsync(_userId) ?? new();
 
             if (subsData.Count == 0) {
                 return;
@@ -94,7 +94,10 @@ namespace CryptoTrackApp.src.view.helpers
 
                 if (subscription == null) continue;
 
-                var notificationThreshold = float.Parse(subscription[SubscriptionKeys.NotificationThreshold]);
+                var notificationThreshold = Math.Round(
+                    float.Parse(subscription[SubscriptionKeys.NotificationThreshold]),
+                    2
+                );
 
                 var changePercent24Hr = float.Parse(currencyData[CryptoCurrencyKeys.ChangePercent24Hr]);
 
