@@ -13,7 +13,7 @@ namespace CryptoTrackApp.src.models
 		private Guid _userId;
         private string _currencyId;
 		private User _user = null!;
-		private double _notificationUmbral = 0.5;
+		private double _notificationUmbral = 10;
 		private DateTime _followDate;
         private DateTime? _unfollowDate;
 

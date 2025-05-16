@@ -90,7 +90,11 @@ namespace CryptoTrackApp.src.services
                 $"[userId: {pUserId}; currencyId: {pCurrencyId}; notificationUmbral: {pNotificationUmbral}]]");
             try {
                 List<Subscription> subs = await repository.GetSubscriptionsListAsync(Guid.Parse(pUserId));
-                var sub = subs.Where(s => s.UserId == Guid.Parse(pUserId) && s.CurrencyId == pCurrencyId && s.UnfollowDate == null).First();
+                var sub = subs.Where(s =>
+                    s.UserId == Guid.Parse(pUserId) &&
+                    s.CurrencyId == pCurrencyId &&
+                    (s.UnfollowDate == null || s.FollowDate > s.UnfollowDate)
+                ).First();
                 sub.NotificationUmbral = pNotificationUmbral;
                 await repository.UpdateSubscriptionAsync(sub);
                 _logger.Log($"[SUCCESS - Operation SetNotificationUmbral at SubscriptionServices]");

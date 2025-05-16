@@ -109,7 +109,8 @@ namespace CryptoTrackApp.src.view.helpers
 
                     string currencyName = currencyData[CryptoCurrencyKeys.Name];
                     string changeType = changePercent24Hr < 0 ? "disminuido" : "aumentado";
-                    changesToNotfy.Add($"El valor de {currencyName} ha {changeType} un {absoluteChange}%.");
+                    string icon = changePercent24Hr < 0 ? "📉" : "📈";
+                    changesToNotfy.Add($"{icon} El valor de {currencyName} ha {changeType} un {absoluteChange}%");
                 }
 
             }
@@ -117,7 +118,7 @@ namespace CryptoTrackApp.src.view.helpers
 
             if (changesToNotfy.Count > 0) {
 
-                string message = "Cambios importantes";
+                string message = "📢 Tendencias importantes en las últimas 24hs 📊";
                 foreach (var change in changesToNotfy) {
                     message += "\n" + change + "";
                 }
