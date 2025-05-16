@@ -107,7 +107,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="_aboutBtn">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
@@ -144,7 +144,7 @@
                 <property name="spacing">10</property>
                 <property name="layout-style">start</property>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="_logOutBtn">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>

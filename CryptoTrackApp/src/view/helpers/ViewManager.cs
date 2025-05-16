@@ -62,6 +62,7 @@ namespace CryptoTrackApp.src.view.helpers
         switch (viewTypeKey)
         {
             case ViewsIds.Login:
+                this.UserId = "";
                 win = new LoginView(this._userServices);
                 break;
 

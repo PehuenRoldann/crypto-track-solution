@@ -18,6 +18,8 @@ namespace CryptoTrackApp.src.view.windows
     {
         [UI] private Button _panelBtn;
         [UI] private Button _followButton;
+        [UI] private Button _logOutBtn;
+        [UI] private Button _aboutBtn;
         [UI] private Image _logoImg;
         [UI] private Image _logoutBtnImg;
         [UI] private Box _panel;
@@ -57,6 +59,7 @@ namespace CryptoTrackApp.src.view.windows
         private string[] _SERVER_BURNING_PATH = {"src", "assets", "images", "server_burning.png"};
         
         private readonly CryptoWorker _cryptoWorker;
+        private IViewManager _viewManager = ViewManager.GetInstance();
 
 
         public MainView(
@@ -70,7 +73,7 @@ namespace CryptoTrackApp.src.view.windows
             this._subscriptionService = pSubService;
             this._currencyService = pCurrencyService;
             this._plotService = pPlotService;
-            
+
             this.InitPanel();
             this.SetStyle(CssFilesPaths.MainViewCss);
 
@@ -103,6 +106,13 @@ namespace CryptoTrackApp.src.view.windows
         {
             this._followButton.ButtonReleaseEvent += FollowButtonReleased;
             this._panelBtn.ButtonReleaseEvent += PanelButtonReleased;
+            this._logOutBtn.ButtonReleaseEvent += LogOutButtonReleased;
+        }
+
+        private void LogOutButtonReleased(object o, ButtonReleaseEventArgs args)
+        {
+            _cryptoWorker.Stop();
+            _viewManager.ShowView(ViewsIds.Login, this);
         }
 
         public override void ConfigImages()
