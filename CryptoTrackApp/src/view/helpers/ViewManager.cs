@@ -91,8 +91,6 @@ namespace CryptoTrackApp.src.view.helpers
         
         InitView(win, pParent);
     }
-
-
     
 
     public void ClearAllCssProviders(CssProvider provider)
@@ -114,8 +112,6 @@ namespace CryptoTrackApp.src.view.helpers
         pParent.Destroy();
         }
     }
-
-
 
     public MessageDialog GetMessageDialog(View pParent, string pTitle, string pMessage,Image pImage,
         string pButtonLabel, int pWidth = 400, int pHeight = 300)
