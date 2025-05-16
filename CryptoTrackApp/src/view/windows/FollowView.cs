@@ -78,8 +78,17 @@ namespace CryptoTrackApp.src.view.windows
                 IDictionary<string, string>[] cryptos = await this._curService.GetCurrencies(offset: this._offset, limit: this._limit);
                 foreach (IDictionary<string, string> crypto in cryptos)
                 {
-                    var cryptoCard = new CryptoCard(this._subService, crypto["Symbol"].ToLower(),
-                    crypto["Name"], crypto["Id"], this._following.Contains(crypto["Id"]));
+                    var cryptoCard = new CryptoCard(
+                        this._subService,
+                        crypto[CryptoCurrencyKeys.Symbol].ToLower(),
+                        crypto[CryptoCurrencyKeys.Name],
+                        crypto[CryptoCurrencyKeys.Id],
+                        decimal.Parse(crypto[CryptoCurrencyKeys.PriceUsd]),
+                        float.Parse(crypto[CryptoCurrencyKeys.ChangePercent24Hr]),
+                        int.Parse(crypto[CryptoCurrencyKeys.Rank]),
+                        this._following.Contains(crypto["Id"])
+                    );
+
                     cryptoCard.StyleContext.AddClass("crypto-card");
 
                     if (!cryptoCard.AlreadyFollow)
@@ -125,8 +134,16 @@ namespace CryptoTrackApp.src.view.windows
                 IDictionary<string, string> [] cryptos = await this._curService.GetCurrencies(offset: this._offset,limit: this._limit);
                 foreach (IDictionary<string, string> crypto in cryptos)
                 {
-                    var cryptoCard = new CryptoCard(this._subService, crypto["Symbol"].ToLower(),
-                        crypto["Name"], crypto["Id"], this._following.Contains(crypto["Id"]));
+                    var cryptoCard = new CryptoCard(
+                        this._subService,
+                        crypto[CryptoCurrencyKeys.Symbol].ToLower(),
+                        crypto[CryptoCurrencyKeys.Name],
+                        crypto[CryptoCurrencyKeys.Id],
+                        decimal.Parse(crypto[CryptoCurrencyKeys.PriceUsd]),
+                        float.Parse(crypto[CryptoCurrencyKeys.ChangePercent24Hr]),
+                        int.Parse(crypto[CryptoCurrencyKeys.Rank]),
+                        this._following.Contains(crypto["Id"])
+                    );
                     cryptoCard.StyleContext.AddClass("crypto-card");
                     this._cardsArray.Add(cryptoCard);
                     this.ReloadFlowBox(this._cardsArray.ToArray());
@@ -151,8 +168,6 @@ namespace CryptoTrackApp.src.view.windows
             }
 
             foreach( var card in cards) {
-                /* Console.WriteLine("Card");
-                Console.Write(card); */
 
                 // Verifica si la tarjeta ya tiene un padre
                 if (card.Parent != null)

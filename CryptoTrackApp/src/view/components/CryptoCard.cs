@@ -12,16 +12,30 @@ namespace CryptoTrackApp.src.view.components
         [UI] private Button _followButton;
         public string CryptoName { get; set; }
         public string CryptoId { get; set; }
+        public decimal PriceUsd { get; set; }
+        public float ChangePercent24Hr { get; set; }
+        public int Rank { get; set; }
         public bool AlreadyFollow { get; set; }
         private ISubscriptionServices _subService;
 
-        public CryptoCard(ISubscriptionServices pSubscriptionService, string pCryptoSymbol = "",
-            string pCryptoName = "", string pCryptoId = "", bool pAlreadyFollow = false)
+        public CryptoCard(
+            ISubscriptionServices pSubscriptionService,
+            string pCryptoSymbol = "",
+            string pCryptoName = "",
+            string pCryptoId = "",
+            decimal pPriceUsd = 0,
+            float pChangePercent24Hr = 0,
+            int pRank = 0,
+            bool pAlreadyFollow = false
+            )
         {
             this._subService = pSubscriptionService;
             this.CryptoName = pCryptoName;
             this.CryptoId = pCryptoId;
             this.AlreadyFollow = pAlreadyFollow;
+            this.Rank = pRank;
+            this.ChangePercent24Hr = pChangePercent24Hr;
+            this.PriceUsd = pPriceUsd;
 
             this.WidthRequest = 200;
             this.HeightRequest = 100;
@@ -32,7 +46,7 @@ namespace CryptoTrackApp.src.view.components
             this.Halign = Align.Center;
             this.Orientation = Orientation.Vertical;
 
-            var name_label = new Label(pCryptoName);
+            var name_label = new Label(CryptoName);
 
             if (this.AlreadyFollow)
             {
@@ -47,9 +61,10 @@ namespace CryptoTrackApp.src.view.components
             this._followButton.ButtonReleaseEvent += FollowButtonReleased;
             this._followButton.StyleContext.AddClass("card-button");
 
-            var info_btn = new Gtk.Button("+Info");
-            info_btn.StyleContext.AddClass("card-button");
-            info_btn.StyleContext.AddClass("info-button");
+            var priceLabel = new Label($"💵 USD: {Math.Round(PriceUsd, 2)}");
+            var changeLabel = new Label($"📈 24h: {Math.Round(ChangePercent24Hr,2)}%");
+            var rankLabel = new Label($"🏅 Rank: {Rank}");
+
 
             Gdk.Pixbuf pixbuf;
             try
@@ -68,8 +83,10 @@ namespace CryptoTrackApp.src.view.components
             // Añadir los widgets al contenedor vertical sin expandirlos
             this.PackStart(name_label, false, false, 0);
             this.PackStart(image, false, false, 0);
-            this.PackEnd(this._followButton, false, false, 0);
-            this.PackEnd(info_btn, false, false, 0);
+            this.PackStart(priceLabel, false, false, 0);
+            this.PackStart(changeLabel, false, false, 0);
+            this.PackStart(rankLabel, false, false, 0);
+            this.PackEnd(this._followButton, false, false, 0); 
 
             ShowAll();
         }
