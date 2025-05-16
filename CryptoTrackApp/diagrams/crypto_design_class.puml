@@ -1,0 +1,94 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class UserServices {
+  public async Task<(int, string)> LoginUser(string pPassword, string pEmail)
+}
+class ISubscriptionServices {
+  public Task<List<IDictionary<string, string>>?> GetActiveSubscriptionsListAsync(string userId)
+  public void AddSubscriptionAsync(string userId, string currencyId)
+  public Task<bool> SetNotificationTreshold(string userId, string currencyId, float notificationUmbral)
+  public Task<List<string>> GetFollowedCryptosIdsAsync(string userId)
+  public Task<bool> UnfollowAsync(string userId, string currencyId)
+}
+class ICurrencyServices {
+  public Task<IDictionary<string, string>> GetCurrency(string pCurrencyId)
+  public Task<IDictionary<string, string>[]> GetCurrencies(int offset=0, int limit=100)
+  public Task<IDictionary<string, string>[]> GetCurrencies (string[] pIds)
+  public Task<List<(DateTime, double)>> GetHistory(string pCurrencyId)
+  public Task<Dictionary<DateTime, List<double>>> GetHistoryValues (string pCurrencyId)
+}
+class SubscriptionServices {
+  public async void AddSubscriptionAsync(string pUserId, string pCurrencyId)
+}
+class CurrencyServices {
+  public CurrencyServices()
+}
+class ICryptoApi {
+  public Task<Currency> GetCurrency(string pId)
+  public Task<Currency[]> GetCurrencies(string[] pIds)
+  public Task<Currency[]> GetCurrencies(int offset = 0, int limit = 100)
+  public Task<List<(DateTime, double)>> GetHistory(string pId)
+}
+class PostgreRepository {
+  public async Task<User?> Login(string email, string password)
+}
+class IRepository {
+  public Task<User?> Login(string pEmail, string pPassword)
+  public Task<bool> ExistEmail(string pEmail)
+  public Task AddSubscriptionAsync(Subscription sub)
+  public Task AddUserAsync(User user)
+  public Task<Subscription?> GetSubscriptionAsync(Guid userId, string currencyId)
+  public Task<List<Subscription>> GetSubscriptionsListAsync(Guid userId)
+  public Task<User?> GetUserAsync(Guid userId)
+  public Task<User?> GetUserAsync(string email)
+  public Task UpdateSubscriptionAsync(Subscription sub)
+  public Task UpdateUserAsync(User user)
+}
+class CryptoTrackAppContext {
+  public CryptoTrackAppContext()
+}
+class CoinApi {
+  public CoinApi()
+}
+class DesktopCryptoNotifier {
+  public void Notify(string message)
+}
+class IPlotterService {
+  public Task<string> GetCandlesPlot(List<(DateTime, double)> history, int width = 700, int height = 300, string title = "Candle Plot!")
+}
+class PlotterService {
+  public async Task<string> GetCandlesPlot(List<(DateTime, double)> history, int width = 700, int height = 300, string title = "Candle")
+}
+class IViewManager {
+  public void ShowView(string pViewType, View? pParent = null)
+}
+class CryptoTreeViewComponent {
+  public CryptoTreeViewComponent(int width = 100, int heigh = 500)
+}
+class CryptoRowActivatedEventArgs {
+  public CryptoRowActivatedEventArgs(string name, int rank, double usdPrice, float tendency)
+}
+class UnfollowEventArgs {
+  public UnfollowEventArgs (string currencyId, string name, Pixbuf icon)
+}
+class NotificationEditedEventArgs {
+  public NotificationEditedEventArgs (string currencyId, string currencyName, int rank, float umbralValue)
+}
+class Logger {
+  public Logger()
+}
+IUserServices <|.. UserServices
+ISubscriptionServices <|.. SubscriptionServices
+ICurrencyServices <|.. CurrencyServices
+IRepository <|.. PostgreRepository
+DbContext <|.. CryptoTrackAppContext
+ICryptoApi <|.. CoinApi
+ICryptoNotifier <|.. DesktopCryptoNotifier
+IPlotterService <|.. PlotterService
+IViewManager <|.. ViewManager
+ScrolledWindow <|.. CryptoTreeViewComponent
+EventArgs <|.. CryptoRowActivatedEventArgs
+EventArgs <|.. UnfollowEventArgs
+EventArgs <|.. NotificationEditedEventArgs
+@enduml

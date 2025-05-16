@@ -1,0 +1,55 @@
+@startuml
+skinparam packageStyle rectangle
+
+package "db" {
+  interface ICryptoApi
+  class PostgreRepository
+  interface IRepository
+  class CryptoTrackAppContext
+  class CoinApi
+}
+package "models" {
+  class Subscription
+  class User
+}
+package "services" {
+  class UserServices
+  interface ISubscriptionServices
+  interface ICurrencyServices
+  class SubscriptionServices
+  class CurrencyServices
+  interface IUserServices
+}
+package "utils" {
+  interface ICryptoNotifier
+  interface IConfigService
+  class Logger
+  class JsonConfigService
+}
+package "view.components" {
+  class MessageDialog
+  class InformationDialog
+  class AboutConfigDialog
+  class ConfirmationDialog
+  class CryptoTreeViewComponent
+  class CryptoRowActivatedEventArgs
+  class UnfollowEventArgs
+  class NotificationEditedEventArgs
+  class CryptoCard
+}
+package "view.helpers" {
+  class CryptoWorker
+  class CryptoDataEventArgs
+  class DesktopCryptoNotifier
+  interface IPlotterService
+  class PlotterService
+  interface IViewManager
+  class ViewManager
+}
+package "view.windows" {
+  class LoginView
+  class MainView
+  class FollowView
+  class SignUpView
+}
+@enduml
