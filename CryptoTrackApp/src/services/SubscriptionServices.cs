@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CryptoTrackApp.src.db;
 using CryptoTrackApp.src.models;
 using CryptoTrackApp.src.utils;
+using Gdk;
 
 namespace CryptoTrackApp.src.services
 {
@@ -111,11 +112,19 @@ namespace CryptoTrackApp.src.services
         {
             _logger.Log($"[EXECUTE - Operation GetFollowedCryptosIdsAsync at SubscriptionServices - userId: {pUserId}]");
             List<string> dataToReturn = new List<string>();
-            List<Subscription> data = await repository.GetSubscriptionsListAsync(Guid.Parse(pUserId));
-
-            foreach (Subscription sub in data)
+            try
             {
-                if (sub.UnfollowDate == null || sub.FollowDate > sub.UnfollowDate ) dataToReturn.Add(sub.CurrencyId);
+                List<Subscription> data = await repository.GetSubscriptionsListAsync(Guid.Parse(pUserId));
+
+                foreach (Subscription sub in data)
+                {
+                    if (sub.UnfollowDate == null || sub.FollowDate > sub.UnfollowDate) dataToReturn.Add(sub.CurrencyId);
+                }
+
+            }
+            catch (Exception error)
+            {
+                _logger.Log($"[ERROR - GetFollowedCryptosIdsAsync at SbuscriptionService - message: {error.Message}]");
             }
 
             return dataToReturn;

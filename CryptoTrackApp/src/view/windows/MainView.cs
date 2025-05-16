@@ -107,6 +107,13 @@ namespace CryptoTrackApp.src.view.windows
             this._followButton.ButtonReleaseEvent += FollowButtonReleased;
             this._panelBtn.ButtonReleaseEvent += PanelButtonReleased;
             this._logOutBtn.ButtonReleaseEvent += LogOutButtonReleased;
+            this._aboutBtn.ButtonReleaseEvent += AboutButtonReleased;
+        }
+
+        private void AboutButtonReleased(object o, ButtonReleaseEventArgs args)
+        {
+            var dialog = new AboutConfigDialog(this);
+            dialog.Run();
         }
 
         private void LogOutButtonReleased(object o, ButtonReleaseEventArgs args)

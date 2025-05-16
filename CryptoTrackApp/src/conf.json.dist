@@ -5,5 +5,5 @@
     "coin_api_url": "https://rest.coincap.io/v3/",
     "coin_cap_api_key": "",
     "db_connection": "Host=my_host;Database=my_db;Username=my_user;Password=my_pw",
-    "timeout_refresh": 5000
+    "timeout_refresh_in_minutes": 5
 }
